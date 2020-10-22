@@ -15,6 +15,7 @@ const _NoticeEmbed = require("./util/Constructors/_NoticeEmbed")
 const _Blacklist = require("./util/Constructors/_Blacklist");
 const _Match = require("./util/Constructors/_Match");
 const nodeSchedule = require('node-schedule');
+const _League = require('./util/Constructors/_League');
 require("dotenv").config();
 
 module.exports.rankedReactionsMap = new Map();
@@ -73,12 +74,30 @@ client.on('error', console.error);
 bot.on('error', e => {
   console.log(e)
 })
+
+let leagues = [
+  "twl",
+  "decl",
+  "clt",
+  "dcl",
+  "mbcl",
+  "ctfcl",
+  "cdcl"
+]
  
 bot.on("ready", async () => {
     console.log(`${bot.user.username} is online!`);
-    bot.user.setPresence({ game: { name: "Super Paintball" } });
+    //bot.user.setPresence({ game: { name: "Mineplex" } });
+    bot.user.setPresence({
+      game: {
+        name: leagues[0].toUpperCase(),
+        type: "WATCHING",
+      }
+    })
+    let i = 0;
+    showLeague(i);
 
-    let minutes = (date.getMinutes() + 1) + 60 * date.getHours() * date.getDate() * date.getMonth() * (date.getFullYear() - 2000);
+    /*let minutes = (date.getMinutes() + 1) + 60 * date.getHours() * date.getDate() * date.getMonth() * (date.getFullYear() - 2000);
 
     _Match.getMatchesObj().forEach(val => {
       if(val.minutes < minutes){
@@ -90,9 +109,23 @@ bot.on("ready", async () => {
         rules.month = date.getMonth();
         rules.year = date.getFullYear();
       }
-    })
+    })*/
 
 });
+
+function showLeague(i){
+  i++;
+  if(leagues.length == i) i = 0;
+  setTimeout(() => {
+    bot.user.setPresence({
+      game: {
+        name: leagues[i].toUpperCase(),
+        type: "WATCHING",
+      }
+    })
+    showLeague(i);
+  }, 10000)
+}
 
 bot.on("messageReactionAdd", async (reaction, user) => {
   if(this.rankedReactionsMap.has(reaction.message.id)){
@@ -168,13 +201,13 @@ bot.on("messageReactionAdd", async (reaction, user) => {
 });
  
 setInterval(function(){
-  _Player.updateNames()
- 
-  /*let players = require('./js/bot/storage/players.json');
- 
-  fs.writeFile('./backups/players.json', JSON.stringify(players), (err) => {
-      if(err) console.log(err);
-  });*/
+  _Player.updateNames("twl");
+  _Player.updateNames("decl");
+  _Player.updateNames("clt");
+  _Player.updateNames("dcl");
+  _Player.updateNames("mbcl");
+  _Player.updateNames("ctfcl");
+  _Player.updateNames("cdcl");
 }, ms("1h"));
 //_Player.updateNames()
  
@@ -191,9 +224,13 @@ bot.on("message", async message => {
     let cmd = messageArray[0];
   let args = messageArray.slice(1);
  
-  let user = new _User(message.author.id);
- 
-  levelUp(user, message);
+  let league = _League.getLeague(message.guild.id);
+
+  /*if(league != null){
+    
+  
+    //levelUp(user, message);
+  }*/
  
   doBlAdd(message);
   doMatchOutcome(message);
@@ -205,6 +242,9 @@ bot.on("message", async message => {
   if(cmd.startsWith(settings.prefix)){
     let commandfile = bot.commands.get(cmd.replace(settings.prefix, ""));
     if(!commandfile) return;
+    if(cmd.replace(settings.prefix, "") == "setleague") return commandfile.run(bot,message,args,cmd);
+    if(league == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+    let user = new _User(message.author.id, league);
     if(settings.owners.includes(message.author.id) || user.hasPermission(commandfile) || hasPermissionRoles(message, commandfile)){
       let sett = require('./settings.json');
       if(settings.owners.includes(message.author.id) || sett.maintenance == false){
@@ -237,7 +277,7 @@ bot.on('messageUpdate', (oldMessage, newMessage) => {
     .addField("Channel", `<#${newMessage.channel.id}>`)
     .setTimestamp(new Date());
  
-  bot.guilds.get('692395141427757067').channels.get('692801275280228382').send(embed);
+  //bot.guilds.get('692395141427757067').channels.get('692801275280228382').send(embed);
 });
  
 bot.on("messageDelete", (message) => {
@@ -256,14 +296,17 @@ bot.on("messageDelete", (message) => {
     .addField("Channel", `<#${message.channel.id}>`)
     .setTimestamp(new Date());
  
-  bot.guilds.get('692395141427757067').channels.get('692801275280228382').send(embed);
+  //bot.guilds.get('692395141427757067').channels.get('692801275280228382').send(embed);
 });
  
 function hasPermissionRoles(message, prop){
+
+  let league = _League.getLeague(message.guild.id);
+
   let member = message.guild.members.get(message.author.id);
   let outcome = false;
   member.roles.forEach((val, i, map) => {
-    let role = new _Role(val.id);
+    let role = new _Role(val.id, league);
     if(role.hasPermission(prop)){
       outcome = true;
       return;
@@ -568,9 +611,10 @@ function doBlAdd(message){
  
           if(message.content == null) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
  
-          if(val == false || !_Player.getPlayer(message.content)) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
+          if(val == false) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
  
-          let player = _Player.getPlayer(message.content);
+          let player = _Player.getPlayer(message.content, module.exports.blAddMap.get(message.author.id).league);
+          if(!player) player = _Player.addPlayer(val.name, val.uuid, league);
  
           //if(player.rank.toLowerCase() != "referee")
  
@@ -581,14 +625,14 @@ function doBlAdd(message){
  
           module.exports.blAddMap.set(message.author.id, newObj);
  
-          return new _NoticeEmbed(Colors.SUCCESS, "The referee for this blacklist has been set to " + player.name + ". Please enter the start date of the blacklist (0000-00-00).").send(message.channel);
+          return new _NoticeEmbed(Colors.SUCCESS, "The referee for this blacklist has been set to " + player.name + ". Please enter the start date of the blacklist (MM/DD/YYYY).").send(message.channel);
  
         })
       }
       break;
       case(1):{
  
-        if(!checkDate(message.content)) return new _NoticeEmbed(Colors.ERROR, "Invalid Date - Please specify a valid date (0000-00-00)").send(message.channel);
+        if(!checkDate(message.content)) return new _NoticeEmbed(Colors.ERROR, "Invalid Date - Please specify a valid date (MM/DD/YYYY)").send(message.channel);
  
         let newObj = module.exports.blAddMap.get(message.author.id)
  
@@ -610,7 +654,7 @@ function doBlAdd(message){
  
         if(message.content.toLowerCase() == "temporary"){
           newObj.step = 3;
-          new _NoticeEmbed(Colors.SUCCESS, "The start type for this blacklist has been set to " + message.content + ". Please enter the end date of the blacklist (0000-00-00).").send(message.channel);
+          new _NoticeEmbed(Colors.SUCCESS, "The start type for this blacklist has been set to " + message.content + ". Please enter the end date of the blacklist (MM/DD/YYYY).").send(message.channel);
         } else {
           newObj.end_date = "NONE";
           newObj.step = 4;
@@ -660,7 +704,7 @@ function doBlAdd(message){
  
         delete newObj.step;
  
-        _Blacklist.createBlacklist(newObj);
+        _Blacklist.createBlacklist(newObj, newObj.league);
  
         return new _NoticeEmbed(Colors.SUCCESS, "The referee notes for this blacklist have been set to " + message.content + ". The blacklist " + newObj.uuid + " has successfully been created.").send(message.channel);
          
@@ -674,11 +718,11 @@ function doBlAdd(message){
  
 function checkDate(date){
  
-  if(date.split("-").length != 3) return false;
+  if(date.split("/").length != 3) return false;
  
   let outcome = true;
  
-  date.split("-").forEach(val => {
+  date.split("/").forEach(val => {
     if(isNaN(val)) outcome = false;
   })
  

@@ -9,7 +9,7 @@ module.exports = class Blacklist {
      * @param {JSON} val
      */
 
-    constructor(val){
+    constructor(val, league){
 
         this.uuid = val.uuid;
         this.referee = val.referee;
@@ -19,6 +19,7 @@ module.exports = class Blacklist {
         this.type = val.type;
         this.alts = val.alts;
         this.end_date = val.end_date;  
+        this.league = league;
       
     }
   
@@ -40,7 +41,7 @@ module.exports = class Blacklist {
       val.alts = this.alts;
       val.end_date = this.end_date;
       
-      let filtered = blacklist.filter(val => val.uuid != this.uuid);
+      let filtered = blacklist[this.league].filter(val => val.uuid != this.uuid);
       filtered.push(val);
       
       blacklist = filtered;
@@ -54,7 +55,7 @@ module.exports = class Blacklist {
     }
 
     delete(){
-        blacklist = blacklist.filter(val => val.uuid != this.uuid);
+        blacklist[this.league] = blacklist[this.league].filter(val => val.uuid != this.uuid);
         fs.writeFile("./storage/blacklist.json", JSON.stringify(blacklist), (err) => {
            if(err) console.log(err)
         });
@@ -65,35 +66,35 @@ module.exports = class Blacklist {
      * @param {String} name
      */
 
-    static exists(uuid){
-        if(blacklist.length == 0) return false;
+    static exists(uuid, league){
+        if(blacklist[league].length == 0) return false;
         else {
-            let filtered = blacklist.filter(val => val.uuid == uuid);
+            let filtered = blacklist[league].filter(val => val.uuid == uuid);
             if(filtered.length == 0) return null;
             else return filtered[0];
         }
     }
 
-    static getBlacklist(uuid){
-        let val = this.exists(uuid);
+    static getBlacklist(uuid, league){
+        let val = this.exists(uuid, league);
         if(val == null || !val) return null;
         else {
-            return new Blacklist(val);
+            return new Blacklist(val, league);
         }
     }
   
-    static createBlacklist(val){
-      if(this.exists(val.uuid) != null && this.exists(val.uuid) != false) return null;
-      blacklist.push(val);
+    static createBlacklist(val, league){
+      if(this.exists(val.uuid, league) != null && this.exists(val.uuid, league) != false) return null;
+      blacklist[league].push(val);
       fs.writeFile('./storage/blacklist.json', JSON.stringify(blacklist), (err) => {
           if(err) console.log(err);
       })
       console.log(require("../../storage/blacklist.json")); 
-      return new Blacklist(val);
+      return new Blacklist(val, league);
     }
   
-  static updateBlacklists(){
-    blacklist.forEach((val, i) => {
+  static updateBlacklists(league){
+    blacklist[league].forEach((val, i) => {
       let date = new Date();
       let year = parseInt(val.end_date.split("-")[0]);
       let month = parseInt(val.end_date.split("-")[1]);
@@ -107,8 +108,8 @@ module.exports = class Blacklist {
     })
   }
   
-  static blacklists(){
-    return blacklist;
+  static blacklists(league){
+    return blacklist[league];
   }
 
 }

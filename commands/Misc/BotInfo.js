@@ -13,7 +13,7 @@ module.exports.run = async (bot,message,args,cmd) => {
         **Servers**: ${bot.guilds.size}
         **Users**: ${bot.users.size}
         **Author**: ${settings.author}
-        **Repository**: https://github.com/captaincrazybro/CWCLBot`)
+        **Repository**: https://github.com/captaincrazybro/CLNBot`)
 
     message.channel.send(embed);
 

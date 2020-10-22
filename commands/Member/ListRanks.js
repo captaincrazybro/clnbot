@@ -13,7 +13,7 @@ const _League = require('../../util/Constructors/_League.js');
 module.exports.run = async (bot,message,args,cmd) => {
     
     let settings = require('../../settings.json');
-    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
 
 	var ranksThing = "";
 	
@@ -28,45 +28,6 @@ module.exports.run = async (bot,message,args,cmd) => {
 
 
     return;
-
-}
-
-function getTeam(team){
-    
-    var teamNames = [];
-    
-    teams.forEach(val => {
-        teamNames.push(val.name);
-    });
-    
-    let teamName = stringUtil.findBestMatch(team, teamNames).bestMatch.target;
-    
-    let returnTeam = _Team.getTeam(teamName);
-    
-    return returnTeam;
-    
-}
-
-function getRankOrder(emoji){
-    
-    let outcome = null;
-
-    ranks.forEach(val => {
-        if(val.split("-")[1] == emoji) outcome = val.split("-")[2]
-    })
-
-    return outcome;
-}
-
-function getRankOrNull(rank){
-
-    let outcome = null;
-
-    ranks.forEach(val => {
-        if(val.split("-")[0].toLowerCase() == rank.toLowerCase()) outcome = val.split("-")[1]
-    })
-
-    return outcome;
 
 }
 

@@ -6,10 +6,14 @@ const settings = require('../../settings.json')
 const _NoticeEmbed = require('../../util/Constructors/_NoticeEmbed.js')
 const _User = require('../../util/Constructors/_User.js')
 const _Role = require('../../util/Constructors/_Role.js')
+const _League = require('../../util/Constructors/_League')
 
 module.exports.run = async (bot,message,args,cmd) => {
 
-    let user = new _User(message.author.id);
+    let league = _League.getLeague(message.guild.id);
+    if(league == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
+
+    let user = new _User(message.author.id, league);
 
     if(args.length == 0){
 
@@ -89,10 +93,11 @@ module.exports.run = async (bot,message,args,cmd) => {
 }
 
 function hasPermissionRoles(message, prop){
+    let league = _League.getLeague(message.guild.id);
     let member = message.guild.members.get(message.author.id);
     let outcome = false;
     member.roles.forEach((val, i, map) => {
-      let role = new _Role(val.id);
+      let role = new _Role(val.id, league);
       if(role.hasPermission(prop)){
         outcome = true;
         return;

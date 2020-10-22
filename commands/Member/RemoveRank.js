@@ -10,7 +10,7 @@ const _League = require('../../util/Constructors/_League.js');
 module.exports.run = async (bot,message,args,cmd) => {
 
     let settings = require('../../settings.json');
-    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
 
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a player").send(message.channel);
 
@@ -20,13 +20,14 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     promise.then(val => {
 
-        if(val == false || !_Player.getPlayer(playerName, message.guild.id)) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
+        if(val == false || !_Player.getPlayer(playerName, league)) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
 
-        let player = _Player.getPlayer(val.name, message.guild.id);
+        let player = _Player.getPlayer(val.name, league);
 
-        if(player == null) player = _Player.addPlayer(val.name, message.guild.id);
+        if(player == null) player = _Player.addPlayer(val.name, league);
 
         player.remRank();
+        player.remRank2();
 
         new _NoticeEmbed(Colors.SUCCESS, `Successfully removed ${val.name}'s rank`).send(message.channel);
 

@@ -1,31 +1,45 @@
 const fs = require('fs');
-const users = require('../../storage/permissions.json');
+//const users = require('../../storage/permissions.json');
 const Groups = require('../../util/Enums/Groups.js');
 const _NoticeEmbed = require('../../util/Constructors/_NoticeEmbed.js')
 const Colors = require('../../util/Enums/Colors.js')
 const _User = require('../../util/Constructors/_User')
 const _Role = require('../../util/Constructors/_Role.js')
 const Discord = require('discord.js');
+const _League = require('../../util/Constructors/_League');
 
 module.exports.run = async (bot,message,args,cmd) => {
-	
+
+	let settings = require('../../settings.json');
+    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+
+    let league = _League.getLeague(message.guild.id);
+
+	let users = require("../../storage/permissions.json")
+
+	let usersObj = users[league].users;
+	let rolesObj = users[league].roles;
+
+	let userMap = new Map(Object.entries(usersObj))
+
 	var members = "";
 
-    JSON.stringify(users).replace(/{/g, "").replace(/}/g, "").replace("\"users\":", "").replace("\"roles\":", "").split(",").forEach(val => {
-		let obj = val.split(":")[0].toString().replace(/"/g, "");
-		let user = message.guild.members.get(obj);
-		if(user != undefined) {
-			if(users.users[obj].group == 0) return
-			var group = Groups.parse[users.users[obj].group];
-			members += `User - ${user.displayName} - ${group}\n`;
+	userMap.forEach((k, v) => {
+		if(k.group != 0){
+			var group = Groups.parse[k.group];
+			members += `User - <@${v.toString()}> - ${group}\n`
 		}
-		let role = message.guild.roles.get(obj);
-		if(role != undefined){
-			if(users.roles[obj].group == 0) return
-			group = Groups.parse[users.roles[obj].group];
-			members += `Role - ${role.name} - ${group}`
-		}
-	})
+	});
+
+	if(rolesObj) {
+		let roleMap = new Map(Object.entries(rolesObj))
+		roleMap.forEach((k, v) => {
+			if(k.group != 0){
+				var group = Groups.parse[k.group];
+				members += `Role - <@${v}> - ${group}\n`
+			}
+		})
+	}
 
     let embed = new Discord.RichEmbed()
         .setColor(Colors.INFO)

@@ -63,7 +63,7 @@ module.exports = class _Player {
      */
 
     setRank(rank){
-        let index = players[league].indexOf(this.val);
+        let index = players[this.league].indexOf(this.val);
         players[this.league][index].rank = rank;
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
             if(err) console.log(err);
@@ -174,6 +174,15 @@ module.exports = class _Player {
 
     /**
      * 
+     * @returns {_Player} 
+     */
+
+    remRank2(){
+        return this.setRank2(undefined);
+    }
+
+    /**
+     * 
      * @param {String} team 
      * @returns {_Player}
      */
@@ -233,13 +242,13 @@ module.exports = class _Player {
      */
 
     static exists(name, league){
-        if(players.length > 0) var filtered = players.filter(val => val.name.toLowerCase() == name.toLowerCase());
+        if(players[league].length > 0) var filtered = players[league].filter(val => val.name.toLowerCase() == name.toLowerCase());
         else return null;
         return filtered.pop();
     }
     
     static existsUuid(uuid, league){
-        if(players.length > 0) var filtered = players.filter(val => val.uuid == uuid);
+        if(players[league].length > 0) var filtered = players[league].filter(val => val.uuid == uuid);
         else return null;
         
         return filtered.pop();
@@ -251,41 +260,37 @@ module.exports = class _Player {
      * @param {String} uuid 
      */
 
-    static addPlayer(name, uuid, serverId){
-        let league = _League.getLeague(serverId);
+    static addPlayer(name, uuid, league){
         if(league == null) return;
         if(this.existsUuid(uuid, league) != null) return;
         let json = {"name": name, "uuid": uuid, "rank": "Member", team: "None", rank2: "None", rating: {"Rifle": null, "Shotgun": null, "Machinegun": null}}
-        players.push(json);
+        players[league].push(json);
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
             if(err) console.log(err);
         })
         return new _Player(json, league);
     }
 
-    static getPlayer(name, serverId){
-        let league = _League.getLeague(serverId);
+    static getPlayer(name, league){
         if(league == null) return;
         let val = this.exists(name, league)
         if(val == null) return null;
         return new _Player(val, league);
     }
     
-    static getPlayerUuid(uuid, serverId){
-        let league = _League.getLeague(serverId);
+    static getPlayerUuid(uuid, league){
         if(league == null) return;
-        let val = this.existsUuid(uuid)
+        let val = this.existsUuid(uuid, league)
         if(val == null) return null;
         return new _Player(val, league);
     }
 
-    static getPlayerObj(serverId){ 
-        let league = _League.getLeague(serverId);
+    static getPlayerObj(league){ 
         return players[league]; 
     }
 
-    static updateNames(){
-        players.forEach(json => {
+    static updateNames(league){
+        players[league].forEach(json => {
             _MinecaftAPI.getUuid(json.name).then(val2 => {
                 if(val2 == undefined || val2.id != json.uuid){
                     _MinecaftAPI.getName(json.uuid).then(val => {
@@ -293,8 +298,8 @@ module.exports = class _Player {
                         console.log(`${json.name} -> ${val}`);
                         var json2 = json;
                         json2.name = val;
-                        players = players.filter(it => it.name != json.name)
-                        players.push(json2);
+                        players[league] = players[league].filter(it => it.name != json.name)
+                        players[league].push(json2);
                         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
                             if(err) console.log(err);
                         })

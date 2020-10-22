@@ -11,26 +11,61 @@ const _League = require('../../util/Constructors/_League.js');
 module.exports.run = async (bot,message,args,cmd) => {
 
     let settings = require('../../settings.json');
-    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
 
-    var rankings = "";
+    let league = _League.getLeague(message.guild.id);
 
-    let teamsSorted = _Team.getTeamObj().sort((a, b) => { return a.losses - b.losses })
+    if(args.length >= 1) league = _League.parseLeague(args[0]);
 
-    teamsSorted.forEach(val => { 
-        let index = teamsSorted.indexOf(val)
-        rankings += `${val.losses}. ${val.name} - Tier ${val.wins}\n`
-    })
+    if(league == null) return new _NoticeEmbed(Colors.ERROR, "Invalid league - Please specify a valid league").send(message.channel);
 
-    let embed = new Discord.RichEmbed()
-        .setColor(Colors.INFO)
-        .setTitle("Rankings")
-        .setDescription(rankings);
+    if(league == "clt"){
+        return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
+    }
 
-    message.channel.send(embed);
+    if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl"){
 
+        var rankings = "";
 
-    return;
+        let teamsSorted = _Team.getTeamObj(league).sort((a, b) => { return parseInt(`${a.losses}.${a.wins}`) - parseInt(`${b.losses}.${b.wins}`) })
+
+        teamsSorted.forEach(val => { 
+            let index = teamsSorted.indexOf(val) + 1
+            rankings += `${val.losses}. ${val.name} - Tier: ${val.wins}\n`
+        })
+
+        let embed = new Discord.RichEmbed()
+            .setColor(Colors.INFO)
+            .setTitle("Rankings")
+            .setDescription(rankings);
+
+        message.channel.send(embed);
+
+        return;
+
+    } else if(league == "twl" || league == "decl"){
+
+        var rankings = "";
+
+        let teamsSorted = _Team.getTeamObj(league).sort((a, b) => { return b.wins - a.wins })
+
+        teamsSorted.forEach(val => { 
+            let index = teamsSorted.indexOf(val) + 1
+            rankings += `${index}. ${val.name} - Points: ${val.wins}\n`
+        })
+
+        let embed = new Discord.RichEmbed()
+            .setColor(Colors.INFO)
+            .setTitle("Rankings")
+            .setDescription(rankings);
+
+        message.channel.send(embed);
+
+        return;
+
+    } else {
+        return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
+    }
 
 }
 

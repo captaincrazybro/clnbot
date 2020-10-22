@@ -25,7 +25,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 module.exports.help = {
     name: "dm",
     aliases: ["pm", "privatemessage", "message"],
-    permission: Groups.MOD,
+    permission: Groups.ADMIN,
     description: "Sends a private message to a user through the bot",
     usage: "dm <mention|id> <message>"
 }

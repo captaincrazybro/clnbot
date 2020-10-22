@@ -7,37 +7,63 @@ const _League = require('../../util/Constructors/_League.js');
 module.exports.run = async (bot,message,args,cmd) => {
 
     let settings = require('../../settings.json');
-    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
+
+    let league = _League.getLeague(message.guild.id);
 
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a team name").send(message.channel);
 
     let teamName = args[0];
 
-    let team = _Team.getTeam(teamName);
+    let team = _Team.getTeam(teamName, league);
 
     if(team == null) return new _NoticeEmbed(Colors.ERROR, "Invalid name - This team does not exist").send(message.channel);
 
-    if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a tier").send(message.channel);
+    if(league == "clt") return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
 
-    let wins = args[1];
+    if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl"){
 
-    if(args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify a rank").send(message.channel);
+        if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a tier").send(message.channel);
 
-    let losses = args[2];
+        if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid tier - Please specify a number").send(message.channel);
 
-    team.setWins(wins);
-    team.setLosses(losses);
+        let tier = parseInt(args[1]);
 
-    new _NoticeEmbed(Colors.SUCCESS, `Successfully set ${team.name}'s score to tier ${wins} and rank ${losses}`).send(message.channel);
+        if(args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify a rank").send(message.channel);
 
-    return;
+        if(isNaN(args[2])) return new _NoticeEmbed(Colors.ERROR, "Invalid rank - Please specify a number").send(message.channel);
+
+        let rank = parseInt(args[2]);
+
+        team.setWins(tier);
+        team.setLosses(rank);
+
+        new _NoticeEmbed(Colors.SUCCESS, `Successfully set ${team.name}'s score to tier ${tier} and rank ${rank}`).send(message.channel);
+
+        return;
+
+    } else {
+
+        if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify points").send(message.channel);
+
+        if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid points - Please specify a number").send(message.channel);
+
+        let points = parseInt(args[1]);
+
+        team.setWins(points);
+
+        new _NoticeEmbed(Colors.SUCCESS, `Successfully set ${team.name}'s points to ${points}`).send(message.channel);
+
+        return;
+
+    }
 
 }
 
 module.exports.help = {
-    name: "setranking",
-    aliases: ["set-ranking"],
+    name: "setscore",
+    aliases: ["set-score"],
     permission: Groups.MOD,
     description: "Sets score for a team",
-    usage: "setranking <team> <tier> <rank>"
+    usage: "setscore <team> <parameters>"
 }

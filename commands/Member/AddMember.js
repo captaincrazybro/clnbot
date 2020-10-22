@@ -9,7 +9,8 @@ const _League = require('../../util/Constructors/_League.js');
 module.exports.run = async (bot,message,args,cmd) => {
 
     let settings = require('../../settings.json');
-    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
+    let league = _League.getLeague(message.guild.id);
 
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a player").send(message.channel);
 
@@ -27,15 +28,15 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         let teamName = args[1];
 
-        let team = _Team.getTeam(teamName, message.guild.id)
+        let team = _Team.getTeam(teamName, league)
 
         if(team == null) return new _NoticeEmbed(Colors.ERROR, "Invalid team - This team does not exist").send(message.channel);
 
-        let player = _Player.getPlayer(val.name, message.guild.id);
+        let player = _Player.getPlayer(val.name, league);
 
-        if(player == null) player = _Player.addPlayer(val.name, val.id, message.guild.id);
+        if(player == null) player = _Player.addPlayer(val.name, val.id, league);
 
-        player.setTeam(team.name, message.guild.id);
+        player.setTeam(team.name, league);
 
         new _NoticeEmbed(Colors.SUCCESS, `Successfully added ${val.name} to ${team.name}`).send(message.channel);
 

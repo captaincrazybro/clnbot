@@ -9,7 +9,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     let league = _League.getLeague(message.guild.id);
 
     if(league == null) return new _NoticeEmbed(Colors.INFO, "This guild does not have a league set").send(message.channel);
-    else return new _NoticeEmbed(Colors.INFO, "This guild's league is " + league);
+    else return new _NoticeEmbed(Colors.INFO, "This guild's league is set to " + league).send(message.channel);
 
 }
 

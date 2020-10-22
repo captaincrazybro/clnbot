@@ -10,7 +10,9 @@ const _League = require('../../util/Constructors/_League.js');
 module.exports.run = async (bot,message,args,cmd) => {
 
     let settings = require('../../settings.json');
-    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
+
+    let league = _League.getLeague(message.guild.id);
 
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a player").send(message.channel);
 
@@ -20,12 +22,12 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     promise.then(val => {
 
-        if(val == false || !_Player.getPlayer(playerName, message.guild.id)) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
+        if(val == false || !_Player.getPlayer(playerName, league)) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
             
-        let player = _Player.getPlayer(val.name, message.guild.id);
+        let player = _Player.getPlayer(val.name, league);
 
         if(player == null) {
-            player = _Player.addPlayer(val.name, val.id, message.guild.id);
+            player = _Player.addPlayer(val.name, val.id, league);
         }
     
         if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a rank").send(message.channel);
@@ -34,7 +36,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         if(getRankOrNull(rank) == null) return new _NoticeEmbed(Colors.ERROR, "Invalid rank - This rank does not exist").send(message.channel);
 
-        player.setRank(rank);
+        player.setRank(capitalize(rank.toLowerCase()), league);
 
         var rank2 = null;
 
@@ -44,14 +46,14 @@ module.exports.run = async (bot,message,args,cmd) => {
 
             if(rank2.toLowerCase() == "member" || rank2.toLowerCase() == "none") rank2 = "None";
             else if(getRankOrNull(rank2) == null) return new _NoticeEmbed(Colors.ERROR, "Invalid second rank - This rank does not exist").send(message.channel);
-            else rank2 = capitalize(rank2);
+            else rank2 = capitalize(rank2.toLowerCase());
 
             player.setRank2(rank2);
 
         }
 
-        if(rank2 != null) new _NoticeEmbed(Colors.SUCCESS, `Successfully set ${val.name}'s rank to ${rank} and second rank to ${rank2}`).send(message.channel);
-        else new _NoticeEmbed(Colors.SUCCESS, `Successfully set ${val.name}'s rank to ${rank}`).send(message.channel);
+        if(rank2 != null) new _NoticeEmbed(Colors.SUCCESS, `Successfully set ${val.name}'s rank to ${capitalize(rank.toLowerCase())} and second rank to ${rank2}`).send(message.channel);
+        else new _NoticeEmbed(Colors.SUCCESS, `Successfully set ${val.name}'s rank to ${capitalize(rank.toLowerCase())}`).send(message.channel);
 
     })
 

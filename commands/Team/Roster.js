@@ -13,13 +13,19 @@ const _League = require('../../util/Constructors/_League.js');
 module.exports.run = async (bot,message,args,cmd) => {
 
     let settings = require('../../settings.json');
-    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
+
+    let league = _League.getLeague(message.guild.id);
+
+    if(args.length >= 2) league = _League.parseLeague(args[1]);
 
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a team").send(message.channel);
 
     let teamName = args[0];
 
-    let team = getTeam(teamName);
+    if(league == null) return new _NoticeEmbed(Colors.ERROR, "Invalid league - Please specify a valid league").send(message.channel);
+
+    let team = getTeam(teamName, league);
 
     if(team == null) return new _NoticeEmbed(Colors.ERROR, "Invalid name - This team does not exist").send(message.channel);
 
@@ -29,14 +35,14 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         team.getMembers().forEach(val => {
             var member = "";
+            if(getRankOrNull(val.rank) != null) member += `${getRankOrNull(val.rank)} `
             member += `${val.name.replace(/_/g, "\\_")}`
-            if(getRankOrNull(val.rank) != null && val.rank.toLowerCase() != "member") member += ` ${getRankOrNull(val.rank)}`
             if(val.rank2 != undefined) if(val.rank2.toLowerCase() != "none" && getRankOrNull(val.rank2) != null) member += ` ${getRankOrNull(val.rank2)}`
             membersArray.push(member);
         })
 
         membersArray.sort((a, b) => {
-            return getRankOrder(a.split(" ")[1]) - getRankOrder(b.split(" ")[1]);
+            return getRankOrder(a.split(" ")[0]) - getRankOrder(b.split(" ")[0]);
         })
 
         let members = membersArray.join("\n");
@@ -51,9 +57,14 @@ module.exports.run = async (bot,message,args,cmd) => {
 
             if(val == null) owner = "None";
             else owner = val;
-        
-            var teamsSorted = teams;
-            teamsSorted.sort((a, b) => { return (b.wins - b.losses) - (a.wins - a.losses) })
+
+            var teams = require('../../storage/teams.json');
+            var teamsSorted = teams[league];
+            if(league == "ctfc"){
+                teamsSorted.sort((a, b) => { return (parseInt(`${b.losses}.${b.wins}`) - parseInt(`${a.losses}.${a.wins}`)) })
+            } else {
+                teamsSorted.sort((a, b) => { return a.wins - b.wins })
+            }
             var index;
             teamsSorted.forEach((val, i) => {
                 if(val.name == team.name) index = i
@@ -64,8 +75,13 @@ module.exports.run = async (bot,message,args,cmd) => {
                 .setTitle(`${team.name}`)
                 //.addField("Mentor", owner)
                 //.addField("Nick", team.nick)
-                .addField("Ranking", `Tier: ${team.wins} Rank: ${team.losses}`)
-                .addField("Members", members)
+                if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl"){
+                    embed.addField("Tier", team.wins);
+                    embed.addField("Rank", team.losses);
+                } else if(league == "twl" || league == "decl") {
+                    embed.addField("Points", team.wins)
+                }
+                embed.addField("Members", members)
                 
             if(team.logo != "None") embed.setThumbnail(team.logo);
 
@@ -78,12 +94,13 @@ module.exports.run = async (bot,message,args,cmd) => {
 
 }
 
-function getTeam(team){
+function getTeam(team, league){
     
     var outcome = null;
+
     
-    teams.forEach(val => {
-        if(val.name.toLowerCase().includes(team.toLowerCase())) outcome = _Team.getTeam(val.name);
+    teams[league].forEach(val => {
+        if(val.name.toLowerCase().includes(team.toLowerCase())) outcome = _Team.getTeam(val.name, league);
     });
     
     return outcome;

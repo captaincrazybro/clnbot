@@ -8,9 +8,15 @@ const _League = require('../../util/Constructors/_League.js');
 module.exports.run = async (bot,message,args,cmd) => {
 
     let settings = require('../../settings.json');
-    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
 
-    let teams = _Team.getTeams();
+    let league = _League.getLeague(message.guild.id);
+
+    if(args.length >= 1) league = _League.parseLeague(args[0]);
+
+    if(league == null) return new _NoticeEmbed(Colors.ERROR, "Invalid league - Please specify a valid league").send(message.channel);
+
+    let teams = _Team.getTeams(league);
 
     if(teams.length == 0) return new _NoticeEmbed(Colors.ERROR, "There are currently no teams").send(message.channel);
 
@@ -28,7 +34,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
 module.exports.help = {
     name: "listteams",
-    aliases: ["teams", "list-teams"],
+    aliases: ["teams", "list-teams", "lt"],
     permission: Groups.DEFAULT,
     description: "Lists the teams",
     usage: "listteams"

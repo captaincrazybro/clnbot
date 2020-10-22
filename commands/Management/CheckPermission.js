@@ -6,8 +6,14 @@ const Colors = require('../../util/Enums/Colors.js')
 const _User = require('../../util/Constructors/_User')
 const _Role = require('../../util/Constructors/_Role.js')
 const Discord = require('discord.js');
+const _League = require('../../util/Constructors/_League');
 
 module.exports.run = async (bot,message,args,cmd) => {
+
+    let settings = require('../../settings.json');
+    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
+
+    let league = _League.getLeague(message.guild.id);
 
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a role or user (mention or id)").send(message.channel);
 
@@ -27,10 +33,10 @@ module.exports.run = async (bot,message,args,cmd) => {
     var name;
 
     if(typeName == "user"){
-        type = new _User(memOrRole.id);
+        type = new _User(memOrRole.id, league);
         name = memOrRole.username;
     } else {
-        type = new _Role(memOrRole.id);
+        type = new _Role(memOrRole.id, league);
         name = memOrRole.name;
     }
 
