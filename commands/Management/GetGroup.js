@@ -22,6 +22,8 @@ module.exports.run = async (bot,message,args,cmd) => {
     
     if(memOrRole != null) if(memOrRole.username == undefined) memOrRole = memOrRole.user;
 
+    if(!memOrRole && userExists(args[0], league)) memOrRole = {id:args[0],id:args[0]}
+
     if(!memOrRole) {
         memOrRole = message.mentions.roles.first() || message.guild.roles.get(args[0]) || message.guild.roles.find(val => val.name.toLowerCase() == args[0].toLowerCase());
         typeName = "role";
@@ -55,6 +57,10 @@ module.exports.run = async (bot,message,args,cmd) => {
     }
 
     name = `<@${memOrRole.id}>`;
+    
+    if(memOrRole.id == memOrRole.username){
+        name = memOrRole.username;
+    }
 
     if(typeName == "role") name = name.replace("@", "@&")
 
@@ -64,6 +70,11 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     message.channel.send(embed);
 
+}
+
+function userExists(id, league){
+    let users = _User.users(league);
+    return users[league].users[id];
 }
 
 module.exports.help = {
