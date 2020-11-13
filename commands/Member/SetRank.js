@@ -80,7 +80,7 @@ function capitalize(string)
 
 module.exports.help = {
     name: "setrank",
-    aliases: ["set-rank"],
+    aliases: ["set-rank","setrank"],
     permission: Groups.MOD,
     description: "Sets the rank for a player",
     usage: "setrank <player> <rank> [rank2]"
