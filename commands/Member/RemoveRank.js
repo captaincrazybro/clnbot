@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args, cmd) => {
 
 module.exports.help = {
     name: "removerank",
-    aliases: ["remove-rank", "rem-rank", "remrank"],
+    aliases: ["remove-rank", "rem-rank", "remrank", "removerank"],
     permission: Groups.MOD,
     description: "Removes the rank of a player",
     usage: "removerank <player>"

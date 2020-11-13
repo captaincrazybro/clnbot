@@ -46,7 +46,7 @@ module.exports.run = async (bot, message, args, cmd) => {
 
 module.exports.help = {
     name: "addmember",
-    aliases: ["add-member", "add-mem", "addmem"],
+    aliases: ["add-member", "add-mem", "addmem", "addmember"],
     permission: Groups.MOD,
     description: "Adds a member to a team",
     usage: "addmember <name> <team>"
