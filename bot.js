@@ -599,7 +599,7 @@ function doBlAdd(message){
  
     if(message.content.toLowerCase() == "exit"){
       module.exports.blAddMap.delete(message.author.id);
-      return new _NoticeEmbed(Colors.SUCCESS, "You have successfully exited this blacklist creation wisard").send(message.channel);
+      return new _NoticeEmbed(Colors.SUCCESS, "You have successfully exited this blacklist creation wizard").send(message.channel);
     }
  
     let obj = module.exports.blAddMap.get(message.author.id);
