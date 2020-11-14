@@ -2,7 +2,7 @@ var leagues = require("../../storage/leagues.json");
 const fs = require("fs");
 const Discord = require("discord.js")
 const _MinecaftAPI = require("../../util/Constructors/_MinecraftAPI")
-const {get} = require('lodash');
+// const {get} = require('lodash');
 
 module.exports = class _League {
 

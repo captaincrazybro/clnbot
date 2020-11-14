@@ -2,7 +2,7 @@ var players = require("../../storage/players.json");
 const fs = require("fs");
 const Discord = require("discord.js")
 const _MinecaftAPI = require("../../util/Constructors/_MinecraftAPI")
-const {get} = require('lodash');
+// const {get} = require('lodash'); is this reallyy necesary?
 const _League = require('./_League.js');
 
 module.exports = class _Player {
@@ -13,12 +13,12 @@ module.exports = class _Player {
      * @param {JSON} val 
      */
 
-    constructor(val, league){
-      
+    constructor(val, league) {
+
         this.league = league
 
         players = require("../../storage/players.json");
-      
+
         this.val = val;
         this.uuid = val.uuid;
         this.rank = val.rank;
@@ -26,11 +26,11 @@ module.exports = class _Player {
         this.name = val.name;
         this.rank2 = val.rank2;
 
-        if(val.rating == null) this.rating = {Shotgun: null, Rifle: null, Machinegun: null};
+        if (val.rating == null) this.rating = { Shotgun: null, Rifle: null, Machinegun: null };
         else this.rating = val.rating
 
-        if(val.deaths == undefined) val.deaths = 0;
-        if(val.kill == undefined) val.kills = 0;
+        if (val.deaths == undefined) val.deaths = 0;
+        if (val.kill == undefined) val.kills = 0;
         this.deaths = val.deaths;
         this.kills = val.kills;
 
@@ -40,7 +40,7 @@ module.exports = class _Player {
      * @returns {Number}
      */
 
-    getKDR(){
+    getKDR() {
         return this.kills / this.deaths;
     }
 
@@ -50,8 +50,8 @@ module.exports = class _Player {
      * @returns {Array<JSON>}
      */
 
-    static filterMembers(team, league){
-        if(players[league].length > 0) var outcome = players[league].filter(val => val.team == team || val.nick == team);
+    static filterMembers(team, league) {
+        if (players[league].length > 0) var outcome = players[league].filter(val => val.team == team || val.nick == team);
         else return null;
         return outcome;
     }
@@ -62,11 +62,11 @@ module.exports = class _Player {
      * @returns {_Player}
      */
 
-    setRank(rank){
+    setRank(rank) {
         let index = players[this.league].indexOf(this.val);
         players[this.league][index].rank = rank;
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.rank = rank;
         this.val.rank = rank;
@@ -79,11 +79,11 @@ module.exports = class _Player {
      * @returns {_Player}
      */
 
-    setRank2(rank){
+    setRank2(rank) {
         let index = players[this.league].indexOf(this.val);
         players[this.league][index].rank2 = rank;
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.rank2 = rank;
         this.val.rank2 = rank;
@@ -95,12 +95,12 @@ module.exports = class _Player {
      * @param {Number} deaths 
      * @returns {_Player}
      */
-    
-    setKills(kills){
+
+    setKills(kills) {
         let index = players[this.league].indexOf(this.val);
         players[this.league][index].kills = kills;
         fs.writeFile('./storage/players.json', JSON.stringify(player), err => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.kills = kills;
         this.val.kills = kills;
@@ -112,12 +112,12 @@ module.exports = class _Player {
      * @param {Number} deaths 
      * @returns {_Player}
      */
-    
-    setDeaths(deaths){
+
+    setDeaths(deaths) {
         let index = players[this.league].indexOf(this.val);
         players[this.league][index].deaths = deaths;
         fs.writeFile('./storage/players.json', JSON.stringify(player), err => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.deaths = deaths;
         this.val.deaths = deaths;
@@ -130,7 +130,7 @@ module.exports = class _Player {
      * @returns {_Player}
      */
 
-    addKills(kills){
+    addKills(kills) {
         return this.setKills(this.kills + kills);
     }
 
@@ -140,7 +140,7 @@ module.exports = class _Player {
      * @returns {_Player}
      */
 
-    addDeaths(deaths){
+    addDeaths(deaths) {
         return this.setDeaths(this.deaths + deaths);
     }
 
@@ -150,7 +150,7 @@ module.exports = class _Player {
      * @returns {_Player}
      */
 
-    removeKills(kills){
+    removeKills(kills) {
         return this.setKills(this.kills - kills);
     }
 
@@ -160,7 +160,7 @@ module.exports = class _Player {
      * @returns {_Player}
      */
 
-    removeDeaths(deaths){
+    removeDeaths(deaths) {
         return this.setDeaths(this.deaths - deaths);
     }
 
@@ -168,8 +168,8 @@ module.exports = class _Player {
      * @returns {_Player}
      */
 
-    remRank(){
-        return this.setRank("Member")  
+    remRank() {
+        return this.setRank("Member")
     }
 
     /**
@@ -177,7 +177,7 @@ module.exports = class _Player {
      * @returns {_Player} 
      */
 
-    remRank2(){
+    remRank2() {
         return this.setRank2(undefined);
     }
 
@@ -187,11 +187,11 @@ module.exports = class _Player {
      * @returns {_Player}
      */
 
-    setTeam(team){
+    setTeam(team) {
         let index = players[this.league].indexOf(this.val);
         players[this.league][index].team = team;
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.team = team;
         this.val.team = team
@@ -231,7 +231,7 @@ module.exports = class _Player {
      * @returns {_Player}
      */
 
-    remTeam(){
+    remTeam() {
         return this.setTeam("None");
     }
 
@@ -241,16 +241,16 @@ module.exports = class _Player {
      * @returns {JSON}
      */
 
-    static exists(name, league){
-        if(players[league].length > 0) var filtered = players[league].filter(val => val.name.toLowerCase() == name.toLowerCase());
+    static exists(name, league) {
+        if (players[league].length > 0) var filtered = players[league].filter(val => val.name.toLowerCase() == name.toLowerCase());
         else return null;
         return filtered.pop();
     }
-    
-    static existsUuid(uuid, league){
-        if(players[league].length > 0) var filtered = players[league].filter(val => val.uuid == uuid);
+
+    static existsUuid(uuid, league) {
+        if (players[league].length > 0) var filtered = players[league].filter(val => val.uuid == uuid);
         else return null;
-        
+
         return filtered.pop();
     }
 
@@ -260,48 +260,48 @@ module.exports = class _Player {
      * @param {String} uuid 
      */
 
-    static addPlayer(name, uuid, league){
-        if(league == null) return;
-        if(this.existsUuid(uuid, league) != null) return;
-        let json = {"name": name, "uuid": uuid, "rank": "Member", team: "None", rank2: "None", rating: {"Rifle": null, "Shotgun": null, "Machinegun": null}}
+    static addPlayer(name, uuid, league) {
+        if (league == null) return;
+        if (this.existsUuid(uuid, league) != null) return;
+        let json = { "name": name, "uuid": uuid, "rank": "Member", team: "None", rank2: "None", rating: { "Rifle": null, "Shotgun": null, "Machinegun": null } }
         players[league].push(json);
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         return new _Player(json, league);
     }
 
-    static getPlayer(name, league){
-        if(league == null) return;
+    static getPlayer(name, league) {
+        if (league == null) return;
         let val = this.exists(name, league)
-        if(val == null) return null;
+        if (val == null) return null;
         return new _Player(val, league);
     }
-    
-    static getPlayerUuid(uuid, league){
-        if(league == null) return;
+
+    static getPlayerUuid(uuid, league) {
+        if (league == null) return;
         let val = this.existsUuid(uuid, league)
-        if(val == null) return null;
+        if (val == null) return null;
         return new _Player(val, league);
     }
 
-    static getPlayerObj(league){ 
-        return players[league]; 
+    static getPlayerObj(league) {
+        return players[league];
     }
 
-    static updateNames(league){
+    static updateNames(league) {
         players[league].forEach(json => {
             _MinecaftAPI.getUuid(json.name).then(val2 => {
-                if(val2 == undefined || val2.id != json.uuid){
+                if (val2 == undefined || val2.id != json.uuid) {
                     _MinecaftAPI.getName(json.uuid).then(val => {
-                        if(val == null) return;
+                        if (val == null) return;
                         console.log(`${json.name} -> ${val}`);
                         var json2 = json;
                         json2.name = val;
                         players[league] = players[league].filter(it => it.name != json.name)
                         players[league].push(json2);
                         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
-                            if(err) console.log(err);
+                            if (err) console.log(err);
                         })
                     })
                 }

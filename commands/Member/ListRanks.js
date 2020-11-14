@@ -7,7 +7,7 @@ const _MinecraftApi = require('../../util/Constructors/_MinecraftAPI')
 const ranks = require('../../storage/ranks.json')
 const teams = require('../../storage/teams.json')
 const _Player = require('../../util/Constructors/_Player');
-const stringUtil = require('string-similarity');
+// const stringUtil = require('string-similarity');
 const _League = require('../../util/Constructors/_League.js');
 
 module.exports.run = async (bot, message, args, cmd) => {
