@@ -44,6 +44,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
 module.exports.help = {
     name: "removemember",
+    test:"test",//this is a git test.
     aliases: ["rem-mem", "remove-member","remmem","removemember"],
     permission: Groups.MOD,
     description: "Removes a member from a team",
