@@ -1,0 +1,32 @@
+{
+  "name": "clnbot",
+  "version": "1.0.0",
+  "description": "This is the clnbot",
+  "main": "bot.js",
+  "scripts": {
+    "test": "node bot.js",
+    "start": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/captaincrazybro/clnbot.git"
+  },
+  "keywords": [
+    "bot",
+    "clnbot",
+    "bot",
+    "discord"
+  ],
+  "author": "Captain & ._.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/captaincrazybro/clnbot/issues"
+  },
+  "homepage": "https://github.com/captaincrazybro/clnbot#readme",
+  "dependencies": {
+    "discord": "^0.8.2",
+    "dotenv": "^8.2.0",
+    "mojang-api": "0.0.2",
+    "node-schedule": "^1.3.2"
+  }
+}
