@@ -70,7 +70,7 @@ module.exports.run = async (bot,message,args,cmd) => {
                 if(val.name == team.name) index = i
             })
 
-            let embed = new Discord.RichEmbed()
+            let embed = new Discord.MessageEmbed()
                 .setColor(team.color)
                 .setTitle(`${team.name}`)
                 //.addField("Mentor", owner)

@@ -17,7 +17,7 @@ module.exports.run = async (bot,message,args,cmd) => {
         if(err) console.log(err);
     })
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setAuthor(`Successfully set the bot prefix to ${args[0]}`)
 

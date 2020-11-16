@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args, cmd) => {
 
     ranks.forEach(val => ranksThing += `${val.split("-")[1]} - ${val.split("-")[0]}\n`);
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setTitle("Ranks")
         .setDescription(ranksThing);

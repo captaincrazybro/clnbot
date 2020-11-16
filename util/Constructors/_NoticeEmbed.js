@@ -13,7 +13,7 @@ module.exports = class _NoticeEmbed {
      */
 
     constructor(color, message){
-        this.embed = new Discord.RichEmbed()
+        this.embed = new Discord.MessageEmbed()
             .setColor(color)
             .setAuthor(message);
     }

@@ -81,7 +81,7 @@ module.exports.run = async (bot,message,args,cmd) => {
             }
         }
 
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
             .setColor(Colors.INFO)
             .setTitle(`Help for ${commandfile.help.name}`)
             .setDescription(`**Aliases**: ${commandfile.help.aliases.join(", ")}\n**Description**: ${commandfile.help.description}\n**Usage**: ${settings.prefix}${commandfile.help.usage}\n**Group**: ${group}`)

@@ -34,7 +34,7 @@ module.exports.run = async (bot,message,args,cmd) => {
             rankings += `${val.losses}. ${val.name} - Tier: ${val.wins}\n`
         })
 
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
             .setColor(Colors.INFO)
             .setTitle("Rankings")
             .setDescription(rankings);
@@ -54,7 +54,7 @@ module.exports.run = async (bot,message,args,cmd) => {
             rankings += `${index}. ${val.name} - Points: ${val.wins}\n`
         })
 
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
             .setColor(Colors.INFO)
             .setTitle("Rankings")
             .setDescription(rankings);

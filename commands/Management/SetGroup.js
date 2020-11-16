@@ -76,7 +76,7 @@ module.exports.run = async(bot,message,args,cmd) => {
 
     type.setGroup(group);
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.SUCCESS)
         .setDescription(`Successfully set ${name}'s group to ${groupName.toLowerCase()}`)
 

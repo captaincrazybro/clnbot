@@ -64,7 +64,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     if(typeName == "role") name = name.replace("@", "@&")
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setDescription(`${name}'s group is ${group}`)
 

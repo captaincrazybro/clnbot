@@ -31,7 +31,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     
         if(blacklist == null) return new _NoticeEmbed(Colors.ERROR, "This player is not blacklisted").send(message.channel);
     
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
             .setColor(Colors.ERROR)
             .setTitle(`Blacklist`)
             .addField("Name", val.name)

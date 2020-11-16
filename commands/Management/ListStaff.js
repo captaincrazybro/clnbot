@@ -41,7 +41,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 		})
 	}
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setAuthor("Staff")
         .setDescription(members);

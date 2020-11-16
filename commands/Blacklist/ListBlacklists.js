@@ -29,7 +29,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     if(blacklist.length == 0) return new _NoticeEmbed(Colors.ERROR, "There are currently no active blacklists").send(message.channel);
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.ERROR)
         .setTitle("Blacklists")
         .setDescription(list);

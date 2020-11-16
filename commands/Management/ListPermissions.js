@@ -54,7 +54,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     if(outcome == "") outcome = `This ${typeName} does not have any permissions set`
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setDescription(outcome)
 

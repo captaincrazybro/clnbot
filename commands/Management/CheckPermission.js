@@ -55,7 +55,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     if(typeName == "role") outcome = outcome.replace("@", "@&")
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setDescription(outcome)
 

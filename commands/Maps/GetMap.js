@@ -23,7 +23,7 @@ module.exports.run = async(bot,message,args,cmd) => {
 
     if(map == null) return new _NoticeEmbed(Colors.ERROR, "Invalid map - Please specify a valid map ").send(message.channel);
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setAuthor(map.name)
         .setImage(map.img);

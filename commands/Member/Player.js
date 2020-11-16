@@ -35,7 +35,7 @@ module.exports.run = async (bot,message,args,cmd) => {
         
         //let blacklist = _Blacklist.getBlacklist(val.id);
 
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
             .setColor(Colors.INFO)
             .setTitle(`${val.name.replace(/_/g, "\\_")}'s Profile`)
             .addField("Team", player.team)

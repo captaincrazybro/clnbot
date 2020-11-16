@@ -20,7 +20,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     if(teams.length == 0) return new _NoticeEmbed(Colors.ERROR, "There are currently no teams").send(message.channel);
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setTitle("Teams")
 

@@ -23,7 +23,7 @@ module.exports.run = async(bot,message,args,cmd) => {
         msg += map.name + "\n";
     })
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setAuthor("List Maps")
         .setDescription(msg);

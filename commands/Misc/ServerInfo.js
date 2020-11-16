@@ -4,7 +4,7 @@ const Colors = require('../../util/Enums/Colors.js')
 
 module.exports.run = async (bot,message,args,cmd) => {
 
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setAuthor("Server Info")
         .setDescription(`\n\n
