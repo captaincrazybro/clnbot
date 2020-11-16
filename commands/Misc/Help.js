@@ -19,7 +19,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         fs.readdir('./commands/', (err, files) => {
 
-            var embed = new Discord.RichEmbed()
+            var embed = new Discord.MessageEmbed()//.RichEmbed()
                 .setColor(Colors.INFO)
                 .setTitle("Commands")
                 .setDescription(`The prefix for this bot is ${settings.prefix}
