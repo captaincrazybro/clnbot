@@ -18,7 +18,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a role or user (mention or id)").send(message.channel);
 
     let typeName = "user";
-    let memOrRole = message.mentions.users.first() || message.guild.members.get(args[0]) || message.guild.members.find(val => val.user.username.toLowerCase() == args[0].toLowerCase()) || message.guild.members.find(val => val.user.tag.toLowerCase() == args[0].toLowerCase());
+    let memOrRole = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.guild.members.find(val => val.user.username.toLowerCase() == args[0].toLowerCase()) || message.guild.members.find(val => val.user.tag.toLowerCase() == args[0].toLowerCase());
     
     if(memOrRole != null) if(memOrRole.username == undefined) memOrRole = memOrRole.user;
 

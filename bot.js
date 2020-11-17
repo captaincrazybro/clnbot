@@ -303,7 +303,7 @@ function hasPermissionRoles(message, prop){
 
   let league = _League.getLeague(message.guild.id);
 
-  let member = message.guild.members.get(message.author.id);
+  let member = message.guild.members.cache.get(message.author.id);
   let outcome = false;
   member.roles.forEach((val, i, map) => {
     let role = new _Role(val.id, league);
@@ -350,10 +350,10 @@ function levelUp(user, message){
             color: "#000000",
             permissions:[]
         }).then(() => {
-          message.guild.members.get(message.author.id).addRole(levelRole);
+          message.guild.members.cache.get(message.author.id).addRole(levelRole);
         });
     } else {
-      message.guild.members.get(message.author.id).addRole(levelRole);
+      message.guild.members.cache.get(message.author.id).addRole(levelRole);
     }
   }
  
@@ -796,10 +796,10 @@ function addRoleAndCreateIfNotExists(user, roleName){
           color: "#000000",
           permissions:[]
       }).then(() => {
-        message.guild.members.get(user.id).addRole(kitRole);
+        message.guild.members.cache.get(user.id).addRole(kitRole);
       });
   } else {
-    message.guild.members.get(user.id).addRole(kitRole);
+    message.guild.members.cache.get(user.id).addRole(kitRole);
   }
 
 }

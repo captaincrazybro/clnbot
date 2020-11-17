@@ -6,7 +6,7 @@ const _League = require('../../util/Constructors/_League.js');
 
 module.exports.run = async (bot,message,args,cmd) => {
 
-    if(!message.guild.members.get(message.author.id).hasPermission('ADMINISTRATOR')) return new _NoticeEmbed(Colors.ERROR, "Only server admins can execute this command").send(message.channel);
+    if(!message.guild.members.cache.get(message.author.id).hasPermission('ADMINISTRATOR')) return new _NoticeEmbed(Colors.ERROR, "Only server admins can execute this command").send(message.channel);
 
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a league").send(message.channel);
 

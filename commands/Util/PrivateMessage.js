@@ -7,7 +7,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a user (mention or id)").send(message.channel);
 
-    let user = message.mentions.users.first() || message.guild.members.get(args[0]);
+    let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
 
     if(!user) return new _NoticeEmbed(Colors.ERROR, "Invalid user - Specify a valid user (mention or id)").send(message.channel);
 
