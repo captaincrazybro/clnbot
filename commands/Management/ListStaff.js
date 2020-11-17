@@ -22,31 +22,25 @@ module.exports.run = async (bot, message, args, cmd) => {
 
 	let userMap = new Map(Object.entries(usersObj))
 
-	var members = "";
+	var members = ""; 
 
-	// console.log(userMap);
-	let groupKeys = await Groups.parse
-	console.log(groupKeys)
-	let i = groupKeys.key;
-	console.log(i)
-	// let users = [];
-	while (i--) {
-		console.log("I", i)
-		if (i == 0)
-			break;
-		let groupUsers = userMap.keys().filter((v) => v == Groups.parse[i] && v != 0);
-		for (let k = 0; k < groupUsers.length; k++) {
-			members += `User - <@${userMap.get().toString()}> - ${Groups.parse[i]}\n`
-			console.log(members);
-
+	//order
+	let map = [...userMap];
+	let newMap = [];
+	for (let k = Object.keys(Groups.parse).length - 1; k >= 0; k--) {
+		for (let i = 0; i < map.length; i++) {
+			if (map[i][1].group == k) {
+				newMap.push(map[i]);
+			}
 		}
-	}
-	// userMap.forEach((k, v) => {
-	// 	if (k.group != 0) {
-	// 		var group = Groups.parse[k.group];
-	// 		members += `User - <@${v.toString()}> - ${group}\n`
-	// 	}
-	// });
+	} 
+
+	(new Map(newMap)).forEach((k, v) => {
+		if (k.group != 0) {
+			var group = Groups.parse[k.group];
+			members += `User - <@${v.toString()}> - ${group}\n`
+		}
+	});
 
 	if (rolesObj) {
 		let roleMap = new Map(Object.entries(rolesObj))

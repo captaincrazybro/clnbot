@@ -6,6 +6,9 @@ const settings = require('../../settings.json')
 module.exports.run = async (bot, message, args, cmd) => {
     // console.log(bot.users)
     //bot.users.cache.size}
+
+    console.log(bot.users.cache.size)
+
     let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
         .setAuthor("Bot Info")
