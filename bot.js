@@ -1,7 +1,7 @@
 const settings = require("./settings.json");
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const bot = new Discord.Client({disableEveryone: true});
+const bot = new Discord.Client({ disableMentions: 'everyone' });//{disableEveryone: true});
 const _User = require('./util/Constructors/_User')
 const _Role = require("./util/Constructors/_Role.js")
 const _MinecraftAPI = require('./util/Constructors/_MinecraftAPI');
