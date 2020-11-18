@@ -96,7 +96,7 @@ function hasPermissionRoles(message, prop) {
     let league = _League.getLeague(message.guild.id);
     let member = message.guild.members.cache.get(message.author.id);
     let outcome = false; 
-    member.roles.forEach((val, i, map) => {
+    member.roles.cache.forEach((val, i, map) => {
         let role = new _Role(val.id, league);
         if (role.hasPermission(prop)) {
             outcome = true;
