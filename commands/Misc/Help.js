@@ -8,14 +8,14 @@ const _User = require('../../util/Constructors/_User.js')
 const _Role = require('../../util/Constructors/_Role.js')
 const _League = require('../../util/Constructors/_League')
 
-module.exports.run = async (bot,message,args,cmd) => {
+module.exports.run = async (bot, message, args, cmd) => {
 
     let league = _League.getLeague(message.guild.id);
-    if(league == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
+    if (league == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
 
     let user = new _User(message.author.id, league);
 
-    if(args.length == 0){
+    if (args.length == 0) {
 
         fs.readdir('./commands/', (err, files) => {
 
@@ -27,26 +27,26 @@ module.exports.run = async (bot,message,args,cmd) => {
 
             files.filter(f => f.split(".").length == 1).forEach((f2, i) => {
 
-            let folderFiles = fs.readdirSync(`./commands/${f2}/`)
+                let folderFiles = fs.readdirSync(`./commands/${f2}/`)
 
-            let commandsArray = [];
+                let commandsArray = [];
 
 
-            folderFiles.forEach(function(val, i, array){
-                let props = require(`../${f2}/${val}`);
-                if(user.hasPermission(props) || hasPermissionRoles(message, props)){
-                    commandsArray.push(props.help.name);
+                folderFiles.forEach(function (val, i, array) {
+                    let props = require(`../${f2}/${val}`);
+                    if (user.hasPermission(props) || hasPermissionRoles(message, props)) {
+                        commandsArray.push(props.help.name);
+                    }
+                })
+
+                let commands = commandsArray.join(", ");
+
+                if (commands.length != 0) {
+                    embed.addField(f2, commands, false)
                 }
+
             })
 
-            let commands = commandsArray.join(", ");
-
-            if(commands.length != 0){
-                embed.addField(f2, commands, false)
-            }
-        
-            })
-            
             message.channel.send(embed);
 
         })
@@ -56,26 +56,26 @@ module.exports.run = async (bot,message,args,cmd) => {
         let commandName = args[0].toLowerCase();
         let commandfile = bot.commands.get(commandName);
 
-        if(!commandfile || (!user.hasPermission(commandfile) && !hasPermissionRoles(message, props))) {
+        if (!commandfile || (!user.hasPermission(commandfile) && !hasPermissionRoles(message, props))) {
             return new _NoticeEmbed(Colors.ERROR, "Could not find command").send(message.channel);
         }
 
         var group;
 
-        switch(commandfile.help.permission){
-            case(Groups.DEFAULT):{
+        switch (commandfile.help.permission) {
+            case (Groups.DEFAULT): {
                 group = "Default";
                 break;
             }
-            case(Groups.MOD):{
+            case (Groups.MOD): {
                 group = "Mod";
                 break;
             }
-            case(Groups.ADMIN):{
+            case (Groups.ADMIN): {
                 group = "Admin";
                 break;
             }
-            case(Groups.OWNER):{
+            case (Groups.OWNER): {
                 group = "Owner";
                 break;
             }
@@ -92,19 +92,19 @@ module.exports.run = async (bot,message,args,cmd) => {
 
 }
 
-function hasPermissionRoles(message, prop){
+function hasPermissionRoles(message, prop) {
     let league = _League.getLeague(message.guild.id);
     let member = message.guild.members.cache.get(message.author.id);
-    let outcome = false;
+    let outcome = false; 
     member.roles.forEach((val, i, map) => {
-      let role = new _Role(val.id, league);
-      if(role.hasPermission(prop)){
-        outcome = true;
-        return;
-      }
+        let role = new _Role(val.id, league);
+        if (role.hasPermission(prop)) {
+            outcome = true;
+            return;
+        }
     })
     return outcome;
-  }
+}
 
 module.exports.help = {
     name: "help",
