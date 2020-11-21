@@ -23,7 +23,7 @@ module.exports.run = async (bot,message,args,cmd) => {
         return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
     }
 
-    if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl"){
+    if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl"){
 
         var rankings = "";
 
