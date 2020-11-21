@@ -82,7 +82,8 @@ let leagues = [
   "dcl",
   "mbcl",
   "ctfcl",
-  "cdcl"
+  "cdcl",
+  "cwcl"
 ]
  
 bot.on("ready", async () => {
@@ -208,6 +209,7 @@ setInterval(function(){
   _Player.updateNames("mbcl");
   _Player.updateNames("ctfcl");
   _Player.updateNames("cdcl");
+  _Player.updateNames("cwcl");
 }, ms("1h"));
 //_Player.updateNames()
  
