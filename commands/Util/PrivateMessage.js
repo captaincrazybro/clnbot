@@ -17,7 +17,10 @@ module.exports.run = async (bot,message,args,cmd) => {
     modArgs.shift();
     let messageToSend = modArgs.join(" ");
 
-    user.send(messageToSend);
+    user.send(messageToSend)
+        .catch(() => {
+            return new _NoticeEmbed(Colors.ERROR, "Unable to send message").send(message.channel);
+        });
     message.delete().catch(O_o=>{});
 
 }
