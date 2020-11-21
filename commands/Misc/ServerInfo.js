@@ -13,9 +13,10 @@ module.exports.run = async (bot, message, args, cmd) => {
         **Name**: ${message.guild.name}
         **Owner**: ${await message.guild.members.fetch(message.guild.ownerID) /*message.guild.owner.user.username*/}
         **Members**: ${message.guild.memberCount}
-        **Online**: ${message.guild.members.cache.filter(m => m.presence.status == "online").size}
         `)
         .setThumbnail(message.guild.iconURL);
+
+        //        **Online**: ${message.guild.members.cache.filter(m => m.presence.status == "online").size}
 
     message.channel.send(embed);
 
