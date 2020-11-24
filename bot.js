@@ -139,7 +139,6 @@ bot.on("messageReactionAdd", async (reaction, user) => {
 
         let playersSorted = _Player.getPlayerObj().filter(val => val.rating[obj.kit] != null);
 
-        playersSorted = playersSorted.sort((a, b) => { return b.rating[obj.kit] - a.rating[obj.kit] });
 
         if(obj.page != 0){
 

@@ -16,7 +16,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
 module.exports.help = {
     name: "me",
-    aliases: [""],
+    aliases: ["sendtome"],
     permission: Groups.DEFAULT,
     description: "Sends a private message to yourself",
     usage: "me <message>"

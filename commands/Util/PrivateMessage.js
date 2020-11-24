@@ -21,7 +21,13 @@ module.exports.run = async (bot,message,args,cmd) => {
         .catch(() => {
             return new _NoticeEmbed(Colors.ERROR, "Unable to send message").send(message.channel);
         });
-    message.delete().catch(O_o=>{});
+    //message.delete().catch(O_o=>{});
+
+    let embed = new Discord.MessageEmbed()
+        .setColor(Colors.SUCCESS)
+        .setDescription("Successfully dmed <@" + user + ">");
+
+    message.channel.send(embed);
 
 }
 

@@ -78,8 +78,11 @@ module.exports.run = async (bot,message,args,cmd) => {
                 if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl"){
                     embed.addField("Tier", team.wins);
                     embed.addField("Rank", team.losses);
-                } else if(league == "twl" || league == "decl") {
+                } else if(league == "decl") {
                     embed.addField("Points", team.wins)
+                } else if(league == "twl"){
+                    embed.addField("Wins", team.wins);
+                    embed.addField("Losses", team.losses);
                 }
                 embed.addField("Members", members)
                 
