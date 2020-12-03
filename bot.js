@@ -15,6 +15,7 @@ const _NoticeEmbed = require("./util/Constructors/_NoticeEmbed")
 const _Blacklist = require("./util/Constructors/_Blacklist");
 const _Match = require("./util/Constructors/_Match");
 const nodeSchedule = require('node-schedule');
+const Groups = require('./util/Enums/Groups');
 const _League = require('./util/Constructors/_League');
 require("dotenv").config();
 
@@ -615,7 +616,7 @@ function doBlAdd(message){
           if(val == false) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
  
           let player = _Player.getPlayer(message.content, module.exports.blAddMap.get(message.author.id).league);
-          if(!player) player = _Player.addPlayer(val.name, val.uuid, league);
+          if(!player) player = _Player.addPlayer(val.name, val.uuid, module.exports.blAddMap.get(message.author.id).league);
  
           //if(player.rank.toLowerCase() != "referee")
  
@@ -686,26 +687,67 @@ function doBlAdd(message){
         let newObj = module.exports.blAddMap.get(message.author.id)
  
         newObj.alts = message.content;
-        newObj.step = 5;
+        newObj.step = 6;
+
+        if(new _User(message.author.id).getGroup >= Groups.MANAGER) {
+          newObj.step = 5;
+          module.exports.blAddMap.set(message.author.id, newObj);
+          new _NoticeEmbed(Colors.SUCCESS, "The alts for this blacklist have been set to " + message.content + ". Please specify if you want this blacklist to be global (yes or no).").send(message.channel);
+          return;
+        }
  
         module.exports.blAddMap.set(message.author.id, newObj);
  
-        return new _NoticeEmbed(Colors.SUCCESS, "The alts for this blacklist has been set to " + message.content + ". Please enter any referee notes for this blacklist.").send(message.channel);
+        return new _NoticeEmbed(Colors.SUCCESS, "The alts for this blacklist have been set to " + message.content + ". Please enter any referee notes for this blacklist.").send(message.channel);
          
       }
       case(5):{
+
+        let newObj = module.exports.blAddMap.get(message.author.id);
+
+        let outcome = null;
+
+        if(message.content.toLowerCase() == "yes" || message.content.toLowerCase() == "y" || message.content.toLowerCase() == "true"){
+          outcome = true;
+        } else if(message.content.toLowerCase() == "no" || message.content.toLowerCase() == "n" || message.content.toLowerCase() == "false"){
+          outcome = false;
+        } else {
+          return new _NoticeEmbed(Colors.ERROR, "Please specify either yes or no").send(message.channel);
+        }
+  
+        newObj.isGlobal = outcome;
+        newObj.step = 6;
+
+        let msgString = "not "
+
+        if(outcome) msgString = "now "
+
+        module.exports.blAddMap.set(message.author.id, newObj);
+
+        return new _NoticeEmbed(Colors.SUCCESS, "This blacklist will " + msgString + "be global. Please enter any referee notes for this blacklist.").send(message.channel);
+
+      }
+      case(6):{
  
         let newObj = module.exports.blAddMap.get(message.author.id)
  
         newObj.notes = message.content;
-        newObj.step = 5;
+        newObj.step = 6;
+
+        if(newObj.isGlobal){
+          leagues.forEach(val => {
+            _Blacklist.createBlacklist(newObj, val);
+          })
+        }
+        else {
+          _Blacklist.createBlacklist(newObj, newObj.league);
+        }
  
         module.exports.blAddMap.set(message.author.id, newObj);
         module.exports.blAddMap.delete(message.author.id);
  
         delete newObj.step;
- 
-        _Blacklist.createBlacklist(newObj, newObj.league);
+
  
         return new _NoticeEmbed(Colors.SUCCESS, "The referee notes for this blacklist have been set to " + message.content + ". The blacklist " + newObj.uuid + " has successfully been created.").send(message.channel);
          
