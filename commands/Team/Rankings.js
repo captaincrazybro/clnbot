@@ -43,7 +43,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         return;
 
-    } else if(league == "twl" || league == "decl"){
+    } else if(league == "decl"){
 
         var rankings = "";
 
@@ -62,11 +62,41 @@ module.exports.run = async (bot,message,args,cmd) => {
         message.channel.send(embed);
 
         return;
+    } else if(league == "twl"){
+
+        var rankings = "";
+
+        let teamsSorted = _Team.getTeamObj(league).sort((a, b) => {return twlRanking(b) - twlRanking(a)});
+
+        teamsSorted.forEach((team, i) => {
+            rankings += `${i + 1}. ${team.name} | ${team.wins}-${team.losses}\n`
+        })
+
+        let embed = new Discord.MessageEmbed()
+            .setColor(Colors.INFO)
+            .setTitle("Rankings")
+            .setDescription(rankings);
+
+        message.channel.send(embed);
 
     } else {
         return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
     }
 
+}
+
+function twlRanking(team){
+    let numLength = `${team.losses}`.length
+    let numO0s = 3 - numLength;
+    let num = `0.`
+    let i = 1;
+    while(i <= numO0s){
+        num += "0";
+        i++;
+    }
+    num += team.losses;
+    let finalNum = team.wins + (1 - parseFloat(num));
+    return finalNum;
 }
 
 module.exports.help = {

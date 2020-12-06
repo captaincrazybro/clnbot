@@ -242,7 +242,8 @@ module.exports = class _Player {
      */
 
     static exists(name, league) {
-        if (players[league].length > 0) var filtered = players[league].filter(val => val.name.toLowerCase() == name.toLowerCase());
+        // console.log("playr", players[league].filter(val => val.name == undefined));
+        if (players[league].length > 0) var filtered = players[league].filter(val => val.name && val.name.toLowerCase() == name.toLowerCase());
         else return null;
         return filtered.pop();
     }

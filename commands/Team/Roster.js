@@ -8,6 +8,7 @@ const ranks = require('../../storage/ranks.json')
 const teams = require('../../storage/teams.json')
 const _Player = require('../../util/Constructors/_Player');
 // const stringUtil = require('string-similarity');
+const _Blacklist = require('../../util/Constructors/_Blacklist');
 const _League = require('../../util/Constructors/_League.js');
 
 module.exports.run = async (bot,message,args,cmd) => {
@@ -38,6 +39,9 @@ module.exports.run = async (bot,message,args,cmd) => {
             if(getRankOrNull(val.rank) != null) member += `${getRankOrNull(val.rank)} `
             member += `${val.name.replace(/_/g, "\\_")}`
             if(val.rank2 != undefined) if(val.rank2.toLowerCase() != "none" && getRankOrNull(val.rank2) != null) member += ` ${getRankOrNull(val.rank2)}`
+            if(_Blacklist.getBlacklist(val.uuid, league)){
+                member = `:x: ${val.name.replace(/_/g, "\\_")}`
+            }
             membersArray.push(member);
         })
 
@@ -78,8 +82,11 @@ module.exports.run = async (bot,message,args,cmd) => {
                 if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl"){
                     embed.addField("Tier", team.wins);
                     embed.addField("Rank", team.losses);
-                } else if(league == "twl" || league == "decl") {
+                } else if(league == "decl") {
                     embed.addField("Points", team.wins)
+                } else if(league == "twl"){
+                    embed.addField("Wins", team.wins);
+                    embed.addField("Losses", team.losses);
                 }
                 embed.addField("Members", members)
                 
@@ -116,6 +123,8 @@ function getRankOrder(emoji){
     ranks.forEach(val => {
         if(val.split("-")[1] == emoji) outcome = val.split("-")[2]
     })
+    
+    if(emoji == ":x:") outcome = 100;
 
     return outcome;
 }

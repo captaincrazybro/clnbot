@@ -11,7 +11,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     let league = _League.getLeague(message.guild.id);
 
-    if(league == "twl" || league == "decl"){
+    if(league == "decl"){
 
         if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a team name").send(message.channel);
 
@@ -19,11 +19,11 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         let team = _Team.getTeam(teamName, league);
 
-        if(team == null) return new _NoticeEmbed(Colors.ERROR, "Invalid name - This team ndoes not exist").send(message.channel);
+        if(team == null) return new _NoticeEmbed(Colors.ERROR, "Invalid name - This team does not exist").send(message.channel);
 
         if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify points").send(message.channel);
 
-        if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid wins - Please specify a number").send(message.channel);
+        if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid points - Please specify a number").send(message.channel);
 
         let points = parseInt(args[1]);
 
@@ -36,6 +36,35 @@ module.exports.run = async (bot,message,args,cmd) => {
         team.addWins(points);
 
         new _NoticeEmbed(Colors.SUCCESS, `Successfully added ${points} points to ${team.name}`).send(message.channel);
+
+        return;
+
+    } else if(league == "twl"){
+        
+        if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a team name").send(message.channel);
+
+        let teamName = args[0];
+
+        let team = _Team.getTeam(teamName, league);
+
+        if(team == null) return new _NoticeEmbed(Colors.ERROR, "Invalid name - This team does not exist").send(message.channel);
+
+        if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify wins").send(message.channel);
+
+        if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid wins - Please specify a number").send(message.channel);
+
+        let wins = parseInt(args[1]);
+
+        if(args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify losses").send(message.channel);
+
+        if(isNaN(args[2])) return new _NoticeEmbed(Colors.ERROR, "Invalid losses - Please specify a number").send(message.channel);
+
+        let losses = parseInt(args[2]);
+
+        team.addWins(wins);
+        team.addLosses(losses);
+
+        new _NoticeEmbed(Colors.SUCCESS, `Successfully added ${wins} wins and ${losses} losses to ${team.name}`).send(message.channel);
 
         return;
 

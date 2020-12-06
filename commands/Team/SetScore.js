@@ -42,6 +42,26 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         return;
 
+    } else if(league == "twl") {
+        
+        if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify wins").send(message.channel);
+
+        if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid wins - Please specify a number").send(message.channel);
+
+        let wins = parseInt(args[1]);
+
+        if(args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify losses").send(message.channel);
+
+        if(isNaN(args[2])) return new _NoticeEmbed(Colors.ERROR, "Invalid losses - Please specify a number").send(message.channel);
+
+        let losses = parseInt(args[2]);
+
+        team.setWins(wins);
+
+        team.setLosses(losses);
+
+        new _NoticeEmbed(Colors.SUCCESS, `Successfully set ${team.name}'s wins to ${wins} and losses to ${losses}`).send(message.channel);
+
     } else {
 
         if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify points").send(message.channel);
