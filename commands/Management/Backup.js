@@ -9,6 +9,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     let players = require("../../storage/players.json");
     let teams = require("../../storage/teams.json");
+    let permissions = require("../../storage/permissions.json");
 
     fs.writeFile('./backup/players.json', JSON.stringify(players), (err) => {
         if(err) console.log(err);
@@ -17,6 +18,10 @@ module.exports.run = async (bot,message,args,cmd) => {
     fs.writeFile('./backup/teams.json', JSON.stringify(teams), (err) => {
         if(err) console.log(err);
     })
+
+    fs.writeFile('./backup/permissions.json', JSON.stringify(permissions), (err) => {
+        if(err) console.log(err);
+    });
 
     new _NoticeEmbed(Colors.SUCCESS, "You have successfully backed up the players and teams").send(message.channel);
 

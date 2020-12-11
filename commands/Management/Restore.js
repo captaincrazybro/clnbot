@@ -9,12 +9,17 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     let players = require('../../backup/players.json');
     let teams = require('../../backup/teams.json')
+    let permissions = require('../../backup/permissions.json');
 
     fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
         if(err) console.log(err);
     })
 
     fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
+        if(err) console.log(err);
+    })
+
+    fs.writeFile('./storage/permissions.json', JSON.stringify(permissions), (err) => {
         if(err) console.log(err);
     })
 
