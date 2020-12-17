@@ -17,6 +17,7 @@ const _Match = require("./util/Constructors/_Match");
 const nodeSchedule = require('node-schedule');
 const Groups = require('./util/Enums/Groups');
 const _League = require('./util/Constructors/_League');
+const {MessageEmbed} = require('discord.js');
 require("dotenv").config();
 
 module.exports.rankedReactionsMap = new Map();
@@ -259,7 +260,7 @@ bot.on("message", async message => {
    
 });
  
-bot.on('messageUpdate', (oldMessage, newMessage) => {
+/*bot.on('messageUpdate', (oldMessage, newMessage) => {
 
   if(newMessage.channel.guild != undefined) if(newMessage.channel.guild.id != '665698425601392749') return;
  
@@ -270,7 +271,7 @@ bot.on('messageUpdate', (oldMessage, newMessage) => {
 
   if(newMessage.content == oldMessage.content) return;
  
-  let embed = new Discord.RichEmbed()
+  let embed = new MessageEmbed()
     .setColor(Colors.INFO)
     .setTitle("Message Edited")
     .addField("Author", newMessage.author.username)
@@ -290,7 +291,7 @@ bot.on("messageDelete", (message) => {
  
     if(disabledChannels.includes(message.channel.id)) return;
  
-   let embed = new Discord.RichEmbed()
+   let embed = new MessageEmbed()
     .setColor(Colors.ERROR)
     .setTitle("Message Deleted")
     .addField("Author", message.author.username)
@@ -299,7 +300,7 @@ bot.on("messageDelete", (message) => {
     .setTimestamp(new Date());
  
   //bot.guilds.get('692395141427757067').channels.get('692801275280228382').send(embed);
-});
+});*/
  
 function hasPermissionRoles(message, prop){
 
@@ -616,7 +617,7 @@ function doBlAdd(message){
           if(val == false) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
  
           let player = _Player.getPlayer(message.content, module.exports.blAddMap.get(message.author.id).league);
-          if(!player) player = _Player.addPlayer(val.name, val.uuid, module.exports.blAddMap.get(message.author.id).league);
+          if(!player) player = _Player.addPlayer(val.name, val.id, module.exports.blAddMap.get(message.author.id).league);
  
           //if(player.rank.toLowerCase() != "referee")
  
