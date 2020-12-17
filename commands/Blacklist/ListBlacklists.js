@@ -23,7 +23,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     blacklist.forEach(val => {
         let player = _Player.getPlayerUuid(val.uuid, league);
         if(!player) player = _Player.addPlayer(val.name, val.uuid, league);
-        list += `${player.name}\n`;
+        list += `${player.name.replace(/_/g, "\\_")}\n`;
         // - Referee: ${val.referee} - Date: ${val.start_date}
     })
 
