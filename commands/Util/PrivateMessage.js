@@ -20,6 +20,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     user.send(messageToSend)
         .catch(() => {
             return new _NoticeEmbed(Colors.ERROR, "Unable to send message").send(message.channel);
+<<<<<<< HEAD
         })
         .then(() => {
             let embed = new Discord.MessageEmbed()
@@ -31,6 +32,16 @@ module.exports.run = async (bot,message,args,cmd) => {
         });
     //message.delete().catch(O_o=>{});
 
+=======
+        });
+    //message.delete().catch(O_o=>{});
+
+    let embed = new Discord.MessageEmbed()
+        .setColor(Colors.SUCCESS)
+        .setDescription("Successfully dmed <@" + user + ">");
+
+    message.channel.send(embed);
+>>>>>>> 76d675f06863248c61425fb50cd890b753529209
 
 }
 
