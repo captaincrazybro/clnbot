@@ -42,6 +42,10 @@ module.exports.run = async (bot,message,args,cmd) => {
             if(_Blacklist.getBlacklist(val.uuid, league)){
                 member = `:x: ${val.name.replace(/_/g, "\\_")}`
             }
+            let alts = getAlts(val.uuid);
+            if(alts.length > 0){
+                if(isAlt(val.name, alts)) member = `:x: ${val.name.replace(/_/g, "\\_")}`
+            }
             membersArray.push(member);
         })
 
@@ -139,6 +143,32 @@ function getRankOrNull(rank){
     })
 
     return outcome;
+
+}
+
+function getAlts(uuid){
+
+    let bl = _Blacklist.getBlacklist(val.uuid, league)
+    if(bl == null) return [];
+    
+    let alts = bl.alts.split(", ");
+    if(alts.length == 1) alts = bl.alts.split(",");
+    if(alts.length == 1) alts = bl.alts.split(" ");
+    if(alts.length == 1) alts = [];
+
+    return alts; 
+
+}
+
+function isAlt(name, alts){
+
+    let outcome = false;
+
+    alts.forEach(alt => {
+        if(alt.toLowerCase() == name.toLowerCase()) outcome = true;
+    })
+
+    return outcome; 
 
 }
 
