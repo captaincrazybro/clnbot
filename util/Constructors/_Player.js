@@ -293,7 +293,7 @@ module.exports = class _Player {
     static updateNames(league) {
         players[league].forEach(json => {
             _MinecaftAPI.getUuid(json.name).then(val2 => {
-                if (val2 == undefined || val2.id != json.uuid) {
+                if ((val2 != undefined && val2.id == undefined) || val2.id != json.uuid) {
                     _MinecaftAPI.getName(json.uuid).then(val => {
                         if (val == null) return;
                         console.log(`${json.name} -> ${val}`);
