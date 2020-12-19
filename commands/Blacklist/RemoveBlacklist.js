@@ -7,6 +7,7 @@ const _Player = require('../../util/Constructors/_Player');
 const _Blacklist = require('../../util/Constructors/_Blacklist.js');
 const Discord = require('discord.js');
 const _League = require('../../util/Constructors/_League')
+const leagues = require('../../bot.js').leagues;
 
 module.exports.run = async (bot,message,args,cmd) => {
 
@@ -30,10 +31,18 @@ module.exports.run = async (bot,message,args,cmd) => {
         if(player == null) player = _Player.addPlayer(val.name);
     
         let blacklist = _Blacklist.getBlacklist(val.id, league);
+
+        if(args[2].toLowerCase() == "-g"){
+            leagues.forEach(gL => {
+                let gBl = _Blacklist.getBlacklist(val.id, gL);
+                gBl.delete();
+            })
+            return new _NoticeEmbed(Colors.SUCCESS, "You have successfully globally deleted the blacklist for " + val.name).send(message.channel);
+        }
     
         if(blacklist == null) return new _NoticeEmbed(Colors.ERROR, "This player is not blacklisted").send(message.channel);
     
-		blacklist.delete()
+        blacklist.delete()
 		
 		return new _NoticeEmbed(Colors.SUCCESS, "You have successfully deleted the blacklist for " + val.name).send(message.channel);
         
