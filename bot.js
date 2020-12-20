@@ -219,7 +219,7 @@ const LeagueModel = require("./util/Models/LeagueModel");
       _Player.updateNames(leagues[i].name);
       i++;
     }
-  }, ms("1h"));
+  }, ms("1d"));
   //_Player.updateNames()
 
   bot.on("message", async (message) => {
