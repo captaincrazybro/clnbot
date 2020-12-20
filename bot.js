@@ -19,13 +19,16 @@ const Groups = require("./util/Enums/Groups");
 const _League = require("./util/Constructors/_League");
 const { MessageEmbed } = require("discord.js");
 require("dotenv").config();
-const { MongoUtil } = require("./util/utils.js");
+// const MongoUtil = require("./util/mongoUtil.js");
+const LeagueModel = require("./util/Models/LeagueModel");
 
 (async () => {
+  // wizards should have their own file in each command file.
   module.exports.rankedReactionsMap = new Map();
   module.exports.matchOutcomeMap = new Map();
   module.exports.blAddMap = new Map();
 
+  //why does this exist.
   let disabledChannels = [
     "542812804374069258",
     "663015781709119509",
@@ -59,7 +62,7 @@ const { MongoUtil } = require("./util/utils.js");
           }
 
           jsfile.forEach((f, i) => {
-            let commandsCollection = new Discord.Collection();
+            let commandsCollection = new Discord.Collection(); // why is this here.?
             let props = require(`./commands/${f2}/${f}`);
             console.log(`${f} loaded!`);
             bot.commands.set(props.help.name, props);
@@ -78,27 +81,17 @@ const { MongoUtil } = require("./util/utils.js");
     console.log(e);
   });
 
-  let leagues;
-  let mongoUtil = new MongoUtil();
-  await mongoUtil.connect();
-  let db = mongoUtil.db;
-  //add collection to object
-  const leaguesCollection = db.collection("leagues");
-  //searches in the db the leagues.
-  const cursorLeagues = await leaguesCollection.aggregate({
-    project: {
-      league: 1,
-    },
-  });
-  leagues = await cursorLeagues.toArray(); 
-  mongoUtil.close(); 
+  const leagues = await LeagueModel.getLeagues();
+  console.log(
+    await LeagueModel.addLeague({ name: null, serverId: "568218010427457586" })
+  );
 
   bot.on("ready", async () => {
     console.log(`${bot.user.username} is online!`);
     //bot.user.setPresence({ game: { name: "Mineplex" } });
     bot.user.setPresence({
       game: {
-        name: leagues[0].league.toUpperCase(),
+        name: leagues[0].name.toUpperCase(),
         type: "WATCHING",
       },
     });
@@ -126,7 +119,7 @@ const { MongoUtil } = require("./util/utils.js");
     setTimeout(() => {
       bot.user.setPresence({
         game: {
-          name: leagues[i].league.toUpperCase(),
+          name: leagues[i].name.toUpperCase(),
           type: "WATCHING",
         },
       });
@@ -223,7 +216,7 @@ const { MongoUtil } = require("./util/utils.js");
   setInterval(function () {
     let i = 0;
     while (i < leagues.length) {
-      _Player.updateNames(leagues[i].league);
+      _Player.updateNames(leagues[i].name);
       i++;
     }
   }, ms("1h"));
@@ -897,11 +890,11 @@ bot.on("messageDelete", (message) => {
           newObj.step = 6;
 
           if (newObj.isGlobal) {
-            leagues.forEach(({ league }) => {
-              _Blacklist.createBlacklist(newObj, league);
+            leagues.forEach(({ name }) => {
+              _Blacklist.createBlacklist(newObj, name);
             });
           } else {
-            _Blacklist.createBlacklist(newObj, newObj.league);
+            _Blacklist.createBlacklist(newObj, newObj.name);
           }
 
           module.exports.blAddMap.set(message.author.id, newObj);
