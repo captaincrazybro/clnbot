@@ -211,7 +211,7 @@ setInterval(function(){
   _Player.updateNames("ctfcl");
   _Player.updateNames("cdcl");
   _Player.updateNames("cwcl");
-}, ms("1h"));
+}, ms("1d"));
 //_Player.updateNames()
  
 bot.on("message", async message => {
