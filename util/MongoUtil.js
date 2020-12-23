@@ -34,10 +34,17 @@ let MongoUtil = class {
     this.#client.close();
   }
 
-  async action(callback) {
-    await this.connect();
+  async action(callback, db) {
+    //db part is to make it all work in 1 connection. But probably wont use it.
+    if (db) {
+      this.#db = db;
+    } else {
+      await this.connect(db);
+    }
     let value = await callback(this.#db);
-    this.close();
+    if (!db) {
+      this.close();
+    }
     return value;
   }
 };

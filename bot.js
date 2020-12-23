@@ -19,10 +19,12 @@ const Groups = require("./util/Enums/Groups");
 const _League = require("./util/Constructors/_League");
 const { MessageEmbed } = require("discord.js");
 require("dotenv").config();
-// const MongoUtil = require("./util/mongoUtil.js");
+const MongoUtil = require("./util/mongoUtil.js");
 const LeagueModel = require("./util/Models/LeagueModel");
 
 (async () => {
+  //idk if this is ok to do i'm leaving it out.
+  // module.exports.db = MongoUtil.db;
   // wizards should have their own file in each command file.
   module.exports.rankedReactionsMap = new Map();
   module.exports.matchOutcomeMap = new Map();
@@ -82,9 +84,14 @@ const LeagueModel = require("./util/Models/LeagueModel");
   });
 
   const leagues = await LeagueModel.getLeagues();
+  console.log(leagues);
   console.log(
-    await LeagueModel.addLeague({ name: null, serverId: "568218010427457586" })
+    await LeagueModel.addLeague({ name:"testleague", fullName:"The best Test league ever." })
   );
+  console.log(await LeagueModel.getLeagueByName("cwcl"))
+  console.log(await LeagueModel.getLeagueServersWithName("cwcl"))
+  console.log(await LeagueModel.getMaxLeagueId())
+  console.log(await LeagueModel.updateLeague())
 
   bot.on("ready", async () => {
     console.log(`${bot.user.username} is online!`);
@@ -213,7 +220,7 @@ const LeagueModel = require("./util/Models/LeagueModel");
     }
   });
 
-  setInterval(function () {
+  setInterval(() => {
     let i = 0;
     while (i < leagues.length) {
       _Player.updateNames(leagues[i].name);

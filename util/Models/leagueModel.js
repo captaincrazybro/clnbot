@@ -1,5 +1,4 @@
 const MongoUtil = require("../MongoUtil");
-const { ObjectId } = require("mongodb");
 class LeagueModel {
   #collectionName = "leagues";
   #projectAllStage = {
@@ -40,7 +39,9 @@ class LeagueModel {
       },
     },
   ];
-  constructor() {}
+  //must recieve an answer and max time for it should be 5 seconds
+  #transactionlessWriteConcern = { w: 1, j: true, wtimeout: 5000 };
+  constructor() { }
   /**
    * This function looks for all the unique leagues in the db and returns a list of them.
    * @returns {Array} A sorted array (by name) of objects that have the name and leagueId of the league.
@@ -60,7 +61,7 @@ class LeagueModel {
    * This function looks for all the servers related to the league's name in the db and returns a list of them.
    * @returns {Array} A sorted array (by name) of objects that have the name of the league.
    */
-  async getLeagueServers(inputName) {
+  async getLeagueServersWithName(inputName) {
     if (typeof inputName != "string" || !inputName) {
       console.log("Name is not a String ", inputName);
       return null;
@@ -84,7 +85,7 @@ class LeagueModel {
    * This function looks for all the servers related to the league's id in the db and returns a list of them.
    * @returns {Array} A sorted array (by name) of objects that have the name of the league.
    */
-  async getLeagueServers(inputLeagueId) {
+  async getLeagueServersWithId(inputLeagueId) {
     if (typeof inputLeagueId != "number" || !inputLeagueId) {
       console.log("Name is not a number ", inputLeagueId);
       return null;
@@ -184,18 +185,35 @@ class LeagueModel {
    * @param {String} name This is the name for the new server.
    *
    */
-  async addLeague({ name: newName }) {
+  async addLeague({ name: newName, fullName: newFullName }) {
     if (typeof newName != "string" || !newName) {
       console.log("Name is not a String ", newName);
       return null;
     }
+    if (typeof newFullName != "string" || !newFullName) {
+      console.log("Full Name is not a String ", newFullName);
+      return null;
+    }
+    //Capitalize Every word.
+    const words = newFullName.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    }
+    newFullName = words.join(" ");
+
+    let newId = (await this.getMaxLeagueId()) + 1;
     let league = {
+      leagueId: newId,
       name: newName.toLowerCase(),
+      fullName: newFullName,
     };
     return await MongoUtil.action(async (db) => {
       const leaguesCollection = db.collection(this.#collectionName);
       try {
-        const newName = await leaguesCollection.insertOne(league);
+        const newName = await leaguesCollection.insertOne(
+          league,
+          this.#transactionlessWriteConcern
+        );
         return {
           insertedId: newName.insertedId,
           insertedCount: newName.insertedCount,
@@ -216,12 +234,12 @@ class LeagueModel {
     });
   }
 
-  async updateLeague({ name: newName, serverId: newServerId }) {
+  async updateLeagueById({ leagueId, name: newName, fullName: newFullName }) {
     if (typeof newName != "string") {
       console.log("League is not a String");
       return null;
     }
-    if (typeof newServerId != "number") {
+    if (typeof newFullName != "string") {
       //maybe this should be a number?
       console.log("Server ID is not a number");
       return null;
@@ -231,27 +249,34 @@ class LeagueModel {
       return null;
     }
     newName = newName.toLowerCase();
-    // let { _id } = this.getLeagueByServerId(newServerId);
-    // console.log("Id", _id);
-    let query = { $serverId: serverId },
-      update = { name: newName };
-    options = {
-      upsert: true, //creates new doc if not found
-      //   multi: false, default is false (multi update.)
-    };
+    if (await this.getLeagueById(leagueId)) {
+      let query = { $leagueId: leagueId },
+        update = { name: newName, fullName: newFullName };
+      options = {
+        upsert: false, //creates new doc if not found
+        //   multi: false, default is false (multi update.)
+      };
 
-    return await MongoUtil.action(async (db) => {
-      const leaguesCollection = db.collection(this.#collectionName);
-      const newName = await leaguesCollection.update(query, update, options);
-      console.log(newName);
+      return await MongoUtil.action(async (db) => {
+        const leaguesCollection = db.collection(this.#collectionName);
+        const newName = await leaguesCollection.update(query, update, options);
+        console.log(newName);
+        return {
+          updatedId: newName.updatedId,
+          updatedCount: newName.updatedCount,
+          modifiedCount: newName.nModified,
+          // addedCount: newName.nUpserted,
+          numberFound: newName.nMatched,
+        };
+      });
+    }
+    else {
       return {
-        updatedId: newName.updatedId,
-        updatedCount: newName.updatedCount,
-        modifiedCount: newName.nModified,
-        addedCount: newName.nUpserted,
-        numberFound: newName.nMatched,
-      }; //maybe?? if not then league.
-    });
+        modifiedCount: 0,
+        message: 'League does not exist.',
+        numberFound: 0,
+      };
+    }
   }
   async resetLeagueByServerId(serverId) {
     return await MongoUtil.action(async (db) => {
