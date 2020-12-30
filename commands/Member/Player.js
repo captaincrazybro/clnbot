@@ -8,6 +8,7 @@ const Discord = require('discord.js');
 const _MinecraftApi = require('../../util/Constructors/_MinecraftAPI');
 const _Blacklist = require('../../util/Constructors/_Blacklist');
 const _League = require('../../util/Constructors/_League.js');
+const leagues = require('../../bot.js').leagues;
 
 module.exports.run = async (bot,message,args,cmd) => {
 
@@ -41,6 +42,7 @@ module.exports.run = async (bot,message,args,cmd) => {
             .addField("Team", player.team)
             .addField("Rank", ranks)
             .addField("UUID", val.id)
+            .addFiedl("Leagues", getLeagues(player.name).toString(", "))
             .setThumbnail(`http://minotar.net/helm/${val.name}/64.png`)
             /*if(player.rating["Rifle"] == null) embed.addField("Rifle Rating", "None");
             else embed.addField("Rifle Rating", player.rating["Rifle"])
@@ -57,6 +59,22 @@ module.exports.run = async (bot,message,args,cmd) => {
     })
 
     return;
+
+}
+
+function getLeagues(name){
+
+    let theLeagues = [];
+
+    leagues.forEach(l => {
+        let player = _Player.getPlayer(name, l);
+        if((player.team != null && player.team.toLowerCase() != "none") || ((player.rank != null && player.rank.toLowerCase() != "none") || (player.rank2 != null && plaayer.rank2.toLowerCase() !="none")))
+        {
+            theLeagues.push(l);
+        }
+    })
+
+    return theLeagues;
 
 }
 
