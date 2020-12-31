@@ -67,6 +67,8 @@ function getLeagues(name){
 
     let theLeagues = [];
 
+    leagues = leagues.filter(val => val != "cotc");
+
     leagues.forEach(l => {
         let player = _Player.getPlayer(name, l);
         if(player){
