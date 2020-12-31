@@ -17,7 +17,7 @@ module.exports.run = async(bot,message,args,cmd) => {
 
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a name").send(message.channel);
 
-    let name = args[0].join(" ");
+    let name = args.join(" ");
 
     let map = _Map.getMap(name, league);
 
