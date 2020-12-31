@@ -9,7 +9,7 @@ const _MinecraftApi = require('../../util/Constructors/_MinecraftAPI');
 const _Blacklist = require('../../util/Constructors/_Blacklist');
 const _League = require('../../util/Constructors/_League.js');
 const botFile = require("../../bot.js")
-const leagues = botFile.leagues;
+var leagues = botFile.leagues;
 
 module.exports.run = async (bot,message,args,cmd) => {
 
