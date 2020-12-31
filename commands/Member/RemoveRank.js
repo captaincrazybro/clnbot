@@ -12,6 +12,8 @@ module.exports.run = async (bot, message, args, cmd) => {
     let settings = require('../../settings.json');
     if (_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
 
+    let league = _League.getLeague(message.guild.id);
+
     if (args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a player").send(message.channel);
 
     let playerName = args[0];
