@@ -156,7 +156,7 @@ function getAlts(uuid, league){
     if(alts.length == 1) alts = bl.alts.split(" ");
     if(alts.length == 1) alts = [];
 
-    if(!alts.includes(", ") && !alts.includes(",") && !alts.includes(" ")) alts = [alts.replace(" ", "")]
+    if(!alts.toLowerCase().includes("none") && !alts.toLowerCase().includes("-")) alts = [alts.replace(" ", "")]
 
     return alts; 
 
