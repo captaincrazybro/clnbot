@@ -28,10 +28,14 @@ module.exports.run = async (bot,message,args,cmd) => {
         if(player == null) player = _Player.addPlayer(val.name, league);
     
         let blacklist = _Blacklist.getBlacklist(val.id, league);
+
+        if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a field").send(message.channel)
     
         let field = args[1].toLowerCase();
 
         if(!blacklist[field] || field == "name" || field == "uuid") return new _NoticeEmbed(Colors.ERROR, "Invalid field - Please specify an existing blacklist field").send(message.channel);
+
+        if(args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify a value").send(message.channel);
 
         let value = args;
         value.shift();
