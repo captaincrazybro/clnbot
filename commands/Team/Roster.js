@@ -148,7 +148,7 @@ function getRankOrNull(rank){
 
 function getAlts(uuid){
 
-    let bl = _Blacklist.getBlacklist(val.uuid, league)
+    let bl = _Blacklist.getBlacklist(uuid, league)
     if(bl == null) return [];
     
     let alts = bl.alts.split(", ");
