@@ -85,8 +85,11 @@ let leagues = [
   "mbcl",
   "ctfcl",
   "cdcl",
-  "cwcl"
+  "cwcl",
+  "cotc"
 ]
+
+module.exports.leagues = leagues;
  
 bot.on("ready", async () => {
     console.log(`${bot.user.username} is online!`);
@@ -203,14 +206,11 @@ bot.on("messageReactionAdd", async (reaction, user) => {
 });
  
 setInterval(function(){
-  _Player.updateNames("twl");
-  _Player.updateNames("decl");
-  _Player.updateNames("clt");
-  _Player.updateNames("dcl");
-  _Player.updateNames("mbcl");
-  _Player.updateNames("ctfcl");
-  _Player.updateNames("cdcl");
-  _Player.updateNames("cwcl");
+  let i = 0;
+  while (i < leagues.length) {
+    _Player.updateNames(leagues[i].league);
+    i++;
+  }
 }, ms("1d"));
 //_Player.updateNames()
  

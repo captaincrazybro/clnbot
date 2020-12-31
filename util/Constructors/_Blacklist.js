@@ -44,7 +44,7 @@ module.exports = class Blacklist {
       let filtered = blacklist[this.league].filter(val => val.uuid != this.uuid);
       filtered.push(val);
       
-      blacklist = filtered;
+      blacklist[this.league] = filtered;
       
       fs.writeFile("./storage/blacklist.json", JSON.stringify(blacklist), err => {
         if(err) console.log(err);

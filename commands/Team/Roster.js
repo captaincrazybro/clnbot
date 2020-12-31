@@ -42,6 +42,7 @@ module.exports.run = async (bot,message,args,cmd) => {
             if(_Blacklist.getBlacklist(val.uuid, league)){
                 member = `:x: ${val.name.replace(/_/g, "\\_")}`
             }
+            if(isAlt(val.name, league)) member = `:x: ${val.name.replace(/_/g, "\\_")}`
             membersArray.push(member);
         })
 
@@ -88,6 +89,7 @@ module.exports.run = async (bot,message,args,cmd) => {
                     embed.addField("Wins", team.wins);
                     embed.addField("Losses", team.losses);
                 }
+                embed.addField("League", league)
                 embed.addField("Members", members)
                 
             if(team.logo != "None") embed.setThumbnail(team.logo);
@@ -135,6 +137,31 @@ function getRankOrNull(rank){
 
     ranks.forEach(val => {
         if(val.split("-")[0].toLowerCase() == rank.toLowerCase()) outcome = val.split("-")[1]
+    })
+
+    return outcome;
+
+}
+
+function isAlt(name, league){
+
+    let outcome = false;
+
+    _Blacklist.blacklists(league).forEach(bl => {
+        let alts = bl.alts;
+        if(arrayContains(alts.split(", "), name) || arrayContains(alts.split(","), name) || arrayContains(alts.split(" "), name) || alts.replace(" ").toLowerCase() == name.toLowerCase()) outcome = true;
+    })
+
+    return outcome;
+
+}
+
+function arrayContains(arr, obj){
+
+    let outcome = false;
+
+    arr.forEach(val => {
+        if(val.replace(" ", "").toLowerCase() == obj) outcome = true;
     })
 
     return outcome;

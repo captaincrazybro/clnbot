@@ -15,17 +15,20 @@ module.exports.run = async(bot,message,args,cmd) => {
 
     let league = _League.getLeague(message.guild.id);
 
-    if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a name").send(message.channel);
+    if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify the link to the map image url").send(message.channel);
 
-    let name = args[0];
+    let url = args[0];
+
+    if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a name").send(message.channel);
+
+    let cArgs = args;
+    cArgs.shift();
+
+    let name = cArgs.join(" ");
 
     let map = _Map.getMap(name, league);
 
     if(map != null) return new _NoticeEmbed(Colors.ERROR, "This name is already taken").send(message.channel);
-
-    if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify the link to the map image url").send(message.channel);
-
-    let url = args[1];
 
     _Map.createMap(name, url, league);
 
