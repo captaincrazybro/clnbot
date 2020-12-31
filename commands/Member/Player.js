@@ -8,7 +8,8 @@ const Discord = require('discord.js');
 const _MinecraftApi = require('../../util/Constructors/_MinecraftAPI');
 const _Blacklist = require('../../util/Constructors/_Blacklist');
 const _League = require('../../util/Constructors/_League.js');
-const leagues = require('../../bot.js').leagues;
+const botFile = require("../../bot.js")
+const leagues = botFile.leagues;
 
 module.exports.run = async (bot,message,args,cmd) => {
 
