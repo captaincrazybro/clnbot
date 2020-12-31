@@ -32,7 +32,7 @@ module.exports = class _League {
         else if(league.toLowerCase() == "decl" || league.toLowerCase() == "declleague") outcome = "decl";
         else if(league.toLowerCase() == "clt" || league.toLowerCase() == "cltleague") outcome = "clt";
         else if(league.toLowerCase() == "cwcl" || league.toLowerCase() == "cwclleague") outcome = "cwcl";
-        else if(league.toLowerCase() == "cotc" || league.toLowerCase() == "cotcleague") outcome = "cotc";
+        else if(["cotc","cotcleague"].includes(league.toLowerCase())) outcome = "cotc";
         else outcome = null;
         return outcome;
     }
