@@ -42,11 +42,7 @@ module.exports.run = async (bot,message,args,cmd) => {
             if(_Blacklist.getBlacklist(val.uuid, league)){
                 member = `:x: ${val.name.replace(/_/g, "\\_")}`
             }
-            let alts = getAlts(val.uuid, league);
-            if(alts.length > 0){
-                if(isAlt(val.name, alts)) member = `:x: ${val.name.replace(/_/g, "\\_")}`
-            }
-            membersArray.push(member);
+            if(isAlt(val.name, league)) member = `:x: ${val.name.replace(/_/g, "\\_")}`
         })
 
         membersArray.sort((a, b) => {
@@ -146,33 +142,28 @@ function getRankOrNull(rank){
 
 }
 
-function getAlts(uuid, league){
-
-    let bl = _Blacklist.getBlacklist(uuid, league)
-    console.log(bl);
-    if(bl == null) return [];
-    
-    let alts = [];
-
-    if(alts.includes(", ")) alts = bl.alts.split(", ");
-    if(alts.includes(",") && alts.length == 0) alts = bl.alts.split(",");
-    if(alts.includes(" ") && alts.length == 0) alts = bl.alts.split(" ");
-
-    if(alts.length == 0 && !alts.toLowerCase().includes("none") && !alts.toLowerCase().includes("-")) alts = [alts.replace(" ", "")]
-
-    return alts; 
-
-}
-
-function isAlt(name, alts){
+function isAlt(name, league){
 
     let outcome = false;
 
-    alts.forEach(alt => {
-        if(alt.toLowerCase() == name.toLowerCase()) outcome = true;
+    _Blacklist.blacklists(league).forEach(bl => {
+        let alts = bl.alts;
+        if(arrayContains(alts.split(", "), name) || arrayContains(alts.split(","), name) || arrayContains(alts.split(" "), name) || alts.replace(" ").toLowerCase() == name.toLowerCase()) outcome = true;
     })
 
-    return outcome; 
+    return outcome;
+
+}
+
+function arrayContains(arr, obj){
+
+    let outcome = false;
+
+    arr.forEach(val => {
+        if(val.replace(" ", "").toLowerCase() == obj) outcome = true;
+    })
+
+    return outcome;
 
 }
 
