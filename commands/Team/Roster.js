@@ -43,6 +43,7 @@ module.exports.run = async (bot,message,args,cmd) => {
                 member = `:x: ${val.name.replace(/_/g, "\\_")}`
             }
             if(isAlt(val.name, league)) member = `:x: ${val.name.replace(/_/g, "\\_")}`
+            membersArray.push(member);
         })
 
         membersArray.sort((a, b) => {
