@@ -43,7 +43,6 @@ module.exports.run = async (bot,message,args,cmd) => {
                 member = `:x: ${val.name.replace(/_/g, "\\_")}`
             }
             let alts = getAlts(val.uuid, league);
-            console.log(alts);
             if(alts.length > 0){
                 if(isAlt(val.name, alts)) member = `:x: ${val.name.replace(/_/g, "\\_")}`
             }
@@ -149,17 +148,17 @@ function getRankOrNull(rank){
 
 function getAlts(uuid, league){
 
-    console.log(uuid);
-
     let bl = _Blacklist.getBlacklist(uuid, league)
+    console.log(bl);
     if(bl == null) return [];
     
-    let alts = bl.alts.split(", ");
-    if(alts.length == 1) alts = bl.alts.split(",");
-    if(alts.length == 1) alts = bl.alts.split(" ");
-    if(alts.length == 1) alts = [];
+    let alts = [];
 
-    if(!alts.toLowerCase().includes("none") && !alts.toLowerCase().includes("-")) alts = [alts.replace(" ", "")]
+    if(alts.includes(", ")) alts = bl.alts.split(", ");
+    if(alts.includes(",") && alts.length == 0) alts = bl.alts.split(",");
+    if(alts.includes(" ") && alts.length == 0) alts = bl.alts.split(" ");
+
+    if(alts.length == 0 && !alts.toLowerCase().includes("none") && !alts.toLowerCase().includes("-")) alts = [alts.replace(" ", "")]
 
     return alts; 
 
