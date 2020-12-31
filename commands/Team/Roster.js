@@ -42,7 +42,7 @@ module.exports.run = async (bot,message,args,cmd) => {
             if(_Blacklist.getBlacklist(val.uuid, league)){
                 member = `:x: ${val.name.replace(/_/g, "\\_")}`
             }
-            let alts = getAlts(val.uuid);
+            let alts = getAlts(val.uuid, league);
             if(alts.length > 0){
                 if(isAlt(val.name, alts)) member = `:x: ${val.name.replace(/_/g, "\\_")}`
             }
@@ -146,7 +146,7 @@ function getRankOrNull(rank){
 
 }
 
-function getAlts(uuid){
+function getAlts(uuid, league){
 
     let bl = _Blacklist.getBlacklist(uuid, league)
     if(bl == null) return [];
