@@ -33,8 +33,8 @@ module.exports.run = async (bot, message, args, cmd) => {
         if (team == null) return new _NoticeEmbed(Colors.ERROR, "Invalid team - This team does not exist").send(message.channel);
 
         let player = _Player.getPlayer(val.name, league);
-
         if (player == null) player = _Player.addPlayer(val.name, val.id, league);
+        console.log("player", player, val.name, val.id, league)
 
         player.setTeam(team.name, league);
 

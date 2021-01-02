@@ -1,6 +1,6 @@
 const Groups = require('../../util/Enums/Groups')
 const _NoticeEmbed = require('../../util/Constructors/_NoticeEmbed');
-const _Team  = require('../../util/Constructors/_Team')
+const _Team = require('../../util/Constructors/_Team')
 const Colors = require('../../util/Enums/Colors')
 const ranks = require('../../storage/ranks.json');
 const _Player = require('../../util/Constructors/_Player');
@@ -11,13 +11,13 @@ const _League = require('../../util/Constructors/_League.js');
 const botFile = require("../../bot.js")
 var leagues = botFile.leagues;
 
-module.exports.run = async (bot,message,args,cmd) => {
+module.exports.run = async (bot, message, args, cmd) => {
 
     let settings = require('../../settings.json');
-    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
+    if (_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
     let league = _League.getLeague(message.guild.id);
 
-    if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a player").send(message.channel);
+    if (args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a player").send(message.channel);
 
     let playerName = args[0];
 
@@ -25,16 +25,16 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     promise.then(val => {
 
-        if(val == false || val == undefined) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
+        if (val == false || val == undefined) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
 
         let player = _Player.getPlayer(val.name, league);
 
-        if(player == null) player = _Player.addPlayer(val.name, val.id, league);
+        if (player == null) player = _Player.addPlayer(val.name, val.id, league);
 
         var ranks = `${player.rank}`
 
-        if(player.rank2 != undefined) if(player.rank2.toLowerCase() != "none") ranks += ` and ${player.rank2}`
-        
+        if (player.rank2 != undefined) if (player.rank2.toLowerCase() != "none") ranks += ` and ${player.rank2}`
+
         //let blacklist = _Blacklist.getBlacklist(val.id);
 
         let embed = new Discord.MessageEmbed()
@@ -45,13 +45,13 @@ module.exports.run = async (bot,message,args,cmd) => {
             .addField("UUID", val.id)
             .addField("Leagues", getLeagues(player.name).toString(", "))
             .setThumbnail(`http://minotar.net/helm/${val.name}/64.png`)
-            /*if(player.rating["Rifle"] == null) embed.addField("Rifle Rating", "None");
-            else embed.addField("Rifle Rating", player.rating["Rifle"])
-            if(player.rating["Shotgun"] == null) embed.addField("Shotgun Rating", "None");
-            else embed.addField("Shotgun Rating", player.rating["Shotgun"])
-            if(player.rating["Machinegun"] == null) embed.addField("Machinegun Rating", "None");
-            else embed.addField("Machinegun Rating", player.rating["Machinegun"])*/
-            
+        /*if(player.rating["Rifle"] == null) embed.addField("Rifle Rating", "None");
+        else embed.addField("Rifle Rating", player.rating["Rifle"])
+        if(player.rating["Shotgun"] == null) embed.addField("Shotgun Rating", "None");
+        else embed.addField("Shotgun Rating", player.rating["Shotgun"])
+        if(player.rating["Machinegun"] == null) embed.addField("Machinegun Rating", "None");
+        else embed.addField("Machinegun Rating", player.rating["Machinegun"])*/
+
         //if(blacklist != null) embed.addField("Blacklist Status", "true");
         //else embed.addField("Blacklist Status", "false");
 
@@ -63,7 +63,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
 }
 
-function getLeagues(name){
+function getLeagues(name) {
 
     let theLeagues = [];
 
@@ -71,9 +71,8 @@ function getLeagues(name){
 
     leagues.forEach(l => {
         let player = _Player.getPlayer(name, l);
-        if(player){
-            if((player.team != null && player.team != "None") || ((player.rank != null && player.rank != "None") || (player.rank2 != null && plaayer.rank2 != "None")))
-            {
+        if (player) {
+            if ((player.team != null && player.team != "None") || ((player.rank != null && player.rank != "None") || (player.rank2 != null && plaayer.rank2 != "None"))) {
                 theLeagues.push(l);
             }
         }
@@ -85,7 +84,7 @@ function getLeagues(name){
 
 module.exports.help = {
     name: "profile",
-    aliases: ["player"],
+    aliases: ["player", "p", "pro", "pl"],
     permission: Groups.DEFAULT,
     description: "Gets the profile of a player",
     usage: "player <name>"

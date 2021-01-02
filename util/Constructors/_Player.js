@@ -262,8 +262,9 @@ module.exports = class _Player {
      */
 
     static addPlayer(name, uuid, league) {
-        if (league == null) return;
-        if (this.existsUuid(uuid, league) != null) return;
+        if (league == null) return;  
+        let pl = this.existsUuid(uuid, league);
+        if (!pl) return; 
         let json = { "name": name, "uuid": uuid, "rank": "Member", team: "None", rank2: "None", rating: { "Rifle": null, "Shotgun": null, "Machinegun": null } }
         players[league].push(json);
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {

@@ -32,7 +32,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     
         let blacklist = _Blacklist.getBlacklist(val.id, league);
 
-        if(args[2].toLowerCase() == "-g"){
+        if(args[2] && args[2].toLowerCase() == "-g"){
             leagues.forEach(gL => {
                 let gBl = _Blacklist.getBlacklist(val.id, gL);
                 gBl.delete();

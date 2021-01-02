@@ -211,7 +211,7 @@ setInterval(function(){
     _Player.updateNames(leagues[i].league);
     i++;
   }
-}, ms("1d"));
+}, ms("3d"));
 //_Player.updateNames()
  
 bot.on("message", async message => {
