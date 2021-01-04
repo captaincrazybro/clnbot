@@ -69,6 +69,8 @@ bot.on('error', e => {
   console.log(e)
 })
 
+// bump
+
 let leagues = [
   "twl",
   "decl",
