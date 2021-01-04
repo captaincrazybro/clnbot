@@ -21,6 +21,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     let list = "";
 
     blacklist.forEach(val => {
+        if(!val.uuid) return;
         let player = _Player.getPlayerUuid(val.uuid, league);
         if(!player) player = _Player.addPlayer(val.name, val.uuid, league);
         list += `${player.name.replace(/_/g, "\\_")}\n`;
