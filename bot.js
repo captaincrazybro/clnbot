@@ -18,31 +18,23 @@ const nodeSchedule = require('node-schedule');
 const Groups = require('./util/Enums/Groups');
 const _League = require('./util/Constructors/_League');
 const {MessageEmbed} = require('discord.js');
+
 require("dotenv").config();
 
 module.exports.rankedReactionsMap = new Map();
 
 module.exports.matchOutcomeMap = new Map();
 module.exports.blAddMap = new Map();
- 
-let disabledChannels = ["542812804374069258",
-"663015781709119509",
-"663060798029037568",
-"542812785877319700",
-"664300314928611350",
-"551066764314673152",
-"542808137057435677",
-"542808159387910259",
-"542808317873881109",
-"542812805146083329",
-"592093959824736268",
-"678673861239242796"]
- 
+
 module.exports.reload = false;
  
 module.exports.bot = bot;
+
+const ModuleManager = require('./modules/ModuleManager.js');
+
+ModuleManager.runAll();
  
-bot.commands = new Discord.Collection();  
+bot.commands = new Discord.Collegitction();  
  fs.readdir('./commands/', (err, files) => {
  
   files.filter(f => f.split(".").length == 1).forEach((f2, i) => {
