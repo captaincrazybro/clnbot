@@ -34,7 +34,7 @@ const ModuleManager = require('./modules/ModuleManager.js');
 
 ModuleManager.runAll();
  
-bot.commands = new Discord.Collegitction();  
+bot.commands = new Discord.Colection();  
  fs.readdir('./commands/', (err, files) => {
  
   files.filter(f => f.split(".").length == 1).forEach((f2, i) => {
