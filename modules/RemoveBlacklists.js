@@ -22,7 +22,7 @@ module.exports = class RemoveBlacklists extends Module {
                     }
                 })
             })
-        })
+        }, ms("1d"))
     }
     
 }
