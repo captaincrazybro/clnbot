@@ -21,7 +21,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     if(league == "clt") return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
 
-    if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl"){
+    if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl" || league == "twl"){
 
         if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a tier").send(message.channel);
 
@@ -42,7 +42,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         return;
 
-    } else if(league == "twl") {
+    } /*else if(league == "twl") {
         
         if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify wins").send(message.channel);
 
@@ -62,7 +62,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         new _NoticeEmbed(Colors.SUCCESS, `Successfully set ${team.name}'s wins to ${wins} and losses to ${losses}`).send(message.channel);
 
-    } else {
+    }*/ else {
 
         if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify points").send(message.channel);
 
