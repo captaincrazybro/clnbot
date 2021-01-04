@@ -160,7 +160,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
               i++;
           }
 
-          let embed = new Discord.RichEmbed()
+          let embed = new Discord.MessageEmbed()
             .setColor("BLUE")
             .setTitle("Rankings - Page " + (this.rankedReactionsMap.get(reaction.message.id).page + 1))
             .setDescription(rankings);
@@ -192,7 +192,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
               i++;
           }
 
-          let embed = new Discord.RichEmbed()
+          let embed = new Discord.MessageEmbed()
             .setColor("BLUE")
             .setTitle("Rankings - Page " + (this.rankedReactionsMap.get(reaction.message.id).page + 1))
             .setDescription(rankings);
@@ -211,7 +211,7 @@ setInterval(function(){
     _Player.updateNames(leagues[i].league);
     i++;
   }
-}, ms("3d"));
+}, ms("12h"));
 //_Player.updateNames()
  
 bot.on("message", async message => {
@@ -361,7 +361,7 @@ function levelUp(user, message){
   }
  
   if(originalLevel != newLevel){
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
       .setColor(Colors.SUCCESS)
       .setDescription(`<@${user.id}>, you have leveled up to level ${newLevel}`)
  
