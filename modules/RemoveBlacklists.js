@@ -2,7 +2,9 @@ const _Blacklist = require('../util/Constructors/_Blacklist.js');
 const leagues = require('../bot').leagues;
 const ms = require('ms');
 
-module.exports.run = () => {
+module.exports.run = run();
+
+function run() {
 
     let current = new Date();
 
