@@ -1,6 +1,6 @@
 const MongoUtil = include("../MongoUtil");
 
-class ServerModel {
+class Server {
   #collectionName = "servers";
 
   #sortByCurrentLeagueId = {
@@ -215,4 +215,4 @@ class ServerModel {
   async resetServerLeague() {}
 }
 
-module.exports = new ServerModel();
+module.exports = new Server();

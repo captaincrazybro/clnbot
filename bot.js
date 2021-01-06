@@ -18,9 +18,8 @@ const nodeSchedule = require("node-schedule");
 const Groups = require("./util/Enums/Groups");
 const _League = require("./util/Constructors/_League");
 const { MessageEmbed } = require("discord.js");
+const League = require("./util/Classes/League");
 require("dotenv").config();
-const MongoUtil = require("./util/mongoUtil.js");
-const LeagueModel = require("./util/Models/LeagueModel");
 
 (async () => {
   //idk if this is ok to do i'm leaving it out.
@@ -83,15 +82,15 @@ const LeagueModel = require("./util/Models/LeagueModel");
     console.log(e);
   });
 
-  const leagues = await LeagueModel.getLeagues();
+  const leagues = await League.getLeagues();
   console.log(leagues);
   console.log(
-    await LeagueModel.addLeague({ name:"testleague", fullName:"The best Test league ever." })
+    await League.addLeague({ name: "testleague", fullName: "The best Test league ever." })
   );
-  console.log(await LeagueModel.getLeagueByName("cwcl"))
-  console.log(await LeagueModel.getLeagueServersWithName("cwcl"))
-  console.log(await LeagueModel.getMaxLeagueId())
-  console.log(await LeagueModel.updateLeague())
+  console.log(await League.getLeagueByName("cwcl"))
+  console.log(await League.getLeagueServersWithName("cwcl"))
+  console.log(await League.getMaxLeagueId())
+  console.log(await League.updateLeague())
 
   bot.on("ready", async () => {
     console.log(`${bot.user.username} is online!`);
@@ -168,7 +167,7 @@ const LeagueModel = require("./util/Models/LeagueModel");
               .setColor("BLUE")
               .setTitle(
                 "Rankings - Page " +
-                  (this.rankedReactionsMap.get(reaction.message.id).page + 1)
+                (this.rankedReactionsMap.get(reaction.message.id).page + 1)
               )
               .setDescription(rankings);
 
@@ -209,7 +208,7 @@ const LeagueModel = require("./util/Models/LeagueModel");
               .setColor("BLUE")
               .setTitle(
                 "Rankings - Page " +
-                  (this.rankedReactionsMap.get(reaction.message.id).page + 1)
+                (this.rankedReactionsMap.get(reaction.message.id).page + 1)
               )
               .setDescription(rankings);
 
@@ -265,8 +264,8 @@ const LeagueModel = require("./util/Models/LeagueModel");
         return new _NoticeEmbed(
           Colors.ERROR,
           "This guild does not have a guild set! Use the " +
-            settings.prefix +
-            "setleague command to set the league's guild"
+          settings.prefix +
+          "setleague command to set the league's guild"
         ).send(message.channel);
       let user = new _User(message.author.id, league);
       if (
@@ -738,8 +737,8 @@ bot.on("messageDelete", (message) => {
               return new _NoticeEmbed(
                 Colors.SUCCESS,
                 "The referee for this blacklist has been set to " +
-                  player.name +
-                  ". Please enter the start date of the blacklist (MM/DD/YYYY)."
+                player.name +
+                ". Please enter the start date of the blacklist (MM/DD/YYYY)."
               ).send(message.channel);
             });
           }
@@ -761,8 +760,8 @@ bot.on("messageDelete", (message) => {
           return new _NoticeEmbed(
             Colors.SUCCESS,
             "The start date for this blacklist has been set to " +
-              message.content +
-              ". Please enter the type of blacklist (temporary or permanent)."
+            message.content +
+            ". Please enter the type of blacklist (temporary or permanent)."
           ).send(message.channel);
         }
         case 2: {
@@ -784,8 +783,8 @@ bot.on("messageDelete", (message) => {
             new _NoticeEmbed(
               Colors.SUCCESS,
               "The start type for this blacklist has been set to " +
-                message.content +
-                ". Please enter the end date of the blacklist (MM/DD/YYYY)."
+              message.content +
+              ". Please enter the end date of the blacklist (MM/DD/YYYY)."
             ).send(message.channel);
           } else {
             newObj.end_date = "NONE";
@@ -793,8 +792,8 @@ bot.on("messageDelete", (message) => {
             new _NoticeEmbed(
               Colors.SUCCESS,
               "The start type for this blacklist has been set to " +
-                message.content +
-                ". Please enter the alts of the blacklist."
+              message.content +
+              ". Please enter the alts of the blacklist."
             ).send(message.channel);
           }
 
@@ -819,8 +818,8 @@ bot.on("messageDelete", (message) => {
           return new _NoticeEmbed(
             Colors.SUCCESS,
             "The end date for this blacklist has been set to " +
-              message.content +
-              ". Please enter the alts of blacklist."
+            message.content +
+            ". Please enter the alts of blacklist."
           ).send(message.channel);
         }
         case 4: {
@@ -835,8 +834,8 @@ bot.on("messageDelete", (message) => {
             new _NoticeEmbed(
               Colors.SUCCESS,
               "The alts for this blacklist have been set to " +
-                message.content +
-                ". Please specify if you want this blacklist to be global (yes or no)."
+              message.content +
+              ". Please specify if you want this blacklist to be global (yes or no)."
             ).send(message.channel);
             return;
           }
@@ -846,8 +845,8 @@ bot.on("messageDelete", (message) => {
           return new _NoticeEmbed(
             Colors.SUCCESS,
             "The alts for this blacklist have been set to " +
-              message.content +
-              ". Please enter any referee notes for this blacklist."
+            message.content +
+            ". Please enter any referee notes for this blacklist."
           ).send(message.channel);
         }
         case 5: {
@@ -886,8 +885,8 @@ bot.on("messageDelete", (message) => {
           return new _NoticeEmbed(
             Colors.SUCCESS,
             "This blacklist will " +
-              msgString +
-              "be global. Please enter any referee notes for this blacklist."
+            msgString +
+            "be global. Please enter any referee notes for this blacklist."
           ).send(message.channel);
         }
         case 6: {
@@ -912,10 +911,10 @@ bot.on("messageDelete", (message) => {
           return new _NoticeEmbed(
             Colors.SUCCESS,
             "The referee notes for this blacklist have been set to " +
-              message.content +
-              ". The blacklist " +
-              newObj.uuid +
-              " has successfully been created."
+            message.content +
+            ". The blacklist " +
+            newObj.uuid +
+            " has successfully been created."
           ).send(message.channel);
         }
       }
