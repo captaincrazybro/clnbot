@@ -83,6 +83,18 @@ let leagues = [
   "cotc"
 ]
 
+const players = require('./storage/players.json');
+
+leagues.forEach(l => {
+  if(!players[l]) {
+    players[l] = [];
+  }
+  fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
+    if(err) console.log(err);
+  })
+})
+
+
 module.exports.leagues = leagues;
  
 bot.on("ready", async () => {
