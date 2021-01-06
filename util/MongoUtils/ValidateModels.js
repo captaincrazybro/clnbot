@@ -28,7 +28,7 @@ const validateModelValues = (model, json) => {
         while (i < model.length) {
             [key, val] = entries[i];
             if (json[key] == undefined && val.required) throw new Error(`Model Error - Json does not contain ${key} and the value is required.`)
-            else if (json[key] != val.type) throw new Error(`Model Error - Json value ${json[key]} is not ${val.type}`)
+            else if (json[key] != val.type) throw new Error(`Model Error - Json value ${json[key]} is not ${val.type} value`)
             i++;
         }
 

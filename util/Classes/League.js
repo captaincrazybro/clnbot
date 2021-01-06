@@ -1,4 +1,6 @@
 const MongoUtil = require("../MongoUtils/MongoUtil");
+const { LeagueModel } = require("../Models/LeagueModel");
+const { validateModelValues } = require("../MongoUtils/ValidateModels");
 class League {
   #collectionName = "leagues";
   #projectAllStage = {
@@ -194,6 +196,10 @@ class League {
       console.log("Full Name is not a String ", newFullName);
       return null;
     }
+    if (this.getLeagueByName(newName)) {
+      console.log("A league with that name already Exists.")
+      return null;
+    }
     //Capitalize Every word.
     const words = newFullName.split(" ");
     for (let i = 0; i < words.length; i++) {
@@ -206,10 +212,12 @@ class League {
       leagueId: newId,
       name: newName.toLowerCase(),
       fullName: newFullName,
+      isActive: true
     };
     return await MongoUtil.action(async (db) => {
       const leaguesCollection = db.collection(this.#collectionName);
       try {
+        if (!validateModelValues(LeagueModel, league)) throw new Error("League Error - Invalid Values for the model");
         const newName = await leaguesCollection.insertOne(
           league,
           this.#transactionlessWriteConcern
@@ -219,6 +227,7 @@ class League {
           insertedCount: newName.insertedCount,
         }; //maybe?? if not then send league info
       } catch (MongoError) {
+        console.log(MongoError);
         //error handling for dupe and possibly other errors.
         if (MongoError.code == 11000) {
           console.log("Dup key", MongoError.keyValue);
@@ -249,6 +258,14 @@ class League {
       return null;
     }
     newName = newName.toLowerCase();
+    
+    //Capitalize Every word.
+    const words = newFullName.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    }
+    newFullName = words.join(" ");
+    
     if (await this.getLeagueById(leagueId)) {
       let query = { $leagueId: leagueId },
         update = { name: newName, fullName: newFullName };
@@ -277,17 +294,6 @@ class League {
         numberFound: 0,
       };
     }
-  }
-  async resetLeagueByServerId(serverId) {
-    return await MongoUtil.action(async (db) => {
-      const leaguesCollection = db.collection(this.#collectionName);
-      const serverLeague = await leaguesCollection.update(
-        query,
-        update,
-        options
-      );
-      console.log(serverLeague);
-    });
   }
 }
 module.exports = new League();

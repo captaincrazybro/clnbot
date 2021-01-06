@@ -90,7 +90,7 @@ require("dotenv").config();
   console.log(await League.getLeagueByName("cwcl"))
   console.log(await League.getLeagueServersWithName("cwcl"))
   console.log(await League.getMaxLeagueId())
-  console.log(await League.updateLeague())
+  console.log(await League.updateLeagueById(1,"test","this a test"))
 
   bot.on("ready", async () => {
     console.log(`${bot.user.username} is online!`);
