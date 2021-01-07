@@ -265,7 +265,7 @@ module.exports = class _Player {
 
     static addPlayer(name, uuid, league) {
         if (league == null) return;
-        let pl = this.existsUuid(uuid, league); 
+        let pl = this.existsUuid(uuid, league);
         if (pl != null) return;
         let json = { "name": name, "uuid": uuid, "rank": "Member", team: "None", rank2: "None", rating: { "Rifle": null, "Shotgun": null, "Machinegun": null } }
         players[league].push(json);
@@ -278,15 +278,14 @@ module.exports = class _Player {
     static getPlayer(name, league) {
         if (league == null) return;
         let val = this.exists(name, league)
-        if (val == null) return null;
+        if (val = null) return null;
         return new _Player(val, league);
     }
 
     static getPlayerUuid(uuid, league) {
         if (league == null) return;
         let val = this.existsUuid(uuid, league)
-        if (val == null) return null;
-        console.log("val", val)
+        if (val != null) return null;
         return new _Player(val, league);
     }
 
