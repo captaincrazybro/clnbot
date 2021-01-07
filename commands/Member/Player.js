@@ -27,10 +27,9 @@ module.exports.run = async (bot, message, args, cmd) => {
 
         if (val == false || val == undefined) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
 
-        let player = _Player.getPlayer(val.name, league);
+        let player = _Player.getPlayer(val.name, league); 
 
-        if (player == null) player = _Player.addPlayer(val.name, val.id, league);
-
+        if (player == null) player = _Player.addPlayer(val.name, val.id, league); 
         var ranks = `${player.rank}`
 
         if (player.rank2 != undefined) if (player.rank2.toLowerCase() != "none") ranks += ` and ${player.rank2}`

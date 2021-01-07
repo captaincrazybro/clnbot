@@ -242,7 +242,9 @@ module.exports = class _Team {
      */
 
     static exists(team, league){
-        if(teams[league].length > 0) var filtered = teams[league].filter(val => val.name.toLowerCase() == team.toLowerCase());
+        if(!teams[league]) teams[league] = [];
+        
+        if( teams[league].length > 0) var filtered = teams[league].filter(val => val.name.toLowerCase() == team.toLowerCase());
         else return null;
         if(filtered.length == 0){
             filtered = teams[league].filter(val => {
