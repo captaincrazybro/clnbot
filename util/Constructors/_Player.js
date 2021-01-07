@@ -254,7 +254,7 @@ module.exports = class _Player {
         if (filtered.length > 0)
             return filtered.pop();
         else
-            return filtered
+            return null//filtered
     }
 
     /**

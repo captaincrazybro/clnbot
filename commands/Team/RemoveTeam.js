@@ -27,7 +27,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
 module.exports.help = {
     name: "removeteam",
-    aliases: ["deleteteam", "rem-team"],
+    aliases: ["deleteteam", "rem-team","remteam","delteam"],
     permission: Groups.MOD,
     description: "Removes a team",
     usage: "removeteam <team>"
