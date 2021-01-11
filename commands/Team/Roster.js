@@ -89,7 +89,7 @@ module.exports.run = async (bot,message,args,cmd) => {
                     embed.addField("Wins", team.wins);
                     embed.addField("Losses", team.losses);
                 }*/
-                embed.addField("League", league.toLowerCase())
+                embed.addField("League", league.toUpperCase())
                 embed.addField("Members", members)
                 
             if(team.logo != "None") embed.setThumbnail(team.logo);
