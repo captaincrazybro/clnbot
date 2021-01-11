@@ -67,6 +67,15 @@ module.exports = class Blacklist {
    */
 
   static exists(uuid, league) {
+    //add empty array
+    if (!blacklist[league]) {
+      blacklist[league] = [];
+      fs.writeFile("./storage/blacklist.json", JSON.stringify(blacklist), (err) => {
+        if (err) console.log(err)
+      });
+    }
+
+
     if (blacklist[league].length == 0) return false;
     else {
       let filtered = blacklist[league].filter(val => val.uuid == uuid);
