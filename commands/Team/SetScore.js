@@ -9,7 +9,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     let settings = require('../../settings.json');
     if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
 
-    let league = _League.getLeague(message.guild.id);
+    let league = _League.getLeague(message.guild.id).toLowerCase();
 
     if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a team name").send(message.channel);
 
@@ -21,7 +21,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     if(league == "clt") return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
 
-    if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl" || league == "twl"){
+    if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl" || league == "twl" || league == "sgcl"){
 
         if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a tier").send(message.channel);
 
