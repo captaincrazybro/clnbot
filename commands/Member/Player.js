@@ -42,7 +42,7 @@ module.exports.run = async (bot, message, args, cmd) => {
             .addField("Team", player.team)
             .addField("Rank", ranks)
             .addField("UUID", val.id)
-            .addField("Leagues", getLeagues(player.name).toString(", "))
+            .addField("Leagues", getLeagues(player.name).toString(", ").toUpperCase())
             .setThumbnail(`http://minotar.net/helm/${val.name}/64.png`)
         /*if(player.rating["Rifle"] == null) embed.addField("Rifle Rating", "None");
         else embed.addField("Rifle Rating", player.rating["Rifle"])
