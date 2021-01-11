@@ -80,18 +80,33 @@ let leagues = [
   "ctfcl",
   "cdcl",
   "cwcl",
-  "cotc"
+  "cotc",
+  "sgcl"
 ]
 
 const players = require('./storage/players.json');
+const teams = require('./storage/teams.json');
+const permissions = require('./storage/permissions.json');
 
 leagues.forEach(l => {
   if(!players[l]) {
     players[l] = [];
   }
-  fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
-    if(err) console.log(err);
-  })
+  if(!team[l]) {
+    teams[l] = [];
+  }
+  if(!permissions[l]) {
+    permissions[l] = {}
+  }
+})
+fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
+  if(err) console.log(err);
+})
+fs.writeFile('./storage/teams.json', JSON.stringify(players), (err) => {
+  if(err) console.log(err);
+})
+fs.writeFile('./storage/permissions.json', JSON.stringify(players), (err) => {
+  if(err) console.log(err);
 })
 
 
