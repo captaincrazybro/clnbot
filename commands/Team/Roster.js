@@ -16,7 +16,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     let settings = require('../../settings.json');
     if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
 
-    let league = _League.getLeague(message.guild.id);
+    let league = _League.getLeague(message.guild.id).toLowerCase();
 
     if(args.length >= 2) league = _League.parseLeague(args[1]);
 
@@ -89,7 +89,7 @@ module.exports.run = async (bot,message,args,cmd) => {
                     embed.addField("Wins", team.wins);
                     embed.addField("Losses", team.losses);
                 }*/
-                embed.addField("League", league)
+                embed.addField("League", league.toLowerCase())
                 embed.addField("Members", members)
                 
             if(team.logo != "None") embed.setThumbnail(team.logo);
