@@ -92,7 +92,7 @@ leagues.forEach(l => {
   if(!players[l]) {
     players[l] = [];
   }
-  if(!team[l]) {
+  if(!teams[l]) {
     teams[l] = [];
   }
   if(!permissions[l]) {
