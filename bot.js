@@ -102,10 +102,10 @@ leagues.forEach(l => {
 fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
   if(err) console.log(err);
 })
-fs.writeFile('./storage/teams.json', JSON.stringify(players), (err) => {
+fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
   if(err) console.log(err);
 })
-fs.writeFile('./storage/permissions.json', JSON.stringify(players), (err) => {
+fs.writeFile('./storage/permissions.json', JSON.stringify(permissions), (err) => {
   if(err) console.log(err);
 })
 
