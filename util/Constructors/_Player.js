@@ -251,8 +251,10 @@ module.exports = class _Player {
     static existsUuid(uuid, league) {
         if (players[league].length > 0) var filtered = players[league].filter(val => val.uuid == uuid);
         else return null;
+        let pop = filtered.pop();
+        console.log("pop", pop);
         if (filtered.length > 0)
-            return filtered.pop();
+            return pop;
         else
             return null//filtered
     }
@@ -265,7 +267,9 @@ module.exports = class _Player {
 
     static addPlayer(name, uuid, league) {
         if (league == null) return;
+        console.log("anem", name, uuid, league);
         let pl = this.existsUuid(uuid, league);
+        console.log("exist", pl)
         if (pl != null) return;
         let json = { "name": name, "uuid": uuid, "rank": "Member", team: "None", rank2: "None", rating: { "Rifle": null, "Shotgun": null, "Machinegun": null } }
         players[league].push(json);
@@ -278,14 +282,14 @@ module.exports = class _Player {
     static getPlayer(name, league) {
         if (league == null) return;
         let val = this.exists(name, league)
-        if (val = null) return null;
+        if (val == null) return null;
         return new _Player(val, league);
     }
 
     static getPlayerUuid(uuid, league) {
         if (league == null) return;
         let val = this.existsUuid(uuid, league)
-        if (val != null) return null;
+        if (val == null) return;
         return new _Player(val, league);
     }
 

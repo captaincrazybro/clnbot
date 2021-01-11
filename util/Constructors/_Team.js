@@ -14,11 +14,11 @@ module.exports = class _Team {
      * @param {JSON} val
      */
 
-    constructor(name, val, league){
+    constructor(name, val, league) {
 
         this.league = league;
-      
-      players = require("../../storage/players.json");
+
+        players = require("../../storage/players.json");
 
         this.val = val;
         this.name = name;
@@ -35,30 +35,30 @@ module.exports = class _Team {
      * @returns {Array<String>}
      */
 
-    getMembers(){
+    getMembers() {
         let filtered = _Player.filterMembers(this.name, this.league);
-        if(filtered == null) return [];
+        if (filtered == null) return [];
         return filtered;
     }
-    
-        /**
-     * 
-     * @param {String} newName 
-     * @returns {_Team}
-     */
 
-    setName(newName){
-        if(newName == this.name) return;
+    /**
+ * 
+ * @param {String} newName 
+ * @returns {_Team}
+ */
+
+    setName(newName) {
+        if (newName == this.name) return;
         let val = this.val;
         val.name = newName;
         teams[this.league] = teams[this.league].filter(it => it.name != this.val.name)
         teams[this.league].push(val);
         fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         players[this.league].filter(val => val.team == this.name).forEach(val => val.team = newName);
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         /*_Match.getMatchesObj().forEach(val => {
             if(val.team1 == this.name){
@@ -68,7 +68,7 @@ module.exports = class _Team {
             }
         })*/
         fs.writeFile('./storage/matches.json', JSON.stringify(teams), err => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.name = newName;
         this.val = val
@@ -81,14 +81,14 @@ module.exports = class _Team {
      * @returns {_Team}
      */
 
-    setColor(color){
-        if(color == this.color) return;
+    setColor(color) {
+        if (color == this.color) return;
         let val = this.val;
         val.color = color;
         teams[this.league] = teams[this.league].filter(it => it.name != this.val.name)
         teams[this.league].push(val);
         fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.color = color;
         this.val = val
@@ -101,14 +101,14 @@ module.exports = class _Team {
      * @returns {_Team}
      */
 
-    setLogo(logo){
-        if(logo == this.logo) return;
+    setLogo(logo) {
+        if (logo == this.logo) return;
         let val = this.val;
         val.logo = logo;
         teams[this.league] = teams[this.league].filter(it => it.name != this.val.name)
         teams[this.league].push(val);
         fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.logo = logo;
         this.val = val
@@ -121,14 +121,14 @@ module.exports = class _Team {
      * @returns {_Team}
      */
 
-    setNick(nick){
-        if(nick == this.nick) return;
+    setNick(nick) {
+        if (nick == this.nick) return;
         let val = this.val;
         val.nick = nick;
         teams[this.league] = teams[this.league].filter(it => it.name != this.val.name)
         teams[this.league].push(val);
         fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.nick = nick;
         this.val = val
@@ -141,14 +141,14 @@ module.exports = class _Team {
      * @returns {_Team}
      */
 
-    setOwner(uuid){
-        if(uuid == this.owner) return;
+    setOwner(uuid) {
+        if (uuid == this.owner) return;
         let val = this.val;
         val.owner = uuid;
         teams[this.league] = teams[this.league].filter(it => it.name != this.val.name)
         teams[this.league].push(val);
         fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.owner = uuid;
         this.val = val
@@ -161,15 +161,15 @@ module.exports = class _Team {
      * @returns {_Team}
      */
 
-    setLosses(losses){
-        if(losses == this.losses) return;
+    setLosses(losses) {
+        if (losses == this.losses) return;
         let val = this.val;
         val.losses = losses;
         teams[this.league] = teams[this.league].filter(it => it.name != this.val.name)
         teams[this.league].push(val);
         this.losses = losses;
         fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.val = val
         return this;
@@ -181,14 +181,14 @@ module.exports = class _Team {
      * @returns {_Team}
      */
 
-    setWins(wins){
-        if(wins == this.wins) return;
+    setWins(wins) {
+        if (wins == this.wins) return;
         let val = this.val;
         val.wins = wins;
         teams[this.league] = teams[this.league].filter(it => it.name != this.val.name)
         teams[this.league].push(val);
         fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         this.wins = wins;
         this.val = val
@@ -201,7 +201,7 @@ module.exports = class _Team {
      * @returns {_Team}
      */
 
-    addWins(wins){
+    addWins(wins) {
         this.setWins(this.wins + wins);
         return this;
     }
@@ -212,7 +212,7 @@ module.exports = class _Team {
      * @returns {_Team}
      */
 
-    addLosses(losses){
+    addLosses(losses) {
         this.setLosses(this.losses + losses);
         return this;
     }
@@ -221,16 +221,16 @@ module.exports = class _Team {
      * @returns {_Team}
      */
 
-    delete(){
+    delete() {
         teams[this.league] = teams[this.league].filter(v => v.name != this.val.name);
         fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
-        players[this.league].forEach(val => { 
-          if(val.team == this.name) _Player.getPlayer(val.name, this.league).setTeam("None");
+        players[this.league].forEach(val => {
+            if (val.team == this.name) _Player.getPlayer(val.name, this.league).setTeam("None");
         })
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         return this;
     }
@@ -241,19 +241,18 @@ module.exports = class _Team {
      * @returns {JSON}
      */
 
-    static exists(team, league){
-        if(!teams[league]) teams[league] = [];
-        
-        if( teams[league].length > 0) var filtered = teams[league].filter(val => val.name.toLowerCase() == team.toLowerCase());
+    static exists(team, league) {
+        if (!teams[league]) teams[league] = [];
+        if (teams[league].length > 0) var filtered = teams[league].filter(val => val.name.toLowerCase() == team.toLowerCase());
         else return null;
-        if(filtered.length == 0){
+        if (filtered.length == 0) {
             filtered = teams[league].filter(val => {
-              if(val.nick != null) return val.nick != "NONE" && val.nick.toLowerCase() == team.toLowerCase();
+                if (val.nick != null) return val.nick != "NONE" && val.nick.toLowerCase() == team.toLowerCase();
             })
-            if(filtered.length == 0) return null;
+            if (filtered.length == 0) return null;
         }
-        
-        return filtered.pop();
+        let pop = filtered.pop();
+        return pop;
     }
 
 
@@ -263,9 +262,9 @@ module.exports = class _Team {
      * @returns {_Team}
      */
 
-    static getTeam(team, league){
-        let val = this.exists(team, league);
-        if(val == null) return null;
+    static getTeam(team, league) {
+        let val = this.exists(team, league); 
+        if (val == null) return null;
         return new _Team(val.name, val, league);
     }
 
@@ -275,9 +274,9 @@ module.exports = class _Team {
      * @return {_Team}
      */
 
-    static createTeam(team, league){
+    static createTeam(team, league) {
         let val = this.exists(team, league);
-        if(val != null) return null;
+        if (val != null) return null;
         let json = {
             "name": team,
             "color": "WHITE",
@@ -289,25 +288,25 @@ module.exports = class _Team {
         }
         teams[league].push(json);
         fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
         return new _Team(team, json, league);
-        
+
     }
 
     /**
      * @returns {Array}
      */
 
-    static getTeams(league){
+    static getTeams(league) {
         let teamList = [];
         teams[league].forEach(val => {
             teamList.push(this.getTeam(val.name, league))
         })
         return teamList;
     }
-    
-    static getTeamObj(league){
+
+    static getTeamObj(league) {
         return teams[league];
     }
 

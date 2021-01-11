@@ -33,9 +33,9 @@ module.exports.run = async (bot, message, args, cmd) => {
         if (team == null) return new _NoticeEmbed(Colors.ERROR, "Invalid team - This team does not exist").send(message.channel);
 
         let player = _Player.getPlayer(val.name, league);
+        console.log("before", player)
         if (player == null) player = _Player.addPlayer(val.name, val.id, league);
-        console.log("player", player, val.name, val.id, league)
-
+        console.log("out", player);
         player.setTeam(team.name, league);
 
         new _NoticeEmbed(Colors.SUCCESS, `Successfully added ${val.name} to ${team.name}`).send(message.channel);

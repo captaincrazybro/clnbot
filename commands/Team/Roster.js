@@ -91,7 +91,7 @@ module.exports.run = async (bot,message,args,cmd) => {
                 }*/
                 embed.addField("League", league.toUpperCase())
                 embed.addField("Members", members)
-                
+              
             if(team.logo != "None") embed.setThumbnail(team.logo);
 
             message.channel.send(embed);
