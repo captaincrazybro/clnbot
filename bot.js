@@ -226,12 +226,6 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     }
   }
 });
-
-let i = 0;
-while (i < leagues.length) {
-  _Player.updateNames(leagues[i]);
-  i++;
-}
  
 setInterval(function(){
   let i = 0;
