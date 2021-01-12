@@ -25,12 +25,16 @@ module.exports.run = async (bot,message,args,cmd) => {
     if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a title").send(message.channel);
 
     let newArgs = args;
-    newArgs.pop();
+    newArgs.shift();
     let title = newArgs.join(" ");
 
     EmbedWizard.embedWizardMap.set(message.author.id, {title: title, channel: channel, step: 1})
 
-    return new _NoticeEmbed(Colors.SUCCESS, "You have successfully started the embed creation wizard. The title has been set as " + title + ". Please specify a color for the embed.").send(message.channel);
+    let embed = new Discord.MessageEmbed()
+        .setColor(Colors.SUCCESS)
+        .setTitle("You have successfully started the embed creation wizard. The channel has been set to <#" + num + "> and title to " + title + ". Please specify a color for the embed.")
+
+    message.channel.send(embed);
 
 }
 
