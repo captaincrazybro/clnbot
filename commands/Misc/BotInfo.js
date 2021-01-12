@@ -17,6 +17,7 @@ module.exports.run = async (bot, message, args, cmd) => {
         **Servers**: ${bot.guilds.cache.size}
         **Users**: ${bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0)}
         **Author**: ${settings.author}
+        **CLN Discord**: https://discord.gg/yEvAQPy 
         **Repository**: https://github.com/captaincrazybro/CLNBot`)
 
     message.channel.send(embed);

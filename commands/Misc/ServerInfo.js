@@ -13,7 +13,6 @@ module.exports.run = async (bot, message, args, cmd) => {
         **Name**: ${message.guild.name}
         **Owner**: ${await message.guild.members.fetch(message.guild.ownerID) /*message.guild.owner.user.username*/}
         **Members**: ${message.guild.memberCount}
-        **CLN Discord**: https://discord.gg/yEvAQPy 
         `)
         .setThumbnail(message.guild.iconURL);
 
