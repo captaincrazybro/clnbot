@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, args, cmd) => {
                 .setTitle("Commands")
                 .setDescription(`The prefix for this bot is ${settings.prefix}
                 '[]'s means the parameter is not necessary and '<>'s means that it is necessary`)
-                .setFooter("If you ever have any security issues or other issues please report it in the CLN discord https://discord.gg/yEvAQPy or contact cqptain#3247 or ._.#1238 through discord.")
+                .setFooter("If you ever have any security issues or other issues please report it in the CLN discord, https://discord.gg/yEvAQPy, or contact cqptain#3247 or ._.#1238 through discord.")
 
             files.filter(f => f.split(".").length == 1).forEach((f2, i) => {
 
