@@ -14,8 +14,6 @@ module.exports.run = async (bot,message,args,cmd) => {
     num = num.replace("#", "");
     num = num.replace(">","");
 
-    console.log(num);
-
     if(isNaN(num)) return new _NoticeEmbed(Colors.ERROR, "Invalid channel - Please specify a valid channel (either #channel-name or id)").send(message.channel);
 
     num = parseFloat(num);
@@ -29,6 +27,8 @@ module.exports.run = async (bot,message,args,cmd) => {
     let title = newArgs.join(" ");
 
     EmbedWizard.embedWizardMap.set(message.author.id, {title: title, channel: channel, step: 1})
+
+    console.log(`<#${num}>`)
 
     let embed = new Discord.MessageEmbed()
         .setColor(Colors.SUCCESS)
