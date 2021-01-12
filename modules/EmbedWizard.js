@@ -1,13 +1,13 @@
 const { exists } = require("../util/Constructors/_Blacklist");
 const _NoticeEmbed = require("../util/Constructors/_NoticeEmbed");
 const Colors = require('../util/Enums/Colors.js');
-
-module.exports.embedWizardMap = new Map();
+const Discord = require('discord.js');
 
 module.exports = class EmbedWizard {
     
     static run(message){
         if(this.embedWizardMap.has(message.author.id)){
+            console.log("hi");
             if(message.content.replace(" ", "").toLowerCase() == "exit" || message.content.replace(" ", "").toLowerCase() == "cancel"){
                 this.embedWizardMap.delete(id);
                 return;
@@ -23,7 +23,7 @@ module.exports = class EmbedWizard {
                     el.step++;
                     this.embedWizardMap.set(id, el);
                     
-                    return new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the color to " + color + ". Please specify the description (can be multiple lines).")
+                    return new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the color to " + color + ". Please specify the description (can be multiple lines).").send(message.channel);
                     break;
                 }
                 case(2):{
@@ -32,7 +32,15 @@ module.exports = class EmbedWizard {
                     el.step++;
                     this.embedWizardMap.set(id, el);
 
-                    return new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the description. Please specify ")
+                    new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the description. The Embed will now send.").send(message.channel);
+
+                    let embed = new Discord.MessageEmbed()
+                        .setColor(el.color)
+                        .setTitle(el.title)
+                        .setDescription(el.description)
+
+                    message.guild.channels.cache.find(val => val.id == el.channel).send(embed);
+                    return this.embedWizardMap.delete(message.author.id);
                     break;
                 }
                 default:{
@@ -42,5 +50,7 @@ module.exports = class EmbedWizard {
             }
         }
     }
+
+    static embedWizardMap = new Map();
 
 }

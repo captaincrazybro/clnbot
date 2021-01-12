@@ -18,6 +18,7 @@ const nodeSchedule = require('node-schedule');
 const Groups = require('./util/Enums/Groups');
 const _League = require('./util/Constructors/_League');
 const {MessageEmbed} = require('discord.js');
+const EmbedWizard = require('./modules/EmbedWizard.js');
 
 require("dotenv").config();
 
@@ -229,7 +230,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
 setInterval(function(){
   let i = 0;
   while (i < leagues.length) {
-    _Player.updateNames(leagues[i].league);
+    _Player.updateNames(leagues[i]);
     i++;
   }
 }, ms("12h"));
@@ -258,6 +259,7 @@ bot.on("message", async message => {
  
   doBlAdd(message);
   doMatchOutcome(message);
+  EmbedWizard.run(message);
 
   //_MinecraftAPI.getUuid("Cqptain").then(val => _MinecraftAPI.getName(val).then(val2 => console.log(val2)))
  
