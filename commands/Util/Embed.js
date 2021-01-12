@@ -14,6 +14,8 @@ module.exports.run = async (bot,message,args,cmd) => {
     num.replace("<", "");
     num.replace(">","");
 
+    console.log(num);
+
     if(isNaN(num)) return new _NoticeEmbed(Colors.ERROR, "Invalid channel - Please specify a valid channel (either #channel-name or id)").send(message.channel);
 
     num = parseFloat(num);
