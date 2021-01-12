@@ -7,7 +7,6 @@ module.exports = class EmbedWizard {
     
     static run(message){
         if(this.embedWizardMap.has(message.author.id)){
-            console.log("hi");
             if(message.content.replace(" ", "").toLowerCase() == "exit" || message.content.replace(" ", "").toLowerCase() == "cancel"){
                 this.embedWizardMap.delete(id);
                 return;
@@ -18,7 +17,7 @@ module.exports = class EmbedWizard {
         
             switch(el.step){
                 case(1):{
-                    let color = message.content;
+                    let color = message.content.toUpperCase();
                     el.color = color;
                     el.step++;
                     this.embedWizardMap.set(id, el);
