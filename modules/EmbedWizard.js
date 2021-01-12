@@ -1,6 +1,7 @@
 const { exists } = require("../util/Constructors/_Blacklist");
 const _NoticeEmbed = require("../util/Constructors/_NoticeEmbed");
 const Colors = require('../util/Enums/Colors.js');
+const Discord = require('discord.js');
 
 module.exports.embedWizardMap = new Map();
 
@@ -32,7 +33,14 @@ module.exports = class EmbedWizard {
                     el.step++;
                     this.embedWizardMap.set(id, el);
 
-                    return new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the description. Please specify ")
+                    new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the description. The Embed will now send.")
+
+                    let embed = new Discord.MessageEmbed()
+                        .setColor(e.color)
+                        .setTitle(e.title)
+                        .setDescription(e.description)
+
+                    return message.guild.channels.cache.get(el.channel).send(embed);
                     break;
                 }
                 default:{
