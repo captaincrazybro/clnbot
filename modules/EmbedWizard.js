@@ -6,9 +6,8 @@ const Discord = require('discord.js');
 module.exports = class EmbedWizard {
     
     static run(message){
-        console.log('hi');
-        console.log(this.embedWizardMap);
         if(this.embedWizardMap.has(message.author.id)){
+            console.log("hi");
             if(message.content.replace(" ", "").toLowerCase() == "exit" || message.content.replace(" ", "").toLowerCase() == "cancel"){
                 this.embedWizardMap.delete(id);
                 return;
