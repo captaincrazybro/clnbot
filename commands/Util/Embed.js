@@ -11,8 +11,8 @@ module.exports.run = async (bot,message,args,cmd) => {
     if(!args[0].includes("<#") || !args[0].includes(">")) return new _NoticeEmbed(Colors.ERROR, "Invalid channel - Please specify a valid channel (either #channel-name or id)").send(message.channel);
     
     let num = args[0].replace("<", "")
-    num.replace("<", "");
-    num.replace(">","");
+    num = num.replace("<", "");
+    num = num.replace(">","");
 
     console.log(num);
 
