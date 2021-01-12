@@ -18,6 +18,7 @@ const nodeSchedule = require('node-schedule');
 const Groups = require('./util/Enums/Groups');
 const _League = require('./util/Constructors/_League');
 const {MessageEmbed} = require('discord.js');
+const EmbedWizard = require('./modules/EmbedWizard.js');
 
 require("dotenv").config();
 
@@ -258,6 +259,7 @@ bot.on("message", async message => {
  
   doBlAdd(message);
   doMatchOutcome(message);
+  EmbedWizard.run(message);
 
   //_MinecraftAPI.getUuid("Cqptain").then(val => _MinecraftAPI.getName(val).then(val2 => console.log(val2)))
  
