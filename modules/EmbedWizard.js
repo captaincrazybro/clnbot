@@ -35,8 +35,8 @@ module.exports = class EmbedWizard {
                     new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the description. The Embed will now send.").send(message.channel);
 
                     let embed = new Discord.MessageEmbed()
-                        .setColor(e.color)
-                        .setTitle(e.title)
+                        .setColor(el.color)
+                        .setTitle(el.title)
                         .setDescription(el.description)
 
                     return message.guild.channels.cache.get(el.channel).send(embed);
