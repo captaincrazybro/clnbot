@@ -23,7 +23,7 @@ module.exports = class EmbedWizard {
                     el.step++;
                     this.embedWizardMap.set(id, el);
                     
-                    return new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the color to " + color + ". Please specify the description (can be multiple lines).")
+                    return new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the color to " + color + ". Please specify the description (can be multiple lines).").send(message.channel);
                     break;
                 }
                 case(2):{
@@ -32,12 +32,12 @@ module.exports = class EmbedWizard {
                     el.step++;
                     this.embedWizardMap.set(id, el);
 
-                    new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the description. The Embed will now send.")
+                    new _NoticeEmbed(Colors.SUCCESS, "You have successfully set the description. The Embed will now send.").send(message.channel);
 
                     let embed = new Discord.MessageEmbed()
                         .setColor(e.color)
                         .setTitle(e.title)
-                        .setDescription(e.description)
+                        .setDescription(el.description)
 
                     return message.guild.channels.cache.get(el.channel).send(embed);
                     break;
