@@ -3,8 +3,6 @@ const _NoticeEmbed = require("../util/Constructors/_NoticeEmbed");
 const Colors = require('../util/Enums/Colors.js');
 const Discord = require('discord.js');
 
-module.exports.embedWizardMap = new Map();
-
 module.exports = class EmbedWizard {
     
     static run(message){
@@ -50,5 +48,7 @@ module.exports = class EmbedWizard {
             }
         }
     }
+
+    static embedWizardMap = new Map();
 
 }
