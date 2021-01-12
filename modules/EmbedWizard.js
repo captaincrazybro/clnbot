@@ -18,7 +18,7 @@ module.exports = class EmbedWizard {
         
             switch(el.step){
                 case(1):{
-                    let color = message.content;
+                    let color = message.content.toUppderCase();
                     el.color = color;
                     el.step++;
                     this.embedWizardMap.set(id, el);
