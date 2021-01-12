@@ -32,7 +32,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     let embed = new Discord.MessageEmbed()
         .setColor(Colors.SUCCESS)
-        .setTitle("You have successfully started the embed creation wizard. The channel has been set to <#" + num + "> and title to " + title + ". Please specify a color for the embed.")
+        .setDescription("You have successfully started the embed creation wizard. The channel has been set to <#" + num + "> and title to " + title + ". Please specify a color for the embed.")
 
     message.channel.send(embed);
 
