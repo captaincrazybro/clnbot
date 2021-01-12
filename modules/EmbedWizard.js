@@ -39,7 +39,10 @@ module.exports = class EmbedWizard {
                         .setTitle(el.title)
                         .setDescription(el.description)
 
-                    return message.guild.channels.cache.get(el.channel).send(embed);
+                    console.log(message.guild.channels.cache);
+
+                    message.guild.channels.cache.get(el.channel).send(embed);
+                    return this.embedWizardMap.delete(message.author.id);
                     break;
                 }
                 default:{
