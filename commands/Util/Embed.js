@@ -19,15 +19,13 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     num = BigInt(num);
 
-    let channel = message.guild.channels.cache.get(num);
-
     if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a title").send(message.channel);
 
     let newArgs = args;
     newArgs.shift();
     let title = newArgs.join(" ");
 
-    EmbedWizard.embedWizardMap.set(message.author.id, {title: title, channel: channel, step: 1})
+    EmbedWizard.embedWizardMap.set(message.author.id, {title: title, channel: num, step: 1})
 
     let embed = new Discord.MessageEmbed()
         .setColor(Colors.SUCCESS)
