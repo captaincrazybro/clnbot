@@ -41,7 +41,7 @@ module.exports = class EmbedWizard {
 
                     console.log(message.guild.channels.cache);
 
-                    message.guild.channels.cache.get(el.channel).send(embed);
+                    message.guild.channels.cache.find(val => val.id == el.channel).send(embed);
                     return this.embedWizardMap.delete(message.author.id);
                     break;
                 }
