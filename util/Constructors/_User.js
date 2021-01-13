@@ -30,6 +30,9 @@ module.exports = class _User {
         if(!users[league].users[id].commands){
             users[league].users[id].commands = {}
         }
+        if(users[league].users[id].group == Groups.MANAGER && !settings.managers.includes[id]){
+            users[league].users[id].group = Groups.DEFAULT;
+        }
         /*if(!punishments[league][id]){
             punishments[league][id] = [];
             fs.writeFile('./storage/punishments.json', JSON.stringify(punishments), (err) => {
