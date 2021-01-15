@@ -14,16 +14,16 @@ module.exports.run = async (bot, message, args, cmd) => {
     let settings = require('../../settings.json');
     if (_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
 
-    let league = _League.getLeague(message.guild.id) 
+    let league = _League.getLeague(message.guild.id)
     blacklist = _Blacklist.blacklists(league);
 
-    let list = ""; 
+    let list = "";
     blacklist.forEach(val => {
         console.log(val)
-        if (!val.uuid) return; 
+        if (!val.uuid) return;
         let player = _Player.getPlayerUuid(val.uuid, league); 
-        if (!player) player = _Player.addPlayer(val.name, val.uuid, league); 
 
+        if (!player) player = _Player.addPlayer(val.name, val.uuid, league); 
         list += `${player.name.replace(/_/g, "\\_")}\n`;
         // - Referee: ${val.referee} - Date: ${val.start_date}
     })
