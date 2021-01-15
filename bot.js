@@ -18,6 +18,7 @@ const nodeSchedule = require("node-schedule");
 const Groups = require("./util/Enums/Groups");
 const _League = require("./util/Constructors/_League");
 const { MessageEmbed } = require("discord.js");
+const EmbedWizard = require('./modules/EmbedWizard.js');
 const League = require("./util/Classes/League");
 require("dotenv").config();
 
@@ -90,7 +91,57 @@ require("dotenv").config();
   console.log(await League.getLeagueByName("cwcl"))
   console.log(await League.getLeagueServersWithName("cwcl"))
   console.log(await League.getMaxLeagueId())
-  console.log(await League.updateLeagueById(1,"test","this a test"))
+  console.log(await League.updateLeagueById(1, "test", "this a test"))
+
+  module.exports.commands = bot.commands;
+
+  client.on('error', console.error);
+  bot.on('error', e => {
+    console.log(e)
+  })
+
+  // bump
+
+  let leagues = [
+    "twl",
+    "decl",
+    "clt",
+    "dcl",
+    "mbcl",
+    "ctfcl",
+    "cdcl",
+    "cwcl",
+    "cotc",
+    "sgcl"
+  ]
+
+  const players = require('./storage/players.json');
+  const teams = require('./storage/teams.json');
+  const permissions = require('./storage/permissions.json');
+
+  leagues.forEach(l => {
+    if (!players[l]) {
+      players[l] = [];
+    }
+    if (!teams[l]) {
+      teams[l] = [];
+    }
+    if (!permissions[l]) {
+      permissions[l] = {}
+    }
+  })
+  fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
+    if (err) console.log(err);
+  })
+  fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
+    if (err) console.log(err);
+  })
+  fs.writeFile('./storage/permissions.json', JSON.stringify(permissions), (err) => {
+    if (err) console.log(err);
+  })
+
+
+  module.exports.leagues = leagues;
 
   bot.on("ready", async () => {
     console.log(`${bot.user.username} is online!`);
@@ -105,7 +156,7 @@ require("dotenv").config();
     showLeague(i);
 
     /*let minutes = (date.getMinutes() + 1) + 60 * date.getHours() * date.getDate() * date.getMonth() * (date.getFullYear() - 2000);
-
+  
     _Match.getMatchesObj().forEach(val => {
       if(val.minutes < minutes){
         let date = new Date(val.date);
@@ -222,13 +273,14 @@ require("dotenv").config();
   setInterval(() => {
     let i = 0;
     while (i < leagues.length) {
-      _Player.updateNames(leagues[i].name);
+      _Player.updateNames(leagues[i]);
       i++;
     }
   }, ms("1d"));
   //_Player.updateNames()
 
-  bot.on("message", async (message) => {
+  bot.on("message", async message => {
+
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.channel.id === "458140177378967562") return;
@@ -244,9 +296,13 @@ require("dotenv").config();
 
     /*if(league != null){
     
-  
+   
     //levelUp(user, message);
   }*/
+
+    doBlAdd(message);
+    doMatchOutcome(message);
+    EmbedWizard.run(message);
 
     doBlAdd(message);
     doMatchOutcome(message);
@@ -287,16 +343,16 @@ require("dotenv").config();
   });
 
   /*bot.on('messageUpdate', (oldMessage, newMessage) => {
-
+  
   if(newMessage.channel.guild != undefined) if(newMessage.channel.guild.id != '665698425601392749') return;
- 
+   
   if(disabledChannels.includes(newMessage.channel.id)) return;
- 
+   
   if(newMessage.content == "") return;
   if(oldMessage.content == "") return;
-
+  
   if(newMessage.content == oldMessage.content) return;
- 
+   
   let embed = new MessageEmbed()
     .setColor(Colors.INFO)
     .setTitle("Message Edited")
@@ -305,18 +361,18 @@ require("dotenv").config();
     .addField("New Message", newMessage.content)
     .addField("Channel", `<#${newMessage.channel.id}>`)
     .setTimestamp(new Date());
- 
+   
   //bot.guilds.get('692395141427757067').channels.get('692801275280228382').send(embed);
-});
- 
-bot.on("messageDelete", (message) => {
-
+  });
+   
+  bot.on("messageDelete", (message) => {
+  
   if(message.channel.guild != undefined) if(message.channel.guild.id != '665698425601392749') return;
    
     if(message.content == "") return;
- 
+   
     if(disabledChannels.includes(message.channel.id)) return;
- 
+   
    let embed = new MessageEmbed()
     .setColor(Colors.ERROR)
     .setTitle("Message Deleted")
@@ -324,9 +380,9 @@ bot.on("messageDelete", (message) => {
     .addField("Content", message.content)
     .addField("Channel", `<#${message.channel.id}>`)
     .setTimestamp(new Date());
- 
+   
   //bot.guilds.get('692395141427757067').channels.get('692801275280228382').send(embed);
-});*/
+  });*/
 
   function hasPermissionRoles(message, prop) {
     let league = _League.getLeague(message.guild.id);
@@ -574,7 +630,7 @@ bot.on("messageDelete", (message) => {
           }
         }
         /*case(2):{
-
+  
         if(message.content == "reset"){
           if(module.exports.matchOutcomeMap.size == 0) return new _NoticeEmbed(Colors.ERROR, "You have not specified any players yet").send(message.channel);
           obj.team1Players = [];
@@ -583,7 +639,7 @@ bot.on("messageDelete", (message) => {
           new _NoticeEmbed(Colors.INFO, `\nPlease specify the players involved in the match on ${obj.team1}.`).send(message.channel);
           break;
         }
-
+  
         if(message.content == "next"){
           if(module.exports.matchOutcomeMap.size == 0) return new _NoticeEmbed(Colors.ERROR, "You have not specify any players yet").send(message.channel);
           obj.step++;
@@ -593,41 +649,41 @@ bot.on("messageDelete", (message) => {
           new _NoticeEmbed(Colors.INFO, `\nAt any time you can enter reset to start from scratch if you've made a mistake. \nWhen you are done entering the player in, enter next to go to the next step`).send(message.channel);
           break;
         }
-
+  
         let args = message.content.split(" ");
-
+  
         let playerName = args[0];
-
+  
         _MinecraftAPI.getUuid(playerName).then(val => {
-
+  
           if(val == null) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
-
+  
           if(val == false || !_Player.getPlayer(val.name)) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
-
+  
           if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify this player's kills").send(message.channel);
-
+  
           if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid kills - Kills must be a number").send(message.channel);
-
+  
           if(args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify this player's deaths")
-
+  
           if(isNaN(args[2])) return new _NoticeEmbed(Colors.ERROR, "Invalid deaths - Deaths must be a number").send(message.channel);
-
+  
           // TODO: Update the player stats here when Jack makes the api for it
-
+  
           obj.team1Players.push({uuid: val.id, kills: parseInt(args[1]), deaths: parseInt(args[2])});
-
+  
           module.exports.matchOutcomeMap.set(message.author.id, obj);
-
+  
           new _NoticeEmbed(Colors.SUCCESS, `You have successfully added ${val.name} with kills ${args[1]} and deaths ${args[2]} to the players involved in the match for team ${obj.team2}!`).send(message.channel);
           new _NoticeEmbed(Colors.INFO, `\nAt any time you can enter reset to start from scratch if you've made a mistake. \nWhen you are done entering the player in, enter next to go to the next step`).send(message.channel);
-
+  
         })
-
+  
         break;
-
+  
       }
       case(3):{
-
+  
         if(message.content == "reset"){
           if(module.exports.matchOutcomeMap.size == 0) return new _NoticeEmbed(Colors.ERROR, "You have not specified any players yet").send(message.channel);
           obj.team1Players = [];
@@ -636,7 +692,7 @@ bot.on("messageDelete", (message) => {
           new _NoticeEmbed(Colors.INFO, `\nPlease specify the players involved in the match on ${obj.team2}.`).send(message.channel);
           break;
         }
-
+  
         if(message.content == "next"){
           if(module.exports.matchOutcomeMap.size == 0) return new _NoticeEmbed(Colors.ERROR, "You have not specify any players yet").send(message.channel);
           obj.step++;
@@ -649,38 +705,38 @@ bot.on("messageDelete", (message) => {
           new _NoticeEmbed(Colors.SUCCESS, `\nYou have now finished the set match outcome wizard for match ${obj.id}!`);
           break;
         }
-
+  
         let args = message.content.split(" ");
-
+  
         let playerName = args[0];
-
+  
         _MinecraftAPI.getUuid(playerName).then(val => {
-
+  
           if(val == null) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
-
+  
           if(val == false || !_Player.getPlayer(val.name)) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
-
+  
           if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify this player's kills").send(message.channel);
-
+  
           if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid kills - Kills must be a number").send(message.channel);
-
+  
           if(args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify this player's deaths")
-
+  
           if(isNaN(args[2])) return new _NoticeEmbed(Colors.ERROR, "Invalid deaths - Deaths must be a number").send(message.channel);
-
+  
           // TODO: Update the player stats here when Jack makes the api for it
-
+  
           obj.team2Players.push({uuid: val.id, kills: parseInt(args[1]), deaths: parseInt(args[2])});
-
+  
           module.exports.matchOutcomeMap.set(message.author.id, obj);
-
+  
           new _NoticeEmbed(Colors.SUCCESS, `You have successfully added ${val.name} with kills ${args[1]} and deaths ${args[2]} to the players involved in the match for team ${obj.team2}!`).send(message.channel);
           new _NoticeEmbed(Colors.INFO, `\nAt any time you can enter reset to start from scratch if you've made a mistake. \nWhen you are done entering the player in, enter next to go to the next step`).send(message.channel);
-
+  
         })
-
+  
         break;
-
+  
       }*/
       }
     }
@@ -934,9 +990,9 @@ bot.on("messageDelete", (message) => {
   }
 
   /*bot.on('messageReactionAdd', (reaction, user) => {
-
+  
   console.log("true");
-
+  
   switch(reaction.message.id){
     case("696452274309824582"):{
       switch(reaction.emoji.name){
@@ -983,8 +1039,8 @@ bot.on("messageDelete", (message) => {
       }
     }
   }
-
-});*/
+  
+  });*/
 
   function addRoleAndCreateIfNotExists(user, roleName) {
     let kitRole = message.guild.roles.find("name", roleName);

@@ -27,10 +27,9 @@ module.exports.run = async (bot, message, args, cmd) => {
 
         if (val == false || val == undefined) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
 
-        let player = _Player.getPlayer(val.name, league);
-
-        if (player == null) player = _Player.addPlayer(val.name, val.id, league);
-
+        let player = _Player.getPlayer(val.name, league); 
+        
+        if (player == null) player = _Player.addPlayer(val.name, val.id, league); 
         var ranks = `${player.rank}`
 
         if (player.rank2 != undefined) if (player.rank2.toLowerCase() != "none") ranks += ` and ${player.rank2}`
@@ -43,7 +42,7 @@ module.exports.run = async (bot, message, args, cmd) => {
             .addField("Team", player.team)
             .addField("Rank", ranks)
             .addField("UUID", val.id)
-            .addField("Leagues", getLeagues(player.name).toString(", "))
+            .addField("Leagues", getLeagues(player.name).toString(", ").toUpperCase())
             .setThumbnail(`http://minotar.net/helm/${val.name}/64.png`)
         /*if(player.rating["Rifle"] == null) embed.addField("Rifle Rating", "None");
         else embed.addField("Rifle Rating", player.rating["Rifle"])

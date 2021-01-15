@@ -251,10 +251,12 @@ module.exports = class _Player {
     static existsUuid(uuid, league) {
         if (players[league].length > 0) var filtered = players[league].filter(val => val.uuid == uuid);
         else return null;
+        let pop = filtered.pop();
+        console.log("pop", pop);
         if (filtered.length > 0)
-            return filtered.pop();
+            return pop;
         else
-            return filtered
+            return null//filtered
     }
 
     /**
@@ -265,8 +267,10 @@ module.exports = class _Player {
 
     static addPlayer(name, uuid, league) {
         if (league == null) return;
+        console.log("anem", name, uuid, league);
         let pl = this.existsUuid(uuid, league);
-        if (pl == null) return;
+        console.log("exist", pl)
+        if (pl != null) return;
         let json = { "name": name, "uuid": uuid, "rank": "Member", team: "None", rank2: "None", rating: { "Rifle": null, "Shotgun": null, "Machinegun": null } }
         players[league].push(json);
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
@@ -285,7 +289,7 @@ module.exports = class _Player {
     static getPlayerUuid(uuid, league) {
         if (league == null) return;
         let val = this.existsUuid(uuid, league)
-        if (val == null) return null;
+        if (val == null) return;
         return new _Player(val, league);
     }
 
@@ -296,7 +300,9 @@ module.exports = class _Player {
     static updateNames(league) {
         players[league].forEach(json => {
             _MinecaftAPI.getUuid(json.name).then(val2 => {
-                if ((val2 != undefined && val2.id == undefined) || val2.id != json.uuid) {
+                if(val2 != undefined && (val2.id == json.uuid || val2.error != undefined)){
+                    return;
+                } else {
                     _MinecaftAPI.getName(json.uuid).then(val => {
                         if (val == null) return;
                         console.log(`${json.name} -> ${val}`);

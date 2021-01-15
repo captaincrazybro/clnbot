@@ -33,6 +33,7 @@ module.exports = class _League {
         else if(league.toLowerCase() == "clt" || league.toLowerCase() == "cltleague") outcome = "clt";
         else if(league.toLowerCase() == "cwcl" || league.toLowerCase() == "cwclleague") outcome = "cwcl";
         else if(league.toLowerCase() == "cotc" || league.toLowerCase() == "cotcleague") outcome = "cotc";
+        else if(league.toLowerCase() == "sgcl" || league.toLowerCaseI() == "sgclleague") outcome = "sgcl";
         else outcome = null;
         return outcome;
     }
