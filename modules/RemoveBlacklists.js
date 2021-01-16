@@ -3,6 +3,7 @@ const ms = require('ms');
 const bot = require('../bot.js')
 const leagues = bot.commands;
 const Module = require('./Module.js');
+console.log(leagues);
 
 module.exports = class RemoveBlacklists extends Module {
 
