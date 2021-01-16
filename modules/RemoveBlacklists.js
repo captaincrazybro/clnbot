@@ -1,6 +1,7 @@
 const _Blacklist = require('../util/Constructors/_Blacklist.js');
 const ms = require('ms');
-const leagues = require('../bot.js').exports.leagues;
+const bot = require('../bot.js')
+const leagues = bot.leagues;
 const Module = require('./Module.js');
 
 module.exports = class RemoveBlacklists extends Module {
