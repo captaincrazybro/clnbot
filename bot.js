@@ -85,13 +85,14 @@ require("dotenv").config();
 
   const leagues = await League.getLeagues();
   console.log(leagues);
-  console.log(
-    await League.addLeague({ name: "testleague", fullName: "The best Test league ever." })
-  );
-  console.log(await League.getLeagueByName("cwcl"))
-  console.log(await League.getLeagueServersWithName("cwcl"))
-  console.log(await League.getMaxLeagueId())
-  console.log(await League.updateLeagueById(1, "test", "this a test"))
+  // console.log(await League.getMaxLeagueId())
+  // console.log(
+    await League.addLeague({ name: "test", fullName: "TestTestTest Te St PruEBa De" })
+  // );
+  // console.log(await League.getLeagueByName("cdcl"))
+  // console.log(await League.getLeagueById(7))
+  console.log(await League.getLeagueServersWithName("cotcl"))
+  console.log(await League.updateLeagueById({ leagueId: 11, name: "test", fullName: "this a testtesttesttesttest" }))
 
   module.exports.commands = bot.commands;
 
@@ -100,20 +101,20 @@ require("dotenv").config();
     console.log(e)
   })
 
-  // bump
+  // // bump
 
-  let leagues = [
-    "twl",
-    "decl",
-    "clt",
-    "dcl",
-    "mbcl",
-    "ctfcl",
-    "cdcl",
-    "cwcl",
-    "cotc",
-    "sgcl"
-  ]
+  // let leagues = [
+  //   "twl",
+  //   "decl",
+  //   "clt",
+  //   "dcl",
+  //   "mbcl",
+  //   "ctfcl",
+  //   "cdcl",
+  //   "cwcl",
+  //   "cotc",
+  //   "sgcl"
+  // ]
 
   const players = require('./storage/players.json');
   const teams = require('./storage/teams.json');

@@ -1,13 +1,13 @@
 const MongoUtil = require("../MongoUtils/MongoUtil");
-const { LeagueModel } = require("../Models/LeagueModel");
+const { leagueSchema } = require("../Models/LeagueModel");
 const { validateModelValues } = require("../MongoUtils/ValidateModels");
 class League {
   #collectionName = "leagues";
   #projectAllStage = {
     $project: {
-      _id: 1, //maybe we should use this.
+      _id: 0, //maybe we should use this.
+      leagueId: 1,
       name: 1,
-      serverId: 1,
     },
   };
   #sortByNameStage = {
@@ -33,7 +33,7 @@ class League {
     },
     {
       $project: {
-        _id: 1,
+        _id: 0,
         name: 1,
         leagueId: 1,
         serverId: "$servers.serverId",
@@ -68,19 +68,16 @@ class League {
       console.log("Name is not a String ", inputName);
       return null;
     }
-    intputName = intputName.toLowerCase();
     return await MongoUtil.action(async (db) => {
-      let leagues;
       const leaguesCollection = db.collection(this.#collectionName);
       const cursorLeagues = await leaguesCollection.aggregate([
         {
-          $match: { name: inputName },
+          $match: { name: new RegExp(inputName, 'i') },
         },
         ...this.#unionWithServerStage,
         this.#sortByDiscordServerIdStage,
       ]);
-      leagues = await cursorLeagues.toArray();
-      return leagues;
+      return await cursorLeagues.toArray();
     });
   }
   /**
@@ -92,7 +89,6 @@ class League {
       console.log("Name is not a number ", inputLeagueId);
       return null;
     }
-    intputName = intputName.toLowerCase();
     return await MongoUtil.action(async (db) => {
       let leagues;
       const leaguesCollection = db.collection(this.#collectionName);
@@ -143,24 +139,20 @@ class League {
       console.log("Name is not a String ", intputName);
       return null;
     }
-    intputName = intputName.toLowerCase();
     return await MongoUtil.action(async (db) => {
-      let league;
       const leagueCollection = db.collection(this.#collectionName);
-      //searches in the db the league.
-
+      //searches in the db the league. 
       const cursorLeague = await leagueCollection.aggregate([
         {
           $match: {
-            name: intputName,
+            name: new RegExp(intputName, 'i'),
           },
         },
         this.#projectAllStage,
         this.#sortByNameStage,
       ]);
 
-      league = await cursorLeague.toArray();
-      return league;
+      return await cursorLeague.toArray();
     });
   }
 
@@ -173,13 +165,15 @@ class League {
       const leaguesCollection = db.collection(this.#collectionName);
       const cursorMaxId = await leaguesCollection.aggregate([
         {
-          $group: {
-            _id: null,
-            maxId: { $max: "$leagueId" },
-          },
-        },
+          '$group': {
+            '_id': null,
+            'maxId': {
+              '$max': '$leagueId'
+            }
+          }
+        }
       ]);
-      return (await cursorMaxId).maxId;
+      return (await cursorMaxId.toArray())[0].maxId;
     });
   }
   /**
@@ -196,12 +190,12 @@ class League {
       console.log("Full Name is not a String ", newFullName);
       return null;
     }
-    if (this.getLeagueByName(newName)) {
+    if ((await this.getLeagueByName(newName)).length > 0) {
       console.log("A league with that name already Exists.")
       return null;
     }
     //Capitalize Every word.
-    const words = newFullName.split(" ");
+    const words = newFullName.toLowerCase().split(" ");
     for (let i = 0; i < words.length; i++) {
       words[i] = words[i][0].toUpperCase() + words[i].substr(1);
     }
@@ -210,14 +204,14 @@ class League {
     let newId = (await this.getMaxLeagueId()) + 1;
     let league = {
       leagueId: newId,
-      name: newName.toLowerCase(),
+      name: newName.toUpperCase(),
       fullName: newFullName,
       isActive: true
     };
     return await MongoUtil.action(async (db) => {
       const leaguesCollection = db.collection(this.#collectionName);
       try {
-        if (!validateModelValues(LeagueModel, league)) throw new Error("League Error - Invalid Values for the model");
+        if (!validateModelValues(leagueSchema, league)) throw new Error("League Error - Invalid Values for the model");
         const newName = await leaguesCollection.insertOne(
           league,
           this.#transactionlessWriteConcern
@@ -244,46 +238,46 @@ class League {
   }
 
   async updateLeagueById({ leagueId, name: newName, fullName: newFullName }) {
-    if (typeof newName != "string") {
-      console.log("League is not a String");
+    if (typeof (newName) != "string") {
+      console.log("Name is not a String");
       return null;
     }
-    if (typeof newFullName != "string") {
+    if (typeof (newFullName) != "string") {
       //maybe this should be a number?
       console.log("Server ID is not a number");
       return null;
     }
-    if (!newName || !newServerId) {
+    if (!newName || !newFullName) {
       console.log("No league or server ID given");
       return null;
     }
-    newName = newName.toLowerCase();
-    
+    newName = newName.toUpperCase();
+
     //Capitalize Every word.
-    const words = newFullName.split(" ");
+    const words = newFullName.toLowerCase().split(" ");
     for (let i = 0; i < words.length; i++) {
       words[i] = words[i][0].toUpperCase() + words[i].substr(1);
     }
     newFullName = words.join(" ");
-    
+
     if (await this.getLeagueById(leagueId)) {
-      let query = { $leagueId: leagueId },
-        update = { name: newName, fullName: newFullName };
-      options = {
-        upsert: false, //creates new doc if not found
-        //   multi: false, default is false (multi update.)
-      };
+      let filter = { leagueId: leagueId },
+        update = {
+          $set: { name: newName, fullName: newFullName }
+        },
+        options = {
+          upsert: false //creates new doc if not found
+          //   multi: false, default is false (multi update.)
+        };
 
       return await MongoUtil.action(async (db) => {
         const leaguesCollection = db.collection(this.#collectionName);
-        const newName = await leaguesCollection.update(query, update, options);
-        console.log(newName);
+        const newName = await leaguesCollection.updateOne(filter, update, options);
+        // console.log(newName);
         return {
-          updatedId: newName.updatedId,
-          updatedCount: newName.updatedCount,
-          modifiedCount: newName.nModified,
-          // addedCount: newName.nUpserted,
-          numberFound: newName.nMatched,
+          n: newName.result.n,
+          nModified: newName.result.nModified,
+          ok: newName.result.ok,
         };
       });
     }

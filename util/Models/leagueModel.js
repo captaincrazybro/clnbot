@@ -1,5 +1,4 @@
-const mongodb = include('mongodb');
-const { validateModel } = include('../MongoUtils/ValidateModel');
+const { validateModel } = require('../MongoUtils/ValidateModels');
 
 let leagueSchema = {
     name: { type: "string", required: true },
@@ -9,4 +8,4 @@ let leagueSchema = {
 }
 validateModel(leagueSchema);
 
-modules.exports = leagueSchema;
+module.exports = { leagueSchema };

@@ -1,4 +1,4 @@
-const MongoUtil = include("../MongoUtil");
+const MongoUtil = require("../MongoUtil");
 
 class Server {
   #collectionName = "servers";

@@ -20,9 +20,9 @@ const validateModel = (model) => {
     return true;
 }
 const validateModelValues = (model, json) => {
-    if (!validateModel(model)) break;
+    if (!validateModel(model)) return false;
     let i = 0;
-    let key, val, entries = model.entries();
+    let key, val, entries = model;
     try {
         if (json.length > model.length) throw new Error("Model Error - Json contains more keys than the model.")
         while (i < model.length) {
