@@ -1,7 +1,7 @@
 const _Blacklist = require('../util/Constructors/_Blacklist.js');
 const ms = require('ms');
 const bot = require('../bot.js')
-const leagues = bot.leagues;
+const leagues = bot.commands;
 const Module = require('./Module.js');
 
 module.exports = class RemoveBlacklists extends Module {
@@ -12,7 +12,7 @@ module.exports = class RemoveBlacklists extends Module {
 
         console.log(leagues);
 
-        leagues.forEach(l => {
+        /*leagues.forEach(l => {
             _Blacklist.blacklists(l).forEach(bl => {
                 if(bl.type.toLowerCase() != "permanent"){
                     let dateArr = bl.end_date.split("-");
@@ -23,7 +23,7 @@ module.exports = class RemoveBlacklists extends Module {
                     if(current >= date) bl.delete();
                 }
             })
-        })
+        })*/
 
         setInterval(() => {
             leagues.forEach(l => {
