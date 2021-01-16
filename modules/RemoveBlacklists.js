@@ -1,5 +1,4 @@
 const _Blacklist = require('../util/Constructors/_Blacklist.js');
-const leagues = require('../bot').leagues;
 const ms = require('ms');
 const Module = require('./Module.js');
 
@@ -8,6 +7,8 @@ module.exports = class RemoveBlacklists extends Module {
     static run() {
 
         let current = new Date();
+
+        var leagues = require('../bot.js').leagues;
 
         setInterval(() => {
             leagues.forEach(l => {
