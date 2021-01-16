@@ -10,6 +10,8 @@ module.exports = class RemoveBlacklists extends Module {
 
         let current = new Date();
 
+        console.log(leagues);
+
         leagues.forEach(l => {
             _Blacklist.blacklists(l).forEach(bl => {
                 if(bl.type.toLowerCase() != "permanent"){
