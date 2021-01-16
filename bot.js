@@ -31,6 +31,21 @@ module.exports.reload = false;
  
 module.exports.bot = bot;
 
+let leagues = [
+  "twl",
+  "decl",
+  "clt",
+  "dcl",
+  "mbcl",
+  "ctfcl",
+  "cdcl",
+  "cwcl",
+  "cotc",
+  "sgcl"
+]
+
+module.exports.leagues = leagues
+
 const ModuleManager = require('./modules/ModuleManager.js');
 
 ModuleManager.runAll();
@@ -69,34 +84,6 @@ client.on('error', console.error);
 bot.on('error', e => {
   console.log(e)
 })
-
-// bump
-
-let leagues = [
-  "twl",
-  "decl",
-  "clt",
-  "dcl",
-  "mbcl",
-  "ctfcl",
-  "cdcl",
-  "cwcl",
-  "cotc",
-  "sgcl"
-]
-
-module.exports.leagues = [
-  "twl",
-  "decl",
-  "clt",
-  "dcl",
-  "mbcl",
-  "ctfcl",
-  "cdcl",
-  "cwcl",
-  "cotc",
-  "sgcl"
-]
 
 const players = require('./storage/players.json');
 const teams = require('./storage/teams.json');
