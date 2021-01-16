@@ -3,15 +3,12 @@ const ms = require('ms');
 const bot = require('../bot.js')
 const leagues = bot.leagues;
 const Module = require('./Module.js');
-console.log(bot);
 
 module.exports = class RemoveBlacklists extends Module {
 
     static run() {
 
         let current = new Date();
-
-        console.log(leagues);
 
         leagues.forEach(l => {
             _Blacklist.blacklists(l).forEach(bl => {
@@ -21,7 +18,8 @@ module.exports = class RemoveBlacklists extends Module {
                     date.setMonth(dateArr[0])
                     date.setDate(dateArr[1]);
                     date.setFullYear(dateArr[2]);
-                    if(current >= date) bl.delete();
+                    let realBl = _Blacklist.getBlacklist(bl.uuid);
+                    if(current >= date) realBl.delete();
                 }
             })
         })
