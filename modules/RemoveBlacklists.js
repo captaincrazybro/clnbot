@@ -18,8 +18,7 @@ module.exports = class RemoveBlacklists extends Module {
                     date.setMonth(dateArr[0])
                     date.setDate(dateArr[1]);
                     date.setFullYear(dateArr[2]);
-                    let realBl = _Blacklist.getBlacklist(bl.uuid);
-                    console.log(bl);
+                    let realBl = _Blacklist.getBlacklist(bl.uuid, l);
                     if(current >= date) realBl.delete();
                 }
             })
