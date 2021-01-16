@@ -85,6 +85,19 @@ let leagues = [
   "sgcl"
 ]
 
+module.exports.leagues = [
+  "twl",
+  "decl",
+  "clt",
+  "dcl",
+  "mbcl",
+  "ctfcl",
+  "cdcl",
+  "cwcl",
+  "cotc",
+  "sgcl"
+]
+
 const players = require('./storage/players.json');
 const teams = require('./storage/teams.json');
 const permissions = require('./storage/permissions.json');
@@ -109,9 +122,6 @@ fs.writeFile('./storage/teams.json', JSON.stringify(teams), (err) => {
 fs.writeFile('./storage/permissions.json', JSON.stringify(permissions), (err) => {
   if(err) console.log(err);
 })
-
-
-module.exports.leagues = leagues;
  
 bot.on("ready", async () => {
     console.log(`${bot.user.username} is online!`);
