@@ -36,12 +36,15 @@ module.exports.run = async (bot, message, args, cmd) => {
 
         //let blacklist = _Blacklist.getBlacklist(val.id);
 
+        let discordUser = bot.users.fetch(player.discordId)
+
         let embed = new Discord.MessageEmbed()
             .setColor(Colors.INFO)
             .setTitle(`${val.name.replace(/_/g, "\\_")}'s Profile`)
             .addField("Team", player.team)
             .addField("Rank", ranks)
             .addField("UUID", val.id)
+            .addField("Discord", discordUser.username + "#" + discordUser.tag)
             .addField("Leagues", getLeagues(player.name).toString(", ").toUpperCase())
             .setThumbnail(`http://minotar.net/helm/${val.name}/64.png`)
         /*if(player.rating["Rifle"] == null) embed.addField("Rifle Rating", "None");
