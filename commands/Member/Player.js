@@ -36,7 +36,9 @@ module.exports.run = async (bot, message, args, cmd) => {
 
         //let blacklist = _Blacklist.getBlacklist(val.id);
 
-        if(player.discordId != null) let discordUser = await bot.users.fetch(player.discordId)
+        if(player.discordId != null) {
+            let discordUser = await bot.users.fetch(player.discordId)
+        }
 
         let embed = new Discord.MessageEmbed()
             .setColor(Colors.INFO)
