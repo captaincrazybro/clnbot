@@ -24,6 +24,8 @@ module.exports = class _User {
         if(settings.owners.includes(id)){
             users[league].users[id].group = Groups.OWNER
         } 
+        console.log(settings.managers)
+        console.log(id);
         if(settings.managers.includes(id)){
             console.log("test");
             users[league].users[id].group = Groups.MANAGER;
