@@ -19,12 +19,15 @@ module.exports = class _Player {
 
         players = require("../../storage/players.json");
 
+        if (val.discordId == undefined) val.discordId = null;
+
         this.val = val;
         this.uuid = val.uuid;
         this.rank = val.rank;
         this.team = val.team;
         this.name = val.name;
         this.rank2 = val.rank2;
+        this.discordId = val.discordId;
 
         if (val.rating == null) this.rating = { Shotgun: null, Rifle: null, Machinegun: null };
         else this.rating = val.rating
@@ -54,6 +57,17 @@ module.exports = class _Player {
         if (players[league].length > 0) var outcome = players[league].filter(val => val.team == team || val.nick == team);
         else return null;
         return outcome;
+    }
+
+    setDiscordId(id){
+        let index = players[this.league].indexOf(this.val);
+        players[this.league][index].discordId = id;
+        fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
+            if (err) console.log(err);
+        })
+        this.discordId = id;
+        this.val.discordId = id;
+        return this;
     }
 
     /**
@@ -271,7 +285,7 @@ module.exports = class _Player {
         let pl = this.existsUuid(uuid, league);
         console.log("exist", pl)
         if (pl != null) return;
-        let json = { "name": name, "uuid": uuid, "rank": "Member", team: "None", rank2: "None", rating: { "Rifle": null, "Shotgun": null, "Machinegun": null } }
+        let json = { "name": name, "uuid": uuid, "rank": "Member", team: "None", rank2: "None", rating: { "Rifle": null, "Shotgun": null, "Machinegun": null }, discordId: null }
         players[league].push(json);
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
             if (err) console.log(err);

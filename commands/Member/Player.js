@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args, cmd) => {
 
     let promise = _MinecraftApi.getUuid(playerName)
 
-    promise.then(val => {
+    promise.then(async val => {
 
         if (val == false || val == undefined) return new _NoticeEmbed(Colors.ERROR, "Invalid Player - This player does not exist").send(message.channel);
 
@@ -36,14 +36,19 @@ module.exports.run = async (bot, message, args, cmd) => {
 
         //let blacklist = _Blacklist.getBlacklist(val.id);
 
+        if(player.discordId != null) {
+            let discordUser = await bot.users.fetch(player.discordId)
+        }
+
         let embed = new Discord.MessageEmbed()
             .setColor(Colors.INFO)
             .setTitle(`${val.name.replace(/_/g, "\\_")}'s Profile`)
             .addField("Team", player.team)
             .addField("Rank", ranks)
             .addField("UUID", val.id)
-            .addField("Leagues", getLeagues(player.name).toString(", ").toUpperCase())
-            .setThumbnail(`http://minotar.net/helm/${val.name}/64.png`)
+            if(player.discordId != null) embed.addField("Discord", discordUser.tag)
+            embed.addField("Leagues", getLeagues(player.name).toString(", ").toUpperCase())
+            embed.setThumbnail(`http://minotar.net/helm/${val.name}/64.png`)
         /*if(player.rating["Rifle"] == null) embed.addField("Rifle Rating", "None");
         else embed.addField("Rifle Rating", player.rating["Rifle"])
         if(player.rating["Shotgun"] == null) embed.addField("Shotgun Rating", "None");

@@ -24,17 +24,13 @@ module.exports = class _User {
         if(settings.owners.includes(id)){
             users[league].users[id].group = Groups.OWNER
         } 
-        console.log(settings.managers)
-        console.log(id);
         if(settings.managers.includes(id)){
-            console.log("test");
             users[league].users[id].group = Groups.MANAGER;
         }
         if(!users[league].users[id].commands){
             users[league].users[id].commands = {}
         }
         if(users[league].users[id].group == Groups.MANAGER && !settings.managers.includes(id)){
-            console.log("test2");
             users[league].users[id].group = Groups.DEFAULT;
         }
         /*if(!punishments[league][id]){
