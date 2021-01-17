@@ -34,6 +34,7 @@ module.exports = class _User {
             users[league].users[id].commands = {}
         }
         if(users[league].users[id].group == Groups.MANAGER && !settings.managers.includes[id]){
+            console.log("test2");
             users[league].users[id].group = Groups.DEFAULT;
         }
         /*if(!punishments[league][id]){
@@ -65,7 +66,7 @@ module.exports = class _User {
     }
 
     get getGroup(){
-        return parseInt(users[this.league].users[this.id].group);
+        return users[this.league].users[this.id].group;
     }
 
     hasCommadPerm(commandName){
