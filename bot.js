@@ -273,7 +273,7 @@ bot.on("message", async message => {
       if(settings.owners.includes(message.author.id) || sett.maintenance == false){
         if(commandfile) {
           commandfile.run(bot,message,args,cmd);
-          let consoleMessage = `[${message.guild.name}#${message.channel.name}-${message.author.tag}] ${message.content}`
+          let consoleMessage = `[${message.guild.name}#${message.channel.name} - ${message.author.tag}] ${message.content}`
           console.log(consoleMessage);
         }
       } else {
