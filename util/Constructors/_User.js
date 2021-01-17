@@ -33,7 +33,7 @@ module.exports = class _User {
         if(!users[league].users[id].commands){
             users[league].users[id].commands = {}
         }
-        if(users[league].users[id].group == Groups.MANAGER && !settings.managers.includes[id]){
+        if(users[league].users[id].group == Groups.MANAGER && !settings.managers.includes(id)){
             console.log("test2");
             users[league].users[id].group = Groups.DEFAULT;
         }
