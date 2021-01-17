@@ -271,9 +271,13 @@ bot.on("message", async message => {
     if(settings.owners.includes(message.author.id) || user.hasPermission(commandfile) || hasPermissionRoles(message, commandfile)){
       let sett = require('./settings.json');
       if(settings.owners.includes(message.author.id) || sett.maintenance == false){
-    if(commandfile) commandfile.run(bot,message,args,cmd);
+        if(commandfile) {
+          commandfile.run(bot,message,args,cmd);
+          let consoleMessage = `[${message.guild.name}#${message.channel.name} - ${message.author.tag}] ${message.content}`
+          console.log(consoleMessage);
+        }
       } else {
-    message.channel.send("Bot is in maintenance");
+        message.channel.send("Bot is in maintenance");
       }
     }
   }
