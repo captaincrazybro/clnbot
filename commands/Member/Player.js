@@ -76,7 +76,7 @@ function getLeagues(name) {
     leagues.forEach(l => {
         let player = _Player.getPlayer(name, l);
         if (player) {
-            if ((player.team != null && player.team != "None") || ((player.rank != null && player.rank != "None") || (player.rank2 != null && plaayer.rank2 != "None"))) {
+            if ((player.team != null && player.team != "None") || ((player.rank != null && player.rank != "None" && player.rank != "Member") || (player.rank2 != null && plaayer.rank2 != "None" && player.rank2 != "Member"))) {
                 theLeagues.push(l);
             }
         }
