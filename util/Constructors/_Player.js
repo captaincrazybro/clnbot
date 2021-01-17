@@ -61,12 +61,12 @@ module.exports = class _Player {
 
     setDiscordId(id){
         let index = players[this.league].indexOf(this.val);
-        players[this.league][index].discordId = discordId;
+        players[this.league][index].discordId = id;
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
             if (err) console.log(err);
         })
-        this.discordId = discordId;
-        this.val.discordId = discordId;
+        this.discordId = id;
+        this.val.discordId = id;
         return this;
     }
 
