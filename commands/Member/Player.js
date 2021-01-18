@@ -40,6 +40,8 @@ module.exports.run = async (bot, message, args, cmd) => {
             let discordUser = await bot.users.fetch(player.discordId)
         }
 
+        let theLeagues = getLeagues(player.name);
+
         let embed = new Discord.MessageEmbed()
             .setColor(Colors.INFO)
             .setTitle(`${val.name.replace(/_/g, "\\_")}'s Profile`)
@@ -47,7 +49,8 @@ module.exports.run = async (bot, message, args, cmd) => {
             .addField("Rank", ranks)
             .addField("UUID", val.id)
             if(player.discordId != null) embed.addField("Discord", discordUser.tag)
-            embed.addField("Leagues", getLeagues(player.name).toString(", ").toUpperCase())
+            if(theLeagues.length != 0) embed.addField("Leagues", theLeagues.toString(", ").toUpperCase())
+            else embed.addField("Leagues", "None")
             embed.setThumbnail(`http://minotar.net/helm/${val.name}/64.png`)
         /*if(player.rating["Rifle"] == null) embed.addField("Rifle Rating", "None");
         else embed.addField("Rifle Rating", player.rating["Rifle"])
