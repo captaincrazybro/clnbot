@@ -24,9 +24,18 @@ module.exports.run = async (bot,message,args,cmd) => {
         .setColor(Colors.INFO)
         .setTitle("Teams")
 
-    teams.forEach(val => {
-        embed.addField(val.name, `${val.getMembers().length} Members`)
-    })
+
+    if(league == "cotc"){
+        let description = "";
+        teams.forEach(val => {
+            description += `${val.name}\n`;
+        })
+        embed.setDescription(description);
+    } else {
+        teams.forEach(val => {
+            embed.addField(val.name, `${val.getMembers().length} Members`)
+        })
+    }
 
     message.channel.send(embed);
 
