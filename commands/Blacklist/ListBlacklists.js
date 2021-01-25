@@ -18,12 +18,17 @@ module.exports.run = async (bot, message, args, cmd) => {
     blacklist = _Blacklist.blacklists(league);
 
     let list = "";
+    console.log(blacklist)
     blacklist.forEach(val => {
         console.log(val)
         if (!val.uuid) return;
-        let player = _Player.getPlayerUuid(val.uuid, league); 
+        let player = _Player.getPlayerUuid(val.uuid, league);
 
-        if (!player) player = _Player.addPlayer(val.name, val.uuid, league); 
+        if (!player) player = _Player.addPlayer(val.name, val.uuid, league);
+        if (!player) {
+            player.name = `<player ${player.uuid}>`
+            console.log(player.uuid, "Please add a name to this player");
+        }
         list += `${player.name.replace(/_/g, "\\_")}\n`;
         // - Referee: ${val.referee} - Date: ${val.start_date}
     })
