@@ -36,14 +36,14 @@ module.exports.run = async (bot, message, args, cmd) => {
     //_Player.updateNames()
     let players = team.getMembers();
     let time = new Date();
-    let i = 0, thing = [];
+    let i = 0, playerNames = [];
     while (i < players.length) {
-        thing[players[i].uuid] = await _MinecaftAPI.getName(players[i].uuid);
+        playerNames[players[i].uuid] = await _MinecaftAPI.getName(players[i].uuid);
         i++;
     }
-    console.log("thing")
+    console.log("playerNames")
     for (val of players) {
-        val.name = thing[val.uuid]
+        val.name = playerNames[val.uuid]
         console.log("val val ", val.name)
         var member = "";
         if (getRankOrNull(val.rank) != null) member += `${getRankOrNull(val.rank)} `

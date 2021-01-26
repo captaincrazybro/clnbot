@@ -233,6 +233,25 @@ setInterval(function () {
 }, ms("12h"));
 //_Player.updateNames()
 
+/*add daily backups
+let players = require("../../storage/players.json");
+    let teams = require("../../storage/teams.json");
+    let permissions = require("../../storage/permissions.json");
+
+    fs.writeFile('./backup/players.json', JSON.stringify(players), (err) => {
+        if(err) console.log(err);
+    })
+
+    fs.writeFile('./backup/teams.json', JSON.stringify(teams), (err) => {
+        if(err) console.log(err);
+    })
+
+    fs.writeFile('./backup/permissions.json', JSON.stringify(permissions), (err) => {
+        if(err) console.log(err);
+    });
+
+    */
+
 bot.on("message", async message => {
 
   if (message.author.bot) return;
