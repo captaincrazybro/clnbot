@@ -314,11 +314,12 @@ module.exports = class _Player {
     static updateNames(league) {
         players[league].forEach(json => {
             // _MinecaftAPI.getUuid(json.name).then(val2 => {
-            //     if(val2 != undefined && (val2.id == json.uuid || val2.error != undefined)){
+            //     if (val2 != undefined && (val2.id == json.uuid || val2.error != undefined)) {
             //         return;
             //     } else {
+            //         console.log("updating player ", json.name, json.uuid) 
             _MinecaftAPI.getName(json.uuid).then(val => {
-                if (val == null || json.name == val) return;
+                if (!val || json.name == val) return;
                 console.log(`${json.name} -> ${val}`);
                 var json2 = json;
                 json2.name = val;
@@ -328,6 +329,7 @@ module.exports = class _Player {
                     if (err) console.log(err);
                 })
             })
+
             //     }
             // })
         })

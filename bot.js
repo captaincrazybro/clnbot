@@ -240,6 +240,7 @@ bot.on("message", async message => {
   if (message.channel.id === "458140177378967562") return;
 
   // if(violatesFilter(message.content)) return message.delete;
+  //filter for the crickets
   if (message.channel.id == "678674587130658855" && message.toString().search(new RegExp(":cockroach:|cockroach|c+r+.+c*k*s*|🪳|bug|grass animal|roaches|:cricket:|\pc\pr\pi\pc\pk*\pe*\pt*\ps*|\pc+\pr+\pi+\pc+\pk+s*|cr1ck3t|cr1ck|c+r+i+ck*e*t*|cr1cket|🦗|\pc+[ -]*\pr+[ -]*\pi+[ -]*\pc+[ -]*\pk+[ -]*\pe+[ -]*\pt+", 'giu')) >= 0) {
     console.log(`[${message.guild.name}#${message.channel.name} - ${message.author.tag}] ${message.content} ->`, message.toString().search(new RegExp(":cricket:|cricket|crick|cr1ck3t|cr1ck|cr1cket|🦗", 'gi')))
     console.log("deleting crickets")
