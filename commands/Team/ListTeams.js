@@ -18,6 +18,14 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     let teams = _Team.getTeams(league);
 
+    if(league == "cotc"){
+        teams = teams.sort(function(a, b){
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+        })
+    }
+
     if(teams.length == 0) return new _NoticeEmbed(Colors.ERROR, "There are currently no teams").send(message.channel);
 
     let embed = new Discord.MessageEmbed()
@@ -28,7 +36,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     if(league == "cotc"){
         let description = "";
         teams.forEach(val => {
-            description += `${val.name}\n`;
+            description += `**${val.name}** - Member Count: ${val.getMembers().length}\n`;
         })
         embed.setDescription(description);
     } else {
