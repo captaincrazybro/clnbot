@@ -36,7 +36,7 @@ module.exports.run = async (bot,message,args,cmd) => {
     if(league == "cotc"){
         let description = "";
         teams.forEach(val => {
-            description += `**${val.name}** - Member Count: ${val.getMembers().lenght}\n`;
+            description += `**${val.name}** - Member Count: ${val.getMembers().length}\n`;
         })
         embed.setDescription(description);
     } else {
