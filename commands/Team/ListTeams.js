@@ -20,8 +20,8 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     if(league == "cotc"){
         teams = teams.sort(function(a, b){
-            if(a.name < b.name) { return -1; }
-            if(a.name > b.name) { return 1; }
+            if(a.name.toUpperCase() < b.name.toUpperCase()) { return -1; }
+            if(a.name.toUpperCase() > b.name.toUpperCase()) { return 1; }
             return 0;
         })
     }
