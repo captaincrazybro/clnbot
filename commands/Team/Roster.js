@@ -41,10 +41,9 @@ module.exports.run = async (bot, message, args, cmd) => {
         playerNames[players[i].uuid] = await _MinecaftAPI.getName(players[i].uuid);
         i++;
     }
-    console.log("playerNames")
     for (val of players) {
         val.name = playerNames[val.uuid]
-        console.log("val val ", val.name)
+        // console.log("val val ", val.name)
         var member = "";
         if (getRankOrNull(val.rank) != null) member += `${getRankOrNull(val.rank)} `
         member += `${val.name.replace(/_/g, "\\_")}`
@@ -56,7 +55,7 @@ module.exports.run = async (bot, message, args, cmd) => {
         membersArray.push(member);
     }
     let time2 = new Date();
-    console.log("sort", new Date(time2 - time))
+    console.log("sort", new Date(time2 - time).toISOString().split("T")[1])
     membersArray.sort((a, b) => {
         return getRankOrder(a.split(" ")[0]) - getRankOrder(b.split(" ")[0]);
     })
@@ -122,7 +121,6 @@ function getTeam(team, league) {
     teams[league].forEach(val => {
         if (val.name.toLowerCase().includes(team.toLowerCase())) outcome = _Team.getTeam(val.name, league);
     });
-
     return outcome;
 
 }

@@ -56,6 +56,7 @@ module.exports = class _Player {
     static filterMembers(team, league) {
         if (players[league].length > 0) var outcome = players[league].filter(val => val.team == team || val.nick == team);
         else return null;
+        console.log(outcome)
         return outcome;
     }
 
@@ -203,12 +204,14 @@ module.exports = class _Player {
 
     setTeam(team) {
         let index = players[this.league].indexOf(this.val);
+        console.log(players[this.league][index].team)
         players[this.league][index].team = team;
+        console.log(players[this.league][index].team)
+        this.team = team;
+        this.val.team = team
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
             if (err) console.log(err);
         })
-        this.team = team;
-        this.val.team = team
         return this;
     }
 
