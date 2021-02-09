@@ -80,15 +80,15 @@ module.exports.run = async (bot,message,args,cmd) => {
                 .setTitle(`${team.name}`)
                 //.addField("Mentor", owner)
                 //.addField("Nick", team.nick)
-                if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl" || league == "twl" || league == "sgcl"){
+                if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl" || league == "sgcl" || league == "cecl"){
                     embed.addField("Tier", team.wins);
                     embed.addField("Rank", team.losses);
                 } else if(league == "decl") {
                     embed.addField("Points", team.wins)
-                } /*else if(league == "twl"){
+                } else if(league == "twl"){
                     embed.addField("Wins", team.wins);
                     embed.addField("Losses", team.losses);
-                }*/
+                }
                 embed.addField("League", league.toUpperCase())
                 embed.addField("Members", members)
               
