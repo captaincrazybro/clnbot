@@ -2,9 +2,9 @@ const Groups = require('../../util/Enums/Groups')
 const Discord = require('discord.js')
 const Colors = require('../../util/Enums/Colors.js')
 
-module.exports.run = async (bot,message,args,cmd) => {
+module.exports.run = async (bot, message, args, cmd) => {
 
-    let invite = `https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=52224`
+    let invite = `https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=59392`
 
     let embed = new Discord.MessageEmbed()
         .setColor(Colors.INFO)
