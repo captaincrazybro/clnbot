@@ -56,10 +56,11 @@ module.exports = class _Player {
     static filterMembers(team, league) {
         if (players[league].length > 0) var outcome = players[league].filter(val => val.team == team || val.nick == team);
         else return null;
+        console.log(outcome)
         return outcome;
     }
 
-    setDiscordId(id){
+    setDiscordId(id) {
         let index = players[this.league].indexOf(this.val);
         players[this.league][index].discordId = id;
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
@@ -203,12 +204,14 @@ module.exports = class _Player {
 
     setTeam(team) {
         let index = players[this.league].indexOf(this.val);
+        console.log(players[this.league][index].team)
         players[this.league][index].team = team;
+        console.log(players[this.league][index].team)
+        this.team = team;
+        this.val.team = team
         fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
             if (err) console.log(err);
         })
-        this.team = team;
-        this.val.team = team
         return this;
     }
 
@@ -313,23 +316,25 @@ module.exports = class _Player {
 
     static updateNames(league) {
         players[league].forEach(json => {
-            _MinecaftAPI.getUuid(json.name).then(val2 => {
-                if(val2 != undefined && (val2.id == json.uuid || val2.error != undefined)){
-                    return;
-                } else {
-                    _MinecaftAPI.getName(json.uuid).then(val => {
-                        if (val == null) return;
-                        console.log(`${json.name} -> ${val}`);
-                        var json2 = json;
-                        json2.name = val;
-                        players[league] = players[league].filter(it => it.name != json.name)
-                        players[league].push(json2);
-                        fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
-                            if (err) console.log(err);
-                        })
-                    })
-                }
+            // _MinecaftAPI.getUuid(json.name).then(val2 => {
+            //     if (val2 != undefined && (val2.id == json.uuid || val2.error != undefined)) {
+            //         return;
+            //     } else {
+            //         console.log("updating player ", json.name, json.uuid) 
+            _MinecaftAPI.getName(json.uuid).then(val => {
+                if (!val || json.name == val) return;
+                console.log(`${json.name} -> ${val}`);
+                var json2 = json;
+                json2.name = val;
+                players[league] = players[league].filter(it => it.name != json.name)
+                players[league].push(json2);
+                fs.writeFile('./storage/players.json', JSON.stringify(players), (err) => {
+                    if (err) console.log(err);
+                })
             })
+
+            //     }
+            // })
         })
     }
 

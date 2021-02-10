@@ -6,23 +6,23 @@ const _MinecaftAPI = require("../../util/Constructors/_MinecraftAPI")
 
 module.exports = class _League {
 
-    static getLeague(id){
-        if(!leagues[id]) return null;
+    static getLeague(id) {
+        if (!leagues[id]) return null;
         return leagues[id];
     }
 
-    static setLeague(id, league){
+    static setLeague(id, league) {
         leagues[id] = league;
         fs.writeFile('./storage/leagues.json', JSON.stringify(leagues), (err) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
         })
     }
-    
-    static resetLeague(id){
+
+    static resetLeague(id) {
         this.setLeague(id, null);
     }
 
-    static parseLeague(league){
+    static parseLeague(league) {
         var outcome;
         if(league.toLowerCase() == "twl" || league.toLowerCase() == "twlleague") outcome = "twl";
         else if(league.toLowerCase() == "ctfcl" || league.toLowerCase() == "ctfclleague") outcome = "ctfcl";

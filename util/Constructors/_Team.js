@@ -263,7 +263,7 @@ module.exports = class _Team {
      */
 
     static getTeam(team, league) {
-        let val = this.exists(team, league); 
+        let val = this.exists(team, league);
         if (val == null) return null;
         return new _Team(val.name, val, league);
     }
