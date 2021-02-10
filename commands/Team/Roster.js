@@ -59,55 +59,54 @@ module.exports.run = async (bot, message, args, cmd) => {
     membersArray.sort((a, b) => {
         return getRankOrder(a.split(" ")[0]) - getRankOrder(b.split(" ")[0]);
     })
-
+  
     let members = membersArray.join("\n");
 
-    if ((await membersArray).length == 0) members = "None";
+    if(membersArray.length == 0) members = "None";
 
     _MinecraftApi.getName(team.owner).then(val => {
 
         var owner;
 
-        if (members == "") members = "None";
+        if(members == "") members = "None";
 
-        if (val == null) owner = "None";
+        if(val == null) owner = "None";
         else owner = val;
 
         var teams = require('../../storage/teams.json');
         var teamsSorted = teams[league];
-        if (league == "ctfc") {
+        if(league == "ctfc"){
             teamsSorted.sort((a, b) => { return (parseInt(`${b.losses}.${b.wins}`) - parseInt(`${a.losses}.${a.wins}`)) })
         } else {
             teamsSorted.sort((a, b) => { return a.wins - b.wins })
         }
         var index;
         teamsSorted.forEach((val, i) => {
-            if (val.name == team.name) index = i
+            if(val.name == team.name) index = i
         })
 
         let embed = new Discord.MessageEmbed()
             .setColor(team.color)
             .setTitle(`${team.name}`)
-        //.addField("Mentor", owner)
-        //.addField("Nick", team.nick)
-        if (league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl" || league == "twl" || league == "sgcl") {
-            embed.addField("Tier", team.wins);
-            embed.addField("Rank", team.losses);
-        } else if (league == "decl") {
-            embed.addField("Points", team.wins)
-        } /*else if(league == "twl"){
-                    embed.addField("Wins", team.wins);
-                    embed.addField("Losses", team.losses);
-                }*/
-        embed.addField("League", league.toUpperCase())
-        embed.addField("Members", members)
+            //.addField("Mentor", owner)
+            //.addField("Nick", team.nick)
+            if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl" || league == "sgcl" || league == "cecl"){
+                embed.addField("Tier", team.wins);
+                embed.addField("Rank", team.losses);
+            } else if(league == "decl") {
+                embed.addField("Points", team.wins)
+            } else if(league == "twl"){
+                embed.addField("Wins", team.wins);
+                embed.addField("Losses", team.losses);
+            }
+            embed.addField("League", league.toUpperCase())
+            embed.addField("Members", members)
 
-        if (team.logo != "None") embed.setThumbnail(team.logo);
+        if(team.logo != "None") embed.setThumbnail(team.logo);
 
         message.channel.send(embed);
 
     })
-
 
     return;
 

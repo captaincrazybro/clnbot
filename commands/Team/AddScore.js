@@ -39,7 +39,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         return;
 
-    } /*else if(league == "twl"){
+    } else if(league == "twl"){
         
         if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a team name").send(message.channel);
 
@@ -68,7 +68,7 @@ module.exports.run = async (bot,message,args,cmd) => {
 
         return;
 
-    }*/ else {
+    } else {
         return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
     }
 

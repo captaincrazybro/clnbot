@@ -41,7 +41,8 @@ let leagues = [
   "cdcl",
   "cwcl",
   "cotc",
-  "sgcl"
+  "sgcl",
+  "cecl"
 ]
 
 module.exports.leagues = leagues
