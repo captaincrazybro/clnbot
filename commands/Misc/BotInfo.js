@@ -1,7 +1,7 @@
 const Groups = require('../../util/Enums/Groups')
 const Discord = require('discord.js')
 const Colors = require('../../util/Enums/Colors.js')
-const settings = require('../../manifest.json')
+const settings = require('../../settings.json')
 
 module.exports.run = async (bot, message, args, cmd) => {
     // console.log(bot.users)
