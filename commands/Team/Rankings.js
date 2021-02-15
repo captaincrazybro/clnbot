@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args, cmd) => {
         return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
     }
 
-    if (["ctfcl", "ctcl", "cdcl", "cwcl", "twl", "sgcl"].includes(league)) {
+    if (["ctfcl", "ctcl", "cdcl", "cwcl", "sgcl", "cecl"].includes(league)) {
 
         var rankings = "";
 
@@ -62,11 +62,11 @@ module.exports.run = async (bot, message, args, cmd) => {
         message.channel.send(embed);
 
         return;
-    } /*else if(league == "twl"){
+    } else if (league == "twl") {
 
         var rankings = "";
 
-        let teamsSorted = _Team.getTeamObj(league).sort((a, b) => {return twlRanking(b) - twlRanking(a)});
+        let teamsSorted = _Team.getTeamObj(league).sort((a, b) => { return twlRanking(b) - twlRanking(a) });
 
         teamsSorted.forEach((team, i) => {
             rankings += `${i + 1}. ${team.name} | ${team.wins}-${team.losses}\n`
@@ -79,7 +79,7 @@ module.exports.run = async (bot, message, args, cmd) => {
 
         message.channel.send(embed);
 
-    }*/ else {
+    } else {
         return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
     }
 

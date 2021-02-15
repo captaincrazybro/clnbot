@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args, cmd) => {
 
     if (league == "clt") return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
 
-    if (["ctfcl", "ctcl", "cdcl", "cwcl", "twl", "sgcl"].includes(league)) {
+    if (["ctfcl", "ctcl", "cdcl", "cwcl", "twl", "sgcl", "cecl"].includes(league)) {
 
         if (args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a tier").send(message.channel);
 
@@ -42,17 +42,17 @@ module.exports.run = async (bot, message, args, cmd) => {
 
         return;
 
-    } /*else if(league == "twl") {
-        
-        if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify wins").send(message.channel);
+    } else if (league == "twl") {
 
-        if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid wins - Please specify a number").send(message.channel);
+        if (args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify wins").send(message.channel);
+
+        if (isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid wins - Please specify a number").send(message.channel);
 
         let wins = parseInt(args[1]);
 
-        if(args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify losses").send(message.channel);
+        if (args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify losses").send(message.channel);
 
-        if(isNaN(args[2])) return new _NoticeEmbed(Colors.ERROR, "Invalid losses - Please specify a number").send(message.channel);
+        if (isNaN(args[2])) return new _NoticeEmbed(Colors.ERROR, "Invalid losses - Please specify a number").send(message.channel);
 
         let losses = parseInt(args[2]);
 
@@ -62,7 +62,7 @@ module.exports.run = async (bot, message, args, cmd) => {
 
         new _NoticeEmbed(Colors.SUCCESS, `Successfully set ${team.name}'s wins to ${wins} and losses to ${losses}`).send(message.channel);
 
-    }*/ else {
+    } else {
 
         if (args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify points").send(message.channel);
 
