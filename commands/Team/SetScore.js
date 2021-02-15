@@ -1,37 +1,37 @@
 const Groups = require('../../util/Enums/Groups')
 const _NoticeEmbed = require('../../util/Constructors/_NoticeEmbed');
-const _Team  = require('../../util/Constructors/_Team')
+const _Team = require('../../util/Constructors/_Team')
 const Colors = require('../../util/Enums/Colors')
 const _League = require('../../util/Constructors/_League.js');
 
-module.exports.run = async (bot,message,args,cmd) => {
+module.exports.run = async (bot, message, args, cmd) => {
 
     let settings = require('../../settings.json');
-    if(_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
+    if (_League.getLeague(message.guild.id) == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a league set! Use the " + settings.prefix + "setleague command to set the guild's league").send(message.channel);
 
     let league = _League.getLeague(message.guild.id).toLowerCase();
 
-    if(args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a team name").send(message.channel);
+    if (args.length == 0) return new _NoticeEmbed(Colors.WARN, "Please specify a team name").send(message.channel);
 
     let teamName = args[0];
 
     let team = _Team.getTeam(teamName, league);
 
-    if(team == null) return new _NoticeEmbed(Colors.ERROR, "Invalid name - This team does not exist").send(message.channel);
+    if (team == null) return new _NoticeEmbed(Colors.ERROR, "Invalid name - This team does not exist").send(message.channel);
 
-    if(league == "clt") return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
+    if (league == "clt") return new _NoticeEmbed(Colors.WARN, "This command is not supported in this league").send(message.channel);
 
-    if(league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl" || league == "twl" || league == "sgcl"){
+    if (["ctfcl", "ctcl", "cdcl", "cwcl", "twl", "sgcl"].includes(league)) {
 
-        if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a tier").send(message.channel);
+        if (args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify a tier").send(message.channel);
 
-        if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid tier - Please specify a number").send(message.channel);
+        if (isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid tier - Please specify a number").send(message.channel);
 
         let tier = parseInt(args[1]);
 
-        if(args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify a rank").send(message.channel);
+        if (args.length == 2) return new _NoticeEmbed(Colors.WARN, "Please specify a rank").send(message.channel);
 
-        if(isNaN(args[2])) return new _NoticeEmbed(Colors.ERROR, "Invalid rank - Please specify a number").send(message.channel);
+        if (isNaN(args[2])) return new _NoticeEmbed(Colors.ERROR, "Invalid rank - Please specify a number").send(message.channel);
 
         let rank = parseInt(args[2]);
 
@@ -64,9 +64,9 @@ module.exports.run = async (bot,message,args,cmd) => {
 
     }*/ else {
 
-        if(args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify points").send(message.channel);
+        if (args.length == 1) return new _NoticeEmbed(Colors.WARN, "Please specify points").send(message.channel);
 
-        if(isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid points - Please specify a number").send(message.channel);
+        if (isNaN(args[1])) return new _NoticeEmbed(Colors.ERROR, "Invalid points - Please specify a number").send(message.channel);
 
         let points = parseInt(args[1]);
 

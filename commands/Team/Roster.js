@@ -91,7 +91,7 @@ module.exports.run = async (bot, message, args, cmd) => {
             .setTitle(`${team.name}`)
         //.addField("Mentor", owner)
         //.addField("Nick", team.nick)
-        if (league == "ctfcl" || league == "mbcl" || league == "dcl" || league == "cdcl" || league == "cwcl" || league == "twl" || league == "sgcl") {
+        if (["ctfcl", "ctcl", "cdcl", "cwcl", "twl", "sgcl"].includes(league)) {
             embed.addField("Tier", team.wins);
             embed.addField("Rank", team.losses);
         } else if (league == "decl") {
