@@ -38,6 +38,7 @@ let leagues = [
   "dcl",
   "mbcl",
   "ctfcl",
+  "ctcl",
   "cdcl",
   "cwcl",
   "cotc",
