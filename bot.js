@@ -289,7 +289,7 @@ bot.on("message", async message => {
   //xp.run(bot,message,args,cmd,fs);
 
   if (cmd.startsWith(settings.prefix)) {
-    let commandfile = bot.commands.get(cmd.replace(settings.prefix, ""));
+    let commandfile = bot.commands.get(cmd.replace(settings.prefix, "").toLowerCase());
     if (!commandfile) return;
     if (cmd.replace(settings.prefix, "") == "setleague") return commandfile.run(bot, message, args, cmd);
     if (league == null) return new _NoticeEmbed(Colors.ERROR, "This guild does not have a guild set! Use the " + settings.prefix + "setleague command to set the league's guild").send(message.channel);
