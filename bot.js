@@ -33,7 +33,7 @@ module.exports.bot = bot;
 
 let leagues = [
   "twl",
-  "decl",
+ // "decl",
   "clt",
   "dcl",
   "mbcl",
